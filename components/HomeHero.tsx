@@ -156,7 +156,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
           <p
             style={{
               margin: 0,
-              paddingTop: '15vh',
+              paddingTop: 'clamp(10vh, 6vw, 15vh)',
               fontSize: 'clamp(22px, 7vw, 64px)',
               fontWeight: 400,
               textAlign: 'center',
