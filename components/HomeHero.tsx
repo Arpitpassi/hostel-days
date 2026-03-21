@@ -3,29 +3,29 @@
 import { useEffect, useState, useRef } from 'react'
 import { getDaysUntilFestival, isFestivalActive, getCurrentFestivalDay, DAY_THEMES } from '@/lib/utils'
 import Link from 'next/link'
+import BirdAnimation from '@/app/BirdAnimation'
 
 interface Step {
-  static: string
   word: string
   color: string
   finale?: boolean
 }
 
 const SEQUENCE: Step[] = [
-  { static: 'get ready for', word: 'cricket',            color: '#f59e0b' },
-  { static: 'get ready for', word: 'football',           color: '#22c55e' },
-  { static: 'get ready for', word: 'basketball',         color: '#f97316' },
-  { static: 'get ready for', word: 'volleyball',         color: '#3b82f6' },
-  { static: 'get ready for', word: 'badminton',          color: '#a855f7' },
-  { static: 'get ready for', word: 'table tennis',       color: '#06b6d4' },
-  { static: 'get ready for', word: 'chess',              color: '#ec4899' },
-  { static: 'get ready for', word: 'the ultimate clash', color: '#ffffff' },
-  { static: 'get ready for', word: 'hostel days 2026',   color: '#fbbf24', finale: true },
+  { word: 'cricket',            color: '#f59e0b' },
+  { word: 'football',           color: '#22c55e' },
+  { word: 'basketball',         color: '#f97316' },
+  { word: 'volleyball',         color: '#3b82f6' },
+  { word: 'badminton',          color: '#a855f7' },
+  { word: 'table tennis',       color: '#06b6d4' },
+  { word: 'chess',              color: '#ec4899' },
+  { word: 'the ultimate clash', color: '#ffffff' },
+  { word: 'hostel days 2026',   color: '#fbbf24', finale: true },
 ]
 
-const GAME_HOLD     = 100
-const ULTIMATE_HOLD = 150
-const FADE_MS       = 0
+const GAME_HOLD     = 150
+const ULTIMATE_HOLD = 250
+const FADE_MS       = 50
 
 interface Props {
   liveCount: number
@@ -42,7 +42,6 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
   const [wordOpacity, setWordOpacity]       = useState(1)
   const [displayedWord, setDisplayedWord]   = useState(SEQUENCE[0].word)
   const [displayedColor, setDisplayedColor] = useState(SEQUENCE[0].color)
-  const [prefix, setPrefix]                 = useState(SEQUENCE[0].static)
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const clear = () => { if (timerRef.current) clearTimeout(timerRef.current) }
@@ -50,7 +49,6 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
   const runStep = (i: number) => {
     if (i >= SEQUENCE.length) return
     const s = SEQUENCE[i]
-    setPrefix(s.static)
 
     if (s.finale) {
       setDisplayedWord(s.word)
@@ -81,7 +79,6 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
     setMounted(true)
     setDisplayedWord(SEQUENCE[0].word)
     setDisplayedColor(SEQUENCE[0].color)
-    setPrefix(SEQUENCE[0].static)
     setWordOpacity(0)
     timerRef.current = setTimeout(() => {
       setWordOpacity(1)
@@ -116,19 +113,20 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
 
   return (
     <section
-      className="relative overflow-hidden px-4 sm:px-6 max-w-2xl md:max-w-4xl mx-auto"
-      style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', paddingBottom: '2.5rem' }}
+      className="relative overflow-hidden px-4 sm:px-6 max-w-2xl md:max-w-4xl mx-auto flex flex-col justify-start min-h-[40vh] md:min-h-[60vh] pt-[3vh] md:pt-[5vh] pb-4 md:pb-6"
     >
       <div
-        className="absolute inset-0 opacity-5 pointer-events-none"
+        className="absolute inset-0 opacity-5 pointer-events-none z-0"
         style={{ backgroundImage: `radial-gradient(circle at 70% 50%, var(--accent) 0%, transparent 60%)` }}
       />
 
-      {/* All content sits at the bottom half */}
-      <div className="relative">
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 transform scale-[1.15] md:scale-[1.40] -translate-y-[2vh] md:-translate-y-[5vh]">
+        <BirdAnimation />
+      </div>
 
-        {/* Live badge */}
-        <div className="flex items-center gap-2 mb-3">
+      <div className="relative z-10 w-full pointer-events-auto flex flex-col items-center flex-1">
+
+        <div className="flex items-center justify-center gap-2 mb-3 w-full">
           {liveCount > 0 && (
             <span className="live-badge">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--live-color)] live-dot" />
@@ -142,77 +140,62 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
           rel="stylesheet"
         />
 
-        {/* Flash-text block */}
         <div
           style={{
-            minHeight: 80,
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'flex-start',
-            justifyContent: 'center',
-            fontFamily: "'Barlow Condensed', var(--font-display), sans-serif",
-            marginBottom: '1.25rem',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            fontFamily: "var(--font-display)",
+            marginTop: '10vh',
+            marginBottom: '1rem',
             width: '100%',
           }}
         >
-          {!animDone ? (
-            <p
+          {/* Main Flashing Text */}
+          <p
+            style={{
+              margin: 0,
+              paddingTop: '15vh',
+              fontSize: 'clamp(22px, 7vw, 64px)',
+              fontWeight: 400,
+              textAlign: 'center',
+              lineHeight: 1.15,
+            }}
+          >
+            <span
               style={{
-                margin: 0,
-                fontSize: 'clamp(22px, 7vw, 72px)',
-                fontWeight: 400,
-                whiteSpace: 'normal',
-                overflowWrap: 'break-word',
-                wordBreak: 'break-word',
-                color: 'var(--text-primary)',
-                textAlign: 'left',
-                lineHeight: 1.15,
+                color: displayedColor,
+                fontWeight: 600,
+                opacity: wordOpacity,
+                transition: `opacity ${FADE_MS}ms ease`,
+                whiteSpace: 'nowrap',
+                textTransform: 'uppercase'
               }}
             >
-              <span>{prefix}</span>
-              <span> </span>
-              <span
-                style={{
-                  color: displayedColor,
-                  fontWeight: 600,
-                  opacity: wordOpacity,
-                  transition: `opacity ${FADE_MS}ms ease`,
-                }}
-              >
-                {displayedWord}
-              </span>
-            </p>
-          ) : (
-            <div>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: 'clamp(22px, 7vw, 72px)',
-                  fontWeight: 400,
-                  whiteSpace: 'normal',
-                  overflowWrap: 'break-word',
-                  wordBreak: 'break-word',
-                  color: 'var(--text-primary)',
-                  textAlign: 'left',
-                  lineHeight: 1.15,
-                }}
-              >
-                <span>{prefix}</span>
-                <span> </span>
-                <span style={{ color: displayedColor, fontWeight: 600 }}>
-                  {displayedWord}
-                </span>
-              </p>
+              {displayedWord}
+            </span>
+          </p>
 
-              {/* Register button — original inline style, left aligned */}
+          {/* Button Wrapper */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateRows: buttonVisible ? '1fr' : '0fr',
+              transition: 'grid-template-rows 0.4s ease-out',
+              width: '100%',
+            }}
+          >
+            <div style={{ overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
               <Link
                 href={registrationUrl}
                 style={{
                   display: 'inline-block',
-                  marginTop: 20,
-                  fontFamily: "'Barlow Condensed', var(--font-display), sans-serif",
+                  marginTop: 15,
+                  marginBottom: 10,
+                  fontFamily: "var(--font-display)",
                   fontSize: 16,
-                  fontWeight: 600,
+                  fontWeight: 700,
                   letterSpacing: '0.15em',
                   padding: '8px 24px',
                   border: '1px solid var(--accent)',
@@ -223,20 +206,22 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
                   cursor: 'pointer',
                   textTransform: 'uppercase' as const,
                   opacity: buttonVisible ? 1 : 0,
-                  transform: buttonVisible ? 'translateY(0)' : 'translateY(8px)',
+                  transform: buttonVisible ? 'translateY(0)' : 'translateY(-10px)',
                   transition: 'opacity 0.4s ease-out, transform 0.4s ease-out',
                 }}
               >
                 Register ↗
               </Link>
             </div>
-          )}
+          </div>
         </div>
+
+        {/* FIX: Increased spacer height by another 2vh to push the stats block exactly 2% further down */}
+        <div className="flex-1 min-h-[19vh] md:min-h-[24vh]" />
 
         {/* Stats / countdown */}
         {!festivalActive && daysUntil > 0 ? (
-          <div className="card w-full sm:w-auto p-4 md:p-6">
-            {/* Mobile: 2×2 grid */}
+          <div className="card w-full sm:w-auto p-4 md:p-6 bg-opacity-80 backdrop-blur-sm shadow-lg mx-auto">
             <div className="grid grid-cols-2 gap-4 sm:hidden">
               {[
                 { value: String(timeLeft.h).padStart(2, '0'), label: 'hrs' },
@@ -258,8 +243,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
               ))}
             </div>
 
-            {/* Desktop: single row */}
-            <div className="hidden sm:inline-flex items-center gap-4 md:gap-8">
+            <div className="hidden sm:flex items-center justify-center gap-4 md:gap-8 w-full">
               <div className="text-center">
                 <p className="font-display font-bold tabular-nums text-2xl md:text-5xl" style={{ color: 'var(--text-primary)' }}>
                   {String(timeLeft.h).padStart(2, '0')}
@@ -287,20 +271,20 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
             </div>
           </div>
         ) : (
-          <div className="flex items-center gap-4 md:gap-10">
-            <div>
+          <div className="flex items-center justify-center gap-4 md:gap-10 w-full">
+            <div className="text-center">
               <p className="font-display font-bold text-2xl md:text-4xl" style={{ color: 'var(--text-primary)' }}>{totalGames}</p>
               <p className="text-xs md:text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>Total games</p>
             </div>
             <div className="w-px h-8 md:h-14" style={{ background: 'var(--border)' }} />
-            <div>
+            <div className="text-center">
               <p className="font-display font-bold text-2xl md:text-4xl" style={{ color: liveCount > 0 ? 'var(--live-color)' : 'var(--text-primary)' }}>
                 {liveCount}
               </p>
               <p className="text-xs md:text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>Live now</p>
             </div>
             <div className="w-px h-8 md:h-14" style={{ background: 'var(--border)' }} />
-            <div>
+            <div className="text-center">
               <p className="font-display font-bold text-2xl md:text-4xl" style={{ color: 'var(--text-primary)' }}>{completedCount}</p>
               <p className="text-xs md:text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>Completed</p>
             </div>

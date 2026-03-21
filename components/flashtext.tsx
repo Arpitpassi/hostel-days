@@ -12,7 +12,7 @@ interface Step {
 const SEQUENCE: Step[] = [
   { static: "get ready for", word: "cricket",        color: "#f59e0b" },
   { static: "get ready for", word: "football",       color: "#22c55e" },
-  { static: "get ready for", word: "basketball",     color: "#f97316" },
+  { static: "get ready for", word: "basketball",     color: "#" },
   { static: "get ready for", word: "volleyball",     color: "#3b82f6" },
   { static: "get ready for", word: "badminton",      color: "#a855f7" },
   { static: "get ready for", word: "table tennis",   color: "#06b6d4" },

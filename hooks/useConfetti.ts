@@ -9,7 +9,7 @@ export function useConfetti() {
       particleCount: 120,
       spread: 80,
       origin: { y: 0.6 },
-      colors: ['#f97316', '#fb923c', '#fbbf24', '#34d399', '#60a5fa'],
+      colors: ['#', '#fb923c', '#fbbf24', '#34d399', '#60a5fa'],
     })
     setTimeout(() => {
       confetti({
@@ -17,7 +17,7 @@ export function useConfetti() {
         angle: 60,
         spread: 55,
         origin: { x: 0 },
-        colors: ['#f97316', '#fbbf24'],
+        colors: ['#', '#fbbf24'],
       })
       confetti({
         particleCount: 60,
