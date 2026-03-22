@@ -1,13 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Game, Category } from '@/types'
+import { Game, Category, Database } from '@/types'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import { DAY_THEMES, getCategoryIcon } from '@/lib/utils'
 import {
-  LogOut, Plus, Minus, CheckCircle, Zap, Clock, Shield,
-  ChevronDown, ChevronUp, Loader2, X, Trophy
+  LogOut, Plus, Minus,
+  Zap, Shield,
+  Loader2, X,
 } from 'lucide-react'
 
 interface Props {
@@ -30,26 +30,28 @@ export function AdminDashboardClient({ games: initialGames, categories, adminNam
     await supabase.auth.signOut()
     router.push('/admin/login')
   }
+const updateGame = async (gameId: number, updates: Partial<Game>) => {
+  setSaving(true)
+  const supabase = createClient()
 
-  const updateGame = async (gameId: number, updates: Partial<Game>) => {
-    setSaving(true)
-    const supabase = createClient()
+  const { categories: _, ...dbUpdates } = updates as Partial<Game> & { categories?: unknown }
 
-    const { data, error } = await supabase
-      .from('games')
-      .update(updates)
-      .eq('id', gameId)
-      .select('*, categories(id, name, type)')
-      .single()
+  // Cast the whole query builder to any to bypass broken type inference
+  const { data, error } = await (supabase as any)
+    .from('games')
+    .update(dbUpdates)
+    .eq('id', gameId)
+    .select('*, categories(id, name, type)')
+    .single()
 
-    if (!error && data) {
-      setGames(prev => prev.map(g => g.id === gameId ? { ...g, ...data } : g))
-      setSelectedGame(prev => prev?.id === gameId ? { ...prev, ...data } : prev)
-      setSavedId(gameId)
-      setTimeout(() => setSavedId(null), 2000)
-    }
-    setSaving(false)
+  if (!error && data) {
+    setGames(prev => prev.map(g => g.id === gameId ? { ...g, ...data } : g))
+    setSelectedGame(prev => prev?.id === gameId ? { ...prev, ...data } : prev)
+    setSavedId(gameId)
+    setTimeout(() => setSavedId(null), 2000)
   }
+  setSaving(false)
+}
 
   const filtered = games.filter(g => {
     if (filterDay !== 'all' && g.day !== filterDay) return false
@@ -458,9 +460,7 @@ function GameEditModal({ game, categories, saving, onUpdate, onClose }: ModalPro
         </div>
 
         {/* Modal footer */}
-        <div
-          className="flex gap-3 px-5 pb-5"
-        >
+        <div className="flex gap-3 px-5 pb-5">
           <button
             onClick={onClose}
             className="flex-1 py-2.5 rounded-xl text-sm font-medium border transition-all"

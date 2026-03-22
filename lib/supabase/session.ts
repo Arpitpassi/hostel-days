@@ -1,12 +1,13 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { Database } from '@/types'
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   })
 
-  const supabase = createServerClient(
+  const supabase = createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -14,7 +15,7 @@ export async function updateSession(request: NextRequest) {
         getAll() {
           return request.cookies.getAll()
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet: { name: string; value: string; options?: object }[]) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value),
           )
@@ -47,13 +48,13 @@ export async function updateSession(request: NextRequest) {
   // If logged-in user tries to hit /admin/login, check if they're admin
   // and redirect them straight to dashboard
   if (request.nextUrl.pathname.startsWith('/admin/login') && user) {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('is_admin')
-      .eq('id', user.id)
-      .single()
+   const { data: profile } = await supabase
+  .from('profiles')
+  .select('is_admin')
+  .eq('id', user.id)
+  .single()
 
-    if (profile?.is_admin) {
+if ((profile as any)?.is_admin) {
       const url = request.nextUrl.clone()
       url.pathname = '/admin/dashboard'
       return NextResponse.redirect(url)
