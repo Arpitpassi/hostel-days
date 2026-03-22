@@ -168,7 +168,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
         style={{ transform: `translateY(${birdTranslateY})` }}
       >
         <div
-          style={{ width: '100%', maxWidth: '500px', transform: 'scale(1.035)' }}
+          style={{ width: '100%', maxWidth: '500px', transform: 'scale(1.3)' }}
           className="md:[transform:scale(1.40)]"
         >
           <BirdAnimation />
