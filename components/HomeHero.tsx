@@ -34,16 +34,50 @@ interface Props {
   registrationUrl?: string
 }
 
-export function HomeHero({ liveCount, totalGames, completedCount, registrationUrl = '/register' }: Props) {
+// ============================================================
+//  POSITION CONTROLS — edit these values to reposition
+// ============================================================
+
+const BIRD_DESKTOP_TRANSLATE_Y = '-2vh'   // desktop: negative = up, positive = down
+const BIRD_MOBILE_TRANSLATE_Y  = '-2vh'   // mobile:  negative = up, positive = down
+
+const TEXT_DESKTOP_PADDING_TOP = '3vh'    // desktop: smaller = up, larger = down
+const TEXT_MOBILE_PADDING_TOP  = '3vh'    // mobile:  smaller = up, larger = down
+
+// Fine-tune the flashing word itself (independent of stats/button below it)
+const WORD_DESKTOP_MARGIN_TOP  = '10vh'   // desktop: smaller = up, larger = down
+const WORD_MOBILE_MARGIN_TOP   = '3vh'    // mobile:  smaller = up, larger = down
+
+const WORD_DESKTOP_PADDING_TOP = 'clamp(10vh, 6vw, 15vh)'  // desktop extra push
+const WORD_MOBILE_PADDING_TOP  = '10vh'                     // mobile extra push
+
+// Spacer between the word/button block and the bottom stats/countdown
+// Shrink to pull stats UP, grow to push stats DOWN
+const STATS_DESKTOP_MIN_HEIGHT = '24vh'   // desktop: smaller = up, larger = down
+const STATS_MOBILE_MIN_HEIGHT  = '10vh'   // mobile:  smaller = up, larger = down
+
+// ============================================================
+
+export function HomeHero({ liveCount, totalGames, completedCount, registrationUrl = '/Participate' }: Props) {
   const [mounted, setMounted]               = useState(false)
   const [timeLeft, setTimeLeft]             = useState({ h: 0, m: 0, s: 0 })
   const [buttonVisible, setButtonVisible]   = useState(false)
   const [wordOpacity, setWordOpacity]       = useState(1)
   const [displayedWord, setDisplayedWord]   = useState(SEQUENCE[0].word)
   const [displayedColor, setDisplayedColor] = useState(SEQUENCE[0].color)
+  const [isMobile, setIsMobile]             = useState(false)
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const clear = () => { if (timerRef.current) clearTimeout(timerRef.current) }
+
+  // Detect mobile (< 768px = Tailwind's md breakpoint)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    setIsMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
 
   const runStep = (i: number) => {
     if (i >= SEQUENCE.length) return
@@ -107,22 +141,47 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
   const festivalActive = mounted ? isFestivalActive()      : false
   const daysUntil      = mounted ? getDaysUntilFestival()  : 0
   const currentDay     = mounted ? getCurrentFestivalDay() : 1
-  const _dayTheme      = DAY_THEMES[currentDay] || DAY_THEMES[1] // kept for potential future use
+  const _dayTheme      = DAY_THEMES[currentDay] || DAY_THEMES[1]
+
+  // Resolved values based on screen size
+  const birdTranslateY  = isMobile ? BIRD_MOBILE_TRANSLATE_Y  : BIRD_DESKTOP_TRANSLATE_Y
+  const textPaddingTop  = isMobile ? TEXT_MOBILE_PADDING_TOP  : TEXT_DESKTOP_PADDING_TOP
+  const wordMarginTop   = isMobile ? WORD_MOBILE_MARGIN_TOP   : WORD_DESKTOP_MARGIN_TOP
+  const wordPaddingTop  = isMobile ? WORD_MOBILE_PADDING_TOP  : WORD_DESKTOP_PADDING_TOP
+  const statsMinHeight  = isMobile ? STATS_MOBILE_MIN_HEIGHT  : STATS_DESKTOP_MIN_HEIGHT
 
   return (
     <section
-      className="relative overflow-hidden px-4 sm:px-6 max-w-2xl md:max-w-4xl mx-auto flex flex-col justify-start min-h-[40vh] md:min-h-[60vh] pt-[3vh] md:pt-[5vh] pb-4 md:pb-6"
+      className="relative overflow-hidden px-4 sm:px-6 max-w-2xl md:max-w-4xl mx-auto flex flex-col min-h-[40vh] md:min-h-[60vh]"
     >
+      {/* Background gradient */}
       <div
         className="absolute inset-0 opacity-5 pointer-events-none z-0"
         style={{ backgroundImage: `radial-gradient(circle at 70% 50%, var(--accent) 0%, transparent 60%)` }}
       />
 
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 transform scale-[1.035] md:scale-[1.40] -translate-y-[2vh] md:-translate-y-[5vh]">
-        <BirdAnimation />
+      {/* ————— BIRD (independent layer) —————
+          Move bird UP:   make BIRD_MOBILE_TRANSLATE_Y more negative, e.g. '-8vh'
+          Move bird DOWN: make BIRD_MOBILE_TRANSLATE_Y more positive, e.g.  '8vh'  */}
+      <div
+        className="absolute inset-0 pointer-events-none z-0 flex items-center justify-center"
+        style={{ transform: `translateY(${birdTranslateY})` }}
+      >
+        <div
+          style={{ width: '100%', maxWidth: '500px', transform: 'scale(1.035)' }}
+          className="md:[transform:scale(1.40)]"
+        >
+          <BirdAnimation />
+        </div>
       </div>
 
-      <div className="relative z-10 w-full pointer-events-auto flex flex-col items-center flex-1">
+      {/* ————— TEXT + BUTTON + STATS (independent layer) —————
+          Move text UP:   make TEXT_MOBILE_PADDING_TOP smaller, e.g. '0vh'
+          Move text DOWN: make TEXT_MOBILE_PADDING_TOP larger,  e.g. '10vh' */}
+      <div
+        className="relative z-10 w-full pointer-events-auto flex flex-col items-center flex-1"
+        style={{ paddingTop: textPaddingTop }}
+      >
 
         <div className="flex items-center justify-center gap-2 mb-3 w-full">
           {liveCount > 0 && (
@@ -133,6 +192,9 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
           )}
         </div>
 
+        {/* ————— FLASHING WORD BLOCK —————
+            Move word UP:   make WORD_MOBILE_MARGIN_TOP + WORD_MOBILE_PADDING_TOP smaller
+            Move word DOWN: make WORD_MOBILE_MARGIN_TOP + WORD_MOBILE_PADDING_TOP larger  */}
         <div
           style={{
             display: 'flex',
@@ -140,16 +202,15 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
             alignItems: 'center',
             justifyContent: 'flex-start',
             fontFamily: "var(--font-display)",
-            marginTop: '10vh',
+            marginTop: wordMarginTop,
             marginBottom: '1rem',
             width: '100%',
           }}
         >
-          {/* Main Flashing Text */}
           <p
             style={{
               margin: 0,
-              paddingTop: 'clamp(10vh, 6vw, 15vh)',
+              paddingTop: wordPaddingTop,
               fontSize: 'clamp(22px, 7vw, 64px)',
               fontWeight: 400,
               textAlign: 'center',
@@ -170,7 +231,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
             </span>
           </p>
 
-          {/* Button Wrapper */}
+          {/* Participate button */}
           <div
             style={{
               display: 'grid',
@@ -193,8 +254,8 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
                   padding: '8px 24px',
                   border: '1px solid var(--accent)',
                   borderRadius: 4,
-                  background: 'rgba(255, 255, 255, 0.15)',
-                  color: 'var(--accent)',
+                  background: 'rgba(140, 108, 152, 0.15)',
+                  color: '#ffffff',
                   textDecoration: 'none',
                   cursor: 'pointer',
                   textTransform: 'uppercase' as const,
@@ -203,13 +264,19 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
                   transition: 'opacity 0.4s ease-out, transform 0.4s ease-out',
                 }}
               >
-                Register
+                Participate
               </Link>
             </div>
           </div>
         </div>
 
-        <div className="flex-1 min-h-[19vh] md:min-h-[24vh]" />
+        {/* ————— SPACER — controls how far down the stats/countdown sit —————
+            Move stats UP:   make STATS_MOBILE_MIN_HEIGHT smaller, e.g. '4vh'
+            Move stats DOWN: make STATS_MOBILE_MIN_HEIGHT larger,  e.g. '18vh' */}
+        <div
+          className="flex-1"
+          style={{ minHeight: statsMinHeight }}
+        />
 
         {/* Stats / countdown */}
         {!festivalActive && daysUntil > 0 ? (

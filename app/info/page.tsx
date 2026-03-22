@@ -55,6 +55,21 @@ export default async function InfoPage() {
         </section>
       )}
 
+      {/* About */}
+      <section>
+        <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
+          About
+        </h2>
+        <div className="card px-4 py-4 space-y-3">
+          <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+            Hostel Days 2026 marks a landmark celebration at the National Institute of Technology Goa, uniting students across hostels in a vibrant display of talent, teamwork, and competitive spirit.
+          </p>
+          <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+            From adrenaline-filled sports to electrifying cultural showcases, the event is designed to foster unity, creativity, and sportsmanship. It&apos;s not just an event—it&apos;s an experience that builds memories, friendships, and legacy.
+          </p>
+        </div>
+      </section>
+
       {/* Venue */}
       <section>
         <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
@@ -83,37 +98,6 @@ export default async function InfoPage() {
         </div>
       </section>
 
-      {/* General Rules */}
-      <section>
-        <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
-          General Rules
-        </h2>
-        <div className="card px-4 py-3 space-y-2.5">
-          {[
-            'Each hostel can enter a maximum of 2 teams per event.',
-            'Players must be currently enrolled students — ID card required.',
-            'Report to the venue 15 minutes before your scheduled game.',
-            'Disputes must be raised with the event coordinator immediately.',
-            'Decision of the referee / judges is final.',
-            'Unsportsmanlike behavior will result in immediate disqualification.',
-            'Points: Win = 3 pts · Draw = 1 pt · Loss = 0 pts',
-            'Tiebreakers decided by goal/point difference, then head-to-head.',
-          ].map((rule, i) => (
-            <div key={i} className="flex items-start gap-2.5">
-              <span
-                className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5"
-                style={{ background: 'var(--bg-secondary)', color: 'var(--text-muted)' }}
-              >
-                {i + 1}
-              </span>
-              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-                {rule}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Contact */}
       <section>
         <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
@@ -121,9 +105,8 @@ export default async function InfoPage() {
         </h2>
         <div className="card divide-y divide-[var(--border)]">
           {[
-            { role: 'Sports Coordinator', name: 'Arjun Mehta', phone: '+91 98765 43210' },
-            { role: 'Cultural Coordinator', name: 'Priya Sharma', phone: '+91 87654 32109' },
-            { role: 'Overall Convenor', name: 'Dr. Suresh Kumar', phone: '+91 76543 21098' },
+           { role: 'Event Manager',          name: 'Atharva Kant Yogi', phone: '+917666274691'   },
+           { role: 'Event Manager',          name: 'Lav Kumar',         phone: '+917564031103'   },
           ].map(c => (
             <div key={c.name} className="px-4 py-3 flex items-center justify-between">
               <div>

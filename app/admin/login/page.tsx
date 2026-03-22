@@ -83,8 +83,7 @@ export default function AdminLoginPage() {
             Admin Portal
           </h1>
           <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
-            Hostel Days 2025 — Score Management
-          </p>
+            Hostel Days 2026 — Score Management          </p>
         </div>
 
         {/* Mode toggle */}

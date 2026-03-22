@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Live Scores',
-  description: 'Real-time live scores for all Hostel Days 2025 matches. Auto-updating scores with no refresh needed.',
+  description: 'Real-time live scores for all Hostel Days 2026 matches. Auto-updating scores with no refresh needed.',
 }
 
 export const revalidate = 0

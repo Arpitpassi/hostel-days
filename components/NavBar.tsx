@@ -36,7 +36,7 @@ export function NavBar() {
           <span className="font-display font-bold text-base tracking-tight" style={{ color: 'var(--text-primary)' }}>
             Hostel Days
             <span className="ml-1.5 text-xs font-body font-normal" style={{ color: 'var(--text-muted)' }}>
-              2025
+              2026
             </span>
           </span>
         </Link>

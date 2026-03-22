@@ -33,11 +33,11 @@ export function timeAgo(time: string): string {
 }
 
 export const FESTIVAL_START = new Date(
-  process.env.NEXT_PUBLIC_FESTIVAL_START_DATE || '2025-03-10'
+  process.env.NEXT_PUBLIC_FESTIVAL_START_DATE || '2026-03-10'
 )
 
 export const FESTIVAL_END = new Date(
-  process.env.NEXT_PUBLIC_FESTIVAL_END_DATE || '2025-03-14'
+  process.env.NEXT_PUBLIC_FESTIVAL_END_DATE || '2026-03-14'
 )
 
 export function getCurrentFestivalDay(): number {

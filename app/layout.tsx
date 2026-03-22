@@ -5,14 +5,14 @@ import { NavBar } from '@/components/NavBar'
 
 export const metadata: Metadata = {
   title: {
-    default: 'Hostel Days 2025 — College Cultural & Sports Festival',
-    template: '%s | Hostel Days 2025',
+    default: 'Hostel Days 2026 — College Cultural & Sports Festival',
+    template: '%s | Hostel Days 2026',
   },
   description:
-    'Live scores, schedules, and results for Hostel Days 2025 — the biggest inter-hostel cultural and sports festival. 5 days of fierce competition!',
+    'Live scores, schedules, and results for Hostel Days 2026 — the biggest inter-hostel cultural and sports festival. 5 days of fierce competition!',
   keywords: ['hostel days', 'college festival', 'live scores', 'sports', 'cultural'],
   openGraph: {
-    title: 'Hostel Days 2025',
+    title: 'Hostel Days 2026',
     description: 'Live scores & results for the biggest college fest',
     type: 'website',
   },

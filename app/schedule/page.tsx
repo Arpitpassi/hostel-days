@@ -27,7 +27,7 @@ export default async function SchedulePage() {
         Schedule
       </h1>
       <p className="text-xs mb-5" style={{ color: 'var(--text-muted)' }}>
-        All events across 5 days — Hostel Days 2025
+        All events across 5 days — Hostel Days 2026
       </p>
 
       {days.map(day => {
