@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { timeAgo } from '@/lib/utils'
-import { Megaphone, Phone } from 'lucide-react'
+import { Megaphone } from 'lucide-react'
 import type { Metadata } from 'next'
 import { Announcement } from '@/types'
 
@@ -77,11 +77,11 @@ export default async function InfoPage() {
         </h2>
         <div className="card divide-y divide-[var(--border)]">
           {[
-            { name: 'Main Ground', events: 'Cricket, Football, Athletics', icon: '🏟️' },
-            { name: 'Sports Complex', events: 'Badminton, TT, Basketball', icon: '🏢' },
-            { name: 'Hostel Lawn', events: 'Tug of War, Volleyball', icon: '🌿' },
-            { name: 'Auditorium', events: 'Dance, Drama, Fashion, Singing', icon: '🎭' },
-            { name: 'Common Room', events: 'Quiz, Debate, Art', icon: '🏛️' },
+            { name: 'Main Ground',    events: 'Cricket, Football, Athletics',    icon: '🏟️' },
+            { name: 'Sports Complex', events: 'Badminton, TT, Basketball',       icon: '🏢' },
+            { name: 'Hostel Lawn',    events: 'Tug of War, Volleyball',          icon: '🌿' },
+            { name: 'Auditorium',     events: 'Dance, Drama, Fashion, Singing',  icon: '🎭' },
+            { name: 'Common Room',    events: 'Quiz, Debate, Art',               icon: '🏛️' },
           ].map(v => (
             <div key={v.name} className="px-4 py-3 flex items-center gap-3">
               <span className="text-xl">{v.icon}</span>
@@ -101,26 +101,20 @@ export default async function InfoPage() {
       {/* Contact */}
       <section>
         <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
-          Contact
+          Our Team
         </h2>
         <div className="card divide-y divide-[var(--border)]">
           {[
-           { role: 'Event Manager',          name: 'Atharva Kant Yogi', phone: '+917666274691'   },
-           { role: 'Event Manager',          name: 'Lav Kumar',         phone: '+917564031103'   },
+            {  name: 'Sudhanshu Raj '},
+            {  name: 'Atharva Kant Yogi'},
+            {  name: 'Omprakash Jena'},
+            {  name: 'Arpit Passi'},
+            {  name: 'Law Kumar'},
+            {  name: 'Sanika Bandodkar'},
+            {  name: 'Swoyansu Das'},
           ].map(c => (
-            <div key={c.name} className="px-4 py-3 flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{c.name}</p>
-                <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{c.role}</p>
-              </div>
-              <a
-                href={`tel:${c.phone.replace(/\s/g, '')}`}
-                className="flex items-center gap-1 text-xs font-medium px-2.5 py-1.5 rounded-lg"
-                style={{ background: 'var(--bg-secondary)', color: '#ffffff' }}
-              >
-                <Phone size={11} />
-                Call
-              </a>
+            <div key={c.name} className="px-4 py-3">
+              <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{c.name}</p>
             </div>
           ))}
         </div>
