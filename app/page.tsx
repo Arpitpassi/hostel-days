@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { LiveTicker } from '@/components/LiveTicker'
 import { HomeHero } from '@/components/HomeHero'
-import { QuickStats } from '@/components/QuickStats'
 import Link from 'next/link'
 import { Zap, Calendar, Trophy, Info } from 'lucide-react'
 import { Game } from '@/types'
@@ -98,7 +97,6 @@ export default async function HomePage() {
 
   const allGames       = (games as unknown as Game[]) || []
   const liveGames      = allGames.filter(g => g.status === 'live')
-  const upcomingGames  = allGames.filter(g => g.status === 'upcoming').slice(0, 6)
   const completedGames = allGames.filter(g => g.status === 'completed')
 
   return (
@@ -122,7 +120,8 @@ export default async function HomePage() {
           >
             <div
               className="w-9 h-9 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center"
-            style={{ background: 'rgba(225, 211, 232, 0.45)' }}            >
+              style={{ background: 'rgba(255, 255, 255, 0.15)' }}
+            >
               <Zap size={18} className="md:hidden" style={{ color: 'var(--accent)' }} />
               <Zap size={24} className="hidden md:block" style={{ color: 'var(--accent)' }} />
             </div>

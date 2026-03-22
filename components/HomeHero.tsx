@@ -37,7 +37,6 @@ interface Props {
 export function HomeHero({ liveCount, totalGames, completedCount, registrationUrl = '/register' }: Props) {
   const [mounted, setMounted]               = useState(false)
   const [timeLeft, setTimeLeft]             = useState({ h: 0, m: 0, s: 0 })
-  const [animDone, setAnimDone]             = useState(false)
   const [buttonVisible, setButtonVisible]   = useState(false)
   const [wordOpacity, setWordOpacity]       = useState(1)
   const [displayedWord, setDisplayedWord]   = useState(SEQUENCE[0].word)
@@ -55,7 +54,6 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
       setDisplayedColor(s.color)
       setWordOpacity(1)
       timerRef.current = setTimeout(() => {
-        setAnimDone(true)
         setTimeout(() => setButtonVisible(true), 300)
       }, 500)
       return
@@ -109,7 +107,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
   const festivalActive = mounted ? isFestivalActive()      : false
   const daysUntil      = mounted ? getDaysUntilFestival()  : 0
   const currentDay     = mounted ? getCurrentFestivalDay() : 1
-  const dayTheme       = DAY_THEMES[currentDay] || DAY_THEMES[1]
+  const _dayTheme      = DAY_THEMES[currentDay] || DAY_THEMES[1] // kept for potential future use
 
   return (
     <section
@@ -120,7 +118,6 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
         style={{ backgroundImage: `radial-gradient(circle at 70% 50%, var(--accent) 0%, transparent 60%)` }}
       />
 
-      {/* Bird: scale-[1.035] on mobile = original 1.15 × 0.9 ≈ 10% smaller */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 transform scale-[1.035] md:scale-[1.40] -translate-y-[2vh] md:-translate-y-[5vh]">
         <BirdAnimation />
       </div>
@@ -166,7 +163,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
                 opacity: wordOpacity,
                 transition: `opacity ${FADE_MS}ms ease`,
                 whiteSpace: 'nowrap',
-                textTransform: 'uppercase'
+                textTransform: 'uppercase',
               }}
             >
               {displayedWord}
@@ -196,7 +193,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
                   padding: '8px 24px',
                   border: '1px solid var(--accent)',
                   borderRadius: 4,
-                  background: 'rgba(255, 255, 255, 0.45)',
+                  background: 'rgba(255, 255, 255, 0.15)',
                   color: 'var(--accent)',
                   textDecoration: 'none',
                   cursor: 'pointer',
@@ -206,7 +203,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
                   transition: 'opacity 0.4s ease-out, transform 0.4s ease-out',
                 }}
               >
-                Register ↗
+                Register
               </Link>
             </div>
           </div>
