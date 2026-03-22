@@ -4,6 +4,7 @@ import { HomeHero } from '@/components/HomeHero'
 import { QuickStats } from '@/components/QuickStats'
 import Link from 'next/link'
 import { Zap, Calendar, Trophy, Info } from 'lucide-react'
+import { Game } from '@/types'
 
 export const revalidate = 0
 
@@ -95,7 +96,7 @@ export default async function HomePage() {
     .order('day', { ascending: true })
     .order('start_time', { ascending: true })
 
-  const allGames       = games || []
+  const allGames       = (games as unknown as Game[]) || []
   const liveGames      = allGames.filter(g => g.status === 'live')
   const upcomingGames  = allGames.filter(g => g.status === 'upcoming').slice(0, 6)
   const completedGames = allGames.filter(g => g.status === 'completed')

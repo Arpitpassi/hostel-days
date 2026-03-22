@@ -1,7 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { timeAgo } from '@/lib/utils'
-import { Megaphone, MapPin, Phone, BookOpen } from 'lucide-react'
+import { Megaphone, Phone } from 'lucide-react'
 import type { Metadata } from 'next'
+import { Announcement } from '@/types'
 
 export const metadata: Metadata = { title: 'Info & Rules' }
 export const revalidate = 60
@@ -13,7 +14,7 @@ export default async function InfoPage() {
     .select('*')
     .order('created_at', { ascending: false })
 
-  const ann = announcements || []
+  const ann = (announcements as unknown as Announcement[]) || []
 
   return (
     <div className="px-4 sm:px-6 py-4 max-w-2xl mx-auto space-y-6">
@@ -59,7 +60,7 @@ export default async function InfoPage() {
         <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
           Venues
         </h2>
-        <div className="card divide-y" style={{ divideColor: 'var(--border)' }}>
+        <div className="card divide-y divide-[var(--border)]">
           {[
             { name: 'Main Ground', events: 'Cricket, Football, Athletics', icon: '🏟️' },
             { name: 'Sports Complex', events: 'Badminton, TT, Basketball', icon: '🏢' },
@@ -118,7 +119,7 @@ export default async function InfoPage() {
         <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
           Contact
         </h2>
-        <div className="card divide-y" style={{ divideColor: 'var(--border)' }}>
+        <div className="card divide-y divide-[var(--border)]">
           {[
             { role: 'Sports Coordinator', name: 'Arjun Mehta', phone: '+91 98765 43210' },
             { role: 'Cultural Coordinator', name: 'Priya Sharma', phone: '+91 87654 32109' },

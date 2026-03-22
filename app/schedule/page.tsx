@@ -1,7 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { DAY_THEMES, formatGameTime, getCategoryIcon } from '@/lib/utils'
-import { Clock, MapPin } from 'lucide-react'
+import { Clock } from 'lucide-react'
 import type { Metadata } from 'next'
+import { Game, GameStatus } from '@/types'
 
 export const metadata: Metadata = { title: 'Schedule' }
 export const revalidate = 60
@@ -14,7 +15,7 @@ export default async function SchedulePage() {
     .order('day')
     .order('start_time')
 
-  const allGames = games || []
+  const allGames = (games as unknown as Game[]) || []
   const days = [1, 2, 3, 4, 5]
 
   return (
@@ -33,8 +34,8 @@ export default async function SchedulePage() {
         const dayGames = allGames.filter(g => g.day === day)
         if (dayGames.length === 0) return null
         const theme = DAY_THEMES[day]
-        const sports = dayGames.filter(g => (g as any).categories?.type === 'sports')
-        const cultural = dayGames.filter(g => (g as any).categories?.type === 'cultural')
+        const sports = dayGames.filter(g => g.categories?.type === 'sports')
+        const cultural = dayGames.filter(g => g.categories?.type === 'cultural')
 
         return (
           <section key={day} className="mb-8">
@@ -72,7 +73,7 @@ export default async function SchedulePage() {
                 </p>
                 <div className="space-y-1.5">
                   {sports.map(game => (
-                    <ScheduleRow key={game.id} game={game as any} />
+                    <ScheduleRow key={game.id} game={game} />
                   ))}
                 </div>
               </div>
@@ -86,7 +87,7 @@ export default async function SchedulePage() {
                 </p>
                 <div className="space-y-1.5">
                   {cultural.map(game => (
-                    <ScheduleRow key={game.id} game={game as any} />
+                    <ScheduleRow key={game.id} game={game} />
                   ))}
                 </div>
               </div>
@@ -98,19 +99,17 @@ export default async function SchedulePage() {
   )
 }
 
-function ScheduleRow({ game }: { game: any }) {
+function ScheduleRow({ game }: { game: Game }) {
   const icon = game.categories ? getCategoryIcon(game.categories.name) : '🏆'
-  const statusColors = {
-    upcoming: { bg: 'var(--bg-secondary)', text: 'var(--text-muted)', dot: '#6b7280' },
-    live: { bg: 'rgba(34,197,94,0.1)', text: 'var(--live-color)', dot: 'var(--live-color)' },
-    completed: { bg: 'rgba(99,102,241,0.1)', text: '#818cf8', dot: '#818cf8' },
+  const statusColors: Record<GameStatus, { bg: string; text: string; dot: string }> = {
+    upcoming:  { bg: 'var(--bg-secondary)',      text: 'var(--text-muted)',  dot: '#6b7280' },
+    live:      { bg: 'rgba(34,197,94,0.1)',       text: 'var(--live-color)', dot: 'var(--live-color)' },
+    completed: { bg: 'rgba(99,102,241,0.1)',      text: '#818cf8',           dot: '#818cf8' },
   }
-  const s = statusColors[game.status as keyof typeof statusColors]
+  const s = statusColors[game.status]
 
   return (
-    <div
-      className="card px-3 py-2.5 flex items-center gap-3"
-    >
+    <div className="card px-3 py-2.5 flex items-center gap-3">
       <span className="text-lg shrink-0">{icon}</span>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>

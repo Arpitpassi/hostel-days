@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getCategoryIcon, DAY_THEMES } from '@/lib/utils'
 import { Trophy } from 'lucide-react'
 import type { Metadata } from 'next'
+import { Game } from '@/types'
 
 export const metadata: Metadata = { title: 'Results' }
 export const revalidate = 30
@@ -15,7 +16,7 @@ export default async function ResultsPage() {
     .order('day')
     .order('start_time')
 
-  const completed = games || []
+  const completed = (games as unknown as Game[]) || []
   const days = [...new Set(completed.map(g => g.day))].sort()
 
   if (completed.length === 0) {
@@ -57,9 +58,7 @@ export default async function ResultsPage() {
 
             <div className="space-y-2">
               {dayGames.map(game => {
-                const icon = (game as any).categories ? getCategoryIcon((game as any).categories.name) : '🏆'
-                const scoreA = game.score_a
-                const scoreB = game.score_b
+                const icon = game.categories ? getCategoryIcon(game.categories.name) : '🏆'
                 const winnerIsA = game.winner === game.team_a
                 const winnerIsB = game.winner === game.team_b
 
@@ -69,7 +68,7 @@ export default async function ResultsPage() {
                     <div className="flex items-center gap-1.5 mb-2">
                       <span className="text-sm">{icon}</span>
                       <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
-                        {(game as any).categories?.name} · {game.event_name}
+                        {game.categories?.name} · {game.event_name}
                       </p>
                       {game.winner && (
                         <span className="ml-auto flex items-center gap-1 text-[10px] font-semibold" style={{ color: '#f59e0b' }}>
@@ -90,7 +89,7 @@ export default async function ResultsPage() {
                           className="ml-auto font-display font-bold text-xl tabular-nums"
                           style={{ color: winnerIsA ? 'var(--live-color)' : 'var(--text-secondary)' }}
                         >
-                          {scoreA}
+                          {game.score_a}
                         </span>
                       </div>
 
@@ -105,7 +104,7 @@ export default async function ResultsPage() {
                           className="mr-auto font-display font-bold text-xl tabular-nums"
                           style={{ color: winnerIsB ? 'var(--live-color)' : 'var(--text-secondary)' }}
                         >
-                          {scoreB}
+                          {game.score_b}
                         </span>
                       </div>
                     </div>
