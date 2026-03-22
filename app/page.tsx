@@ -122,8 +122,7 @@ export default async function HomePage() {
           >
             <div
               className="w-9 h-9 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center"
-              style={{ background: 'var(--accent-glow)' }}
-            >
+            style={{ background: 'rgba(225, 211, 232, 0.45)' }}            >
               <Zap size={18} className="md:hidden" style={{ color: 'var(--accent)' }} />
               <Zap size={24} className="hidden md:block" style={{ color: 'var(--accent)' }} />
             </div>

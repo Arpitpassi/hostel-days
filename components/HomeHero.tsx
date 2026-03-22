@@ -196,7 +196,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
                   padding: '8px 24px',
                   border: '1px solid var(--accent)',
                   borderRadius: 4,
-                  background: 'var(--accent-glow)',
+                  background: 'rgba(255, 255, 255, 0.45)',
                   color: 'var(--accent)',
                   textDecoration: 'none',
                   cursor: 'pointer',
