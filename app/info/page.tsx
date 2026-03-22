@@ -116,7 +116,7 @@ export default async function InfoPage() {
               <a
                 href={`tel:${c.phone.replace(/\s/g, '')}`}
                 className="flex items-center gap-1 text-xs font-medium px-2.5 py-1.5 rounded-lg"
-                style={{ background: 'var(--bg-secondary)', color: 'var(--accent)' }}
+                style={{ background: 'var(--bg-secondary)', color: '#ffffff' }}
               >
                 <Phone size={11} />
                 Call
