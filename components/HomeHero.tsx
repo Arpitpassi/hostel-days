@@ -39,14 +39,14 @@ interface Props {
 // ============================================================
 
 const BIRD_DESKTOP_TRANSLATE_Y = '-2vh'   // desktop: negative = up, positive = down
-const BIRD_MOBILE_TRANSLATE_Y  = '-3vh'   // mobile:  negative = up, positive = down
+const BIRD_MOBILE_TRANSLATE_Y  = '-2.5vh'   // mobile:  negative = up, positive = down
 
 const TEXT_DESKTOP_PADDING_TOP = '3vh'    // desktop: smaller = up, larger = down
 const TEXT_MOBILE_PADDING_TOP  = '3vh'    // mobile:  smaller = up, larger = down
 
 // Fine-tune the flashing word itself (independent of stats/button below it)
 const WORD_DESKTOP_MARGIN_TOP  = '10vh'   // desktop: smaller = up, larger = down
-const WORD_MOBILE_MARGIN_TOP   = '3vh'    // mobile:  smaller = up, larger = down
+const WORD_MOBILE_MARGIN_TOP   = '3.5vh'    // mobile:  smaller = up, larger = down
 
 const WORD_DESKTOP_PADDING_TOP = 'clamp(10vh, 6vw, 15vh)'  // desktop extra push
 const WORD_MOBILE_PADDING_TOP  = '10vh'                     // mobile extra push
@@ -54,7 +54,7 @@ const WORD_MOBILE_PADDING_TOP  = '10vh'                     // mobile extra push
 // Spacer between the word/button block and the bottom stats/countdown
 // Shrink to pull stats UP, grow to push stats DOWN
 const STATS_DESKTOP_MIN_HEIGHT = '24vh'   // desktop: smaller = up, larger = down
-const STATS_MOBILE_MIN_HEIGHT  = '12vh'   // mobile:  smaller = up, larger = down
+const STATS_MOBILE_MIN_HEIGHT  = '12.5vh'   // mobile:  smaller = up, larger = down
 
 // ============================================================
 
