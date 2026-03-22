@@ -7,15 +7,11 @@ import bodyImg      from "./body.png";
 import puuchImg     from "./puuch.png";
 
 export default function BirdAnimation() {
-  const baseTransition = { repeat: Infinity, ease: "easeInOut" };
+  const baseTransition = { repeat: Infinity, ease: "easeInOut" } as const;
 
   return (
     <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
       
-      {/* FIX APPLIED HERE: 
-        Replaced fixed 500x500 with a responsive square container. 
-        It will be 500px on desktop, but shrink proportionately on mobile.
-      */}
       <div style={{ position: "relative", width: "100%", maxWidth: "500px", aspectRatio: "1 / 1" }}>
 
         {/* Left Wing */}
