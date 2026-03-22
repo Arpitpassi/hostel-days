@@ -694,7 +694,7 @@ export default async function AdminDashboardPage() {
 
   if (!user) redirect('/admin/login')
 
-  const { data: profile } = await supabase
+  const { data: profile } = await (supabase as any)
     .from('profiles')
     .select('*')
     .eq('id', user.id)
@@ -702,13 +702,13 @@ export default async function AdminDashboardPage() {
 
   if (!profile?.is_admin) redirect('/?error=unauthorized')
 
-  const { data: games } = await supabase
+  const { data: games } = await (supabase as any)
     .from('games')
     .select('*, categories(id, name, type)')
     .order('day')
     .order('start_time')
 
-  const { data: categories } = await supabase
+  const { data: categories } = await (supabase as any)
     .from('categories')
     .select('*')
     .order('type')
@@ -722,7 +722,6 @@ export default async function AdminDashboardPage() {
     />
   )
 }
-
 </file>
 
 <file src="app/admin/login/page.tsx">
@@ -754,7 +753,6 @@ export default function AdminLoginPage() {
       return
     }
 
-    // Check admin status
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { setMessage({ type: 'error', text: 'Login failed.' }); setLoading(false); return }
 
@@ -764,7 +762,7 @@ export default function AdminLoginPage() {
       .eq('id', user.id)
       .single()
 
-    if (!profile?.is_admin) {
+    if (!(profile as any)?.is_admin) {
       await supabase.auth.signOut()
       setMessage({ type: 'error', text: 'You are not authorized as admin.' })
       setLoading(false)
@@ -812,7 +810,7 @@ export default function AdminLoginPage() {
             Admin Portal
           </h1>
           <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
-            Hostel Days 2025 — Score Management
+            Hostel Days 2026 — Score Management
           </p>
         </div>
 
@@ -921,7 +919,6 @@ export default function AdminLoginPage() {
     </div>
   )
 }
-
 </file>
 
 <file src="app/admin/page.tsx">
@@ -934,15 +931,13 @@ export default function AdminPage() {
 </file>
 
 <file src="app/globals.css">
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-display: 'Syne', serif;
-  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'Inter Tight', 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
   --font-mono: 'DM Mono', monospace;
 
   /* Light mode tokens */
@@ -1137,14 +1132,14 @@ input, select, textarea {
 @media (max-width: 640px) {
   button, a { min-height: 44px; }
 }
-
 </file>
 
 <file src="app/info/page.tsx">
 import { createClient } from '@/lib/supabase/server'
 import { timeAgo } from '@/lib/utils'
-import { Megaphone, MapPin, Phone, BookOpen } from 'lucide-react'
+import { Megaphone, Phone } from 'lucide-react'
 import type { Metadata } from 'next'
+import { Announcement } from '@/types'
 
 export const metadata: Metadata = { title: 'Info & Rules' }
 export const revalidate = 60
@@ -1156,7 +1151,7 @@ export default async function InfoPage() {
     .select('*')
     .order('created_at', { ascending: false })
 
-  const ann = announcements || []
+  const ann = (announcements as unknown as Announcement[]) || []
 
   return (
     <div className="px-4 sm:px-6 py-4 max-w-2xl mx-auto space-y-6">
@@ -1202,7 +1197,7 @@ export default async function InfoPage() {
         <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
           Venues
         </h2>
-        <div className="card divide-y" style={{ divideColor: 'var(--border)' }}>
+        <div className="card divide-y divide-[var(--border)]">
           {[
             { name: 'Main Ground', events: 'Cricket, Football, Athletics', icon: '🏟️' },
             { name: 'Sports Complex', events: 'Badminton, TT, Basketball', icon: '🏢' },
@@ -1261,7 +1256,7 @@ export default async function InfoPage() {
         <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
           Contact
         </h2>
-        <div className="card divide-y" style={{ divideColor: 'var(--border)' }}>
+        <div className="card divide-y divide-[var(--border)]">
           {[
             { role: 'Sports Coordinator', name: 'Arjun Mehta', phone: '+91 98765 43210' },
             { role: 'Cultural Coordinator', name: 'Priya Sharma', phone: '+91 87654 32109' },
@@ -1289,7 +1284,6 @@ export default async function InfoPage() {
     </div>
   )
 }
-
 </file>
 
 <file src="app/layout.tsx">
@@ -1300,14 +1294,14 @@ import { NavBar } from '@/components/NavBar'
 
 export const metadata: Metadata = {
   title: {
-    default: 'Hostel Days 2025 — College Cultural & Sports Festival',
-    template: '%s | Hostel Days 2025',
+    default: 'Hostel Days 2026 — College Cultural & Sports Festival',
+    template: '%s | Hostel Days 2026',
   },
   description:
-    'Live scores, schedules, and results for Hostel Days 2025 — the biggest inter-hostel cultural and sports festival. 5 days of fierce competition!',
+    'Live scores, schedules, and results for Hostel Days 2026 — the biggest inter-hostel cultural and sports festival. 5 days of fierce competition!',
   keywords: ['hostel days', 'college festival', 'live scores', 'sports', 'cultural'],
   openGraph: {
-    title: 'Hostel Days 2025',
+    title: 'Hostel Days 2026',
     description: 'Live scores & results for the biggest college fest',
     type: 'website',
   },
@@ -1327,6 +1321,10 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Inter+Tight:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className="overflow-x-hidden">
         <ThemeProvider>
@@ -1349,8 +1347,8 @@ import { Game, Category } from '@/types'
 import { useRealtimeGames } from '@/hooks/useRealtimeGames'
 import { useConfetti } from '@/hooks/useConfetti'
 import { LiveScoreCard } from '@/components/LiveScoreCard'
-import { DAY_THEMES, getCategoryIcon } from '@/lib/utils'
-import { Zap, Clock, CheckCircle2, Filter } from 'lucide-react'
+import { DAY_THEMES } from '@/lib/utils'
+import { Zap, Clock, CheckCircle2 } from 'lucide-react'
 
 interface Props {
   initialGames: Game[]
@@ -1368,7 +1366,6 @@ export function LiveScoresClient({ initialGames, categories }: Props) {
   const [dayFilter, setDayFilter] = useState<FilterDay>('all')
   const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'live' | 'error'>('connecting')
 
-  // Fire confetti when a game completes
   useEffect(() => {
     const prev = prevGamesRef.current
     games.forEach(game => {
@@ -1380,7 +1377,6 @@ export function LiveScoresClient({ initialGames, categories }: Props) {
     prevGamesRef.current = games
   }, [games, fireConfetti])
 
-  // Simulate connection status
   useEffect(() => {
     const t = setTimeout(() => setConnectionStatus('live'), 1200)
     return () => clearTimeout(t)
@@ -1392,11 +1388,10 @@ export function LiveScoresClient({ initialGames, categories }: Props) {
     return true
   })
 
-  // Group by day then by sports/cultural
   const days = dayFilter === 'all' ? [1, 2, 3, 4, 5] : [dayFilter]
 
-  const liveCount = games.filter(g => g.status === 'live').length
-  const upcomingCount = games.filter(g => g.status === 'upcoming').length
+  const liveCount      = games.filter(g => g.status === 'live').length
+  const upcomingCount  = games.filter(g => g.status === 'upcoming').length
   const completedCount = games.filter(g => g.status === 'completed').length
 
   return (
@@ -1415,66 +1410,55 @@ export function LiveScoresClient({ initialGames, categories }: Props) {
           </p>
         </div>
         {liveCount > 0 && (
-          <span className="live-badge text-sm px-3 py-1.5">
-            <span className="w-2 h-2 rounded-full bg-[var(--live-color)] live-dot" />
+          <span className="live-badge">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--live-color)] live-dot" />
             {liveCount} Live
           </span>
         )}
       </div>
 
-      {/* Status filter pills */}
-      <div className="flex gap-2 mb-3 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-none">
+      {/* Status filter pills — no count badge, icon only on active, fits in one row */}
+      <div className="flex gap-1.5 mb-3">
         {([
-          { key: 'all', label: 'All', count: games.length, icon: null },
-          { key: 'live', label: 'Live', count: liveCount, icon: <Zap size={11} /> },
-          { key: 'upcoming', label: 'Upcoming', count: upcomingCount, icon: <Clock size={11} /> },
-          { key: 'completed', label: 'Done', count: completedCount, icon: <CheckCircle2 size={11} /> },
-        ] as const).map(f => (
-          <button
-            key={f.key}
-            onClick={() => setStatusFilter(f.key as FilterStatus)}
-            className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
-              statusFilter === f.key
-                ? 'bg-[var(--accent)] text-white border-transparent'
-                : 'border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--text-primary)]'
-            }`}
-          >
-            {f.icon}
-            {f.label}
-            <span
-              className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
-                statusFilter === f.key ? 'bg-white/20 text-white' : 'bg-[var(--bg-secondary)] text-[var(--text-muted)]'
+          { key: 'all',       label: 'All',      count: games.length,   icon: null },
+          { key: 'live',      label: 'Live',     count: liveCount,      icon: <Zap size={10} /> },
+          { key: 'upcoming',  label: 'Upcoming', count: upcomingCount,  icon: <Clock size={10} /> },
+          { key: 'completed', label: 'Done',     count: completedCount, icon: <CheckCircle2 size={10} /> },
+        ] as const).map(f => {
+          const active = statusFilter === f.key
+          return (
+            <button
+              key={f.key}
+              onClick={() => setStatusFilter(f.key as FilterStatus)}
+              className={`flex-1 flex items-center justify-center gap-1 py-1.5 rounded-full text-[11px] font-semibold border transition-all ${
+                active
+                  ? 'bg-[var(--accent)] text-white border-transparent'
+                  : 'border-[var(--border)] text-[var(--text-muted)]'
               }`}
             >
-              {f.count}
-            </span>
-          </button>
-        ))}
+              {active && f.icon}
+              {f.label}
+              {active && f.count > 0 && (
+                <span className="text-[9px] font-bold opacity-80">{f.count}</span>
+              )}
+            </button>
+          )
+        })}
       </div>
 
-      {/* Day filter */}
-      <div className="flex gap-1.5 mb-5 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-none">
-        <button
-          onClick={() => setDayFilter('all')}
-          className={`shrink-0 px-3 py-1 rounded-lg text-xs font-medium border transition-all ${
-            dayFilter === 'all'
-              ? 'bg-[var(--bg-secondary)] border-[var(--border-strong)] text-[var(--text-primary)]'
-              : 'border-[var(--border)] text-[var(--text-muted)]'
-          }`}
-        >
-          All Days
-        </button>
-        {[1, 2, 3, 4, 5].map(d => (
+      {/* Day filter — compact, fits all 6 buttons */}
+      <div className="flex gap-1 mb-5">
+        {(['all', 1, 2, 3, 4, 5] as const).map(d => (
           <button
             key={d}
             onClick={() => setDayFilter(d as FilterDay)}
-            className={`shrink-0 px-3 py-1 rounded-lg text-xs font-medium border transition-all ${
+            className={`flex-1 py-1 rounded-lg text-[11px] font-medium border transition-all ${
               dayFilter === d
                 ? 'bg-[var(--bg-secondary)] border-[var(--border-strong)] text-[var(--text-primary)]'
                 : 'border-[var(--border)] text-[var(--text-muted)]'
             }`}
           >
-            Day {d}
+            {d === 'all' ? 'All' : `D${d}`}
           </button>
         ))}
       </div>
@@ -1484,13 +1468,12 @@ export function LiveScoresClient({ initialGames, categories }: Props) {
         const dayGames = filtered.filter(g => g.day === day)
         if (dayGames.length === 0) return null
 
-        const sports = dayGames.filter(g => (g as any).categories?.type === 'sports')
+        const sports   = dayGames.filter(g => (g as any).categories?.type === 'sports')
         const cultural = dayGames.filter(g => (g as any).categories?.type === 'cultural')
-        const theme = DAY_THEMES[day]
+        const theme    = DAY_THEMES[day]
 
         return (
           <div key={day} className="mb-7">
-            {/* Day header */}
             <div className="flex items-center gap-2 mb-3">
               <h2 className="font-display font-bold text-base" style={{ color: 'var(--text-primary)' }}>
                 Day {day}
@@ -1503,18 +1486,14 @@ export function LiveScoresClient({ initialGames, categories }: Props) {
               <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
             </div>
 
-            {/* Sports section */}
             {sports.length > 0 && (
               <div className="mb-4">
-                <p className="text-xs font-bold uppercase tracking-wider mb-2 flex items-center gap-1.5" style={{ color: 'var(--text-muted)' }}>
+                <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--text-muted)' }}>
                   ⚽ Sports
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {sports.map(game => (
-                    <div
-                      key={game.id}
-                      className={`fade-slide-up ${updatedId === game.id ? 'score-flash' : ''}`}
-                    >
+                    <div key={game.id} className={`fade-slide-up ${updatedId === game.id ? 'score-flash' : ''}`}>
                       <LiveScoreCard game={game as any} />
                     </div>
                   ))}
@@ -1522,7 +1501,6 @@ export function LiveScoresClient({ initialGames, categories }: Props) {
               </div>
             )}
 
-            {/* Cultural section */}
             {cultural.length > 0 && (
               <div>
                 <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--text-muted)' }}>
@@ -1530,10 +1508,7 @@ export function LiveScoresClient({ initialGames, categories }: Props) {
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {cultural.map(game => (
-                    <div
-                      key={game.id}
-                      className={`fade-slide-up ${updatedId === game.id ? 'score-flash' : ''}`}
-                    >
+                    <div key={game.id} className={`fade-slide-up ${updatedId === game.id ? 'score-flash' : ''}`}>
                       <LiveScoreCard game={game as any} />
                     </div>
                   ))}
@@ -1545,9 +1520,7 @@ export function LiveScoresClient({ initialGames, categories }: Props) {
       })}
 
       {filtered.length === 0 && (
-        <div
-          className="card p-10 text-center"
-        >
+        <div className="card p-10 text-center">
           <p className="text-3xl mb-2">🏆</p>
           <p className="font-semibold" style={{ color: 'var(--text-secondary)' }}>No games found</p>
           <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>Try a different filter</p>
@@ -1556,7 +1529,6 @@ export function LiveScoresClient({ initialGames, categories }: Props) {
     </div>
   )
 }
-
 </file>
 
 <file src="app/live-scores/page.tsx">
@@ -1566,7 +1538,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Live Scores',
-  description: 'Real-time live scores for all Hostel Days 2025 matches. Auto-updating scores with no refresh needed.',
+  description: 'Real-time live scores for all Hostel Days 2026 matches. Auto-updating scores with no refresh needed.',
 }
 
 export const revalidate = 0
@@ -1600,9 +1572,9 @@ export default async function LiveScoresPage() {
 import { createClient } from '@/lib/supabase/server'
 import { LiveTicker } from '@/components/LiveTicker'
 import { HomeHero } from '@/components/HomeHero'
-import { QuickStats } from '@/components/QuickStats'
 import Link from 'next/link'
 import { Zap, Calendar, Trophy, Info } from 'lucide-react'
+import { Game } from '@/types'
 
 export const revalidate = 0
 
@@ -1694,9 +1666,8 @@ export default async function HomePage() {
     .order('day', { ascending: true })
     .order('start_time', { ascending: true })
 
-  const allGames       = games || []
+  const allGames       = (games as unknown as Game[]) || []
   const liveGames      = allGames.filter(g => g.status === 'live')
-  const upcomingGames  = allGames.filter(g => g.status === 'upcoming').slice(0, 6)
   const completedGames = allGames.filter(g => g.status === 'completed')
 
   return (
@@ -1720,7 +1691,7 @@ export default async function HomePage() {
           >
             <div
               className="w-9 h-9 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center"
-              style={{ background: 'var(--accent-glow)' }}
+              style={{ background: 'rgba(255, 255, 255, 0.15)' }}
             >
               <Zap size={18} className="md:hidden" style={{ color: 'var(--accent)' }} />
               <Zap size={24} className="hidden md:block" style={{ color: 'var(--accent)' }} />
@@ -1820,6 +1791,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getCategoryIcon, DAY_THEMES } from '@/lib/utils'
 import { Trophy } from 'lucide-react'
 import type { Metadata } from 'next'
+import { Game } from '@/types'
 
 export const metadata: Metadata = { title: 'Results' }
 export const revalidate = 30
@@ -1833,7 +1805,7 @@ export default async function ResultsPage() {
     .order('day')
     .order('start_time')
 
-  const completed = games || []
+  const completed = (games as unknown as Game[]) || []
   const days = [...new Set(completed.map(g => g.day))].sort()
 
   if (completed.length === 0) {
@@ -1875,9 +1847,7 @@ export default async function ResultsPage() {
 
             <div className="space-y-2">
               {dayGames.map(game => {
-                const icon = (game as any).categories ? getCategoryIcon((game as any).categories.name) : '🏆'
-                const scoreA = game.score_a
-                const scoreB = game.score_b
+                const icon = game.categories ? getCategoryIcon(game.categories.name) : '🏆'
                 const winnerIsA = game.winner === game.team_a
                 const winnerIsB = game.winner === game.team_b
 
@@ -1887,7 +1857,7 @@ export default async function ResultsPage() {
                     <div className="flex items-center gap-1.5 mb-2">
                       <span className="text-sm">{icon}</span>
                       <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
-                        {(game as any).categories?.name} · {game.event_name}
+                        {game.categories?.name} · {game.event_name}
                       </p>
                       {game.winner && (
                         <span className="ml-auto flex items-center gap-1 text-[10px] font-semibold" style={{ color: '#f59e0b' }}>
@@ -1908,7 +1878,7 @@ export default async function ResultsPage() {
                           className="ml-auto font-display font-bold text-xl tabular-nums"
                           style={{ color: winnerIsA ? 'var(--live-color)' : 'var(--text-secondary)' }}
                         >
-                          {scoreA}
+                          {game.score_a}
                         </span>
                       </div>
 
@@ -1923,7 +1893,7 @@ export default async function ResultsPage() {
                           className="mr-auto font-display font-bold text-xl tabular-nums"
                           style={{ color: winnerIsB ? 'var(--live-color)' : 'var(--text-secondary)' }}
                         >
-                          {scoreB}
+                          {game.score_b}
                         </span>
                       </div>
                     </div>
@@ -1937,14 +1907,14 @@ export default async function ResultsPage() {
     </div>
   )
 }
-
 </file>
 
 <file src="app/schedule/page.tsx">
 import { createClient } from '@/lib/supabase/server'
 import { DAY_THEMES, formatGameTime, getCategoryIcon } from '@/lib/utils'
-import { Clock, MapPin } from 'lucide-react'
+import { Clock } from 'lucide-react'
 import type { Metadata } from 'next'
+import { Game, GameStatus } from '@/types'
 
 export const metadata: Metadata = { title: 'Schedule' }
 export const revalidate = 60
@@ -1957,7 +1927,7 @@ export default async function SchedulePage() {
     .order('day')
     .order('start_time')
 
-  const allGames = games || []
+  const allGames = (games as unknown as Game[]) || []
   const days = [1, 2, 3, 4, 5]
 
   return (
@@ -1969,15 +1939,15 @@ export default async function SchedulePage() {
         Schedule
       </h1>
       <p className="text-xs mb-5" style={{ color: 'var(--text-muted)' }}>
-        All events across 5 days — Hostel Days 2025
+        All events across 5 days — Hostel Days 2026
       </p>
 
       {days.map(day => {
         const dayGames = allGames.filter(g => g.day === day)
         if (dayGames.length === 0) return null
         const theme = DAY_THEMES[day]
-        const sports = dayGames.filter(g => (g as any).categories?.type === 'sports')
-        const cultural = dayGames.filter(g => (g as any).categories?.type === 'cultural')
+        const sports = dayGames.filter(g => g.categories?.type === 'sports')
+        const cultural = dayGames.filter(g => g.categories?.type === 'cultural')
 
         return (
           <section key={day} className="mb-8">
@@ -2015,7 +1985,7 @@ export default async function SchedulePage() {
                 </p>
                 <div className="space-y-1.5">
                   {sports.map(game => (
-                    <ScheduleRow key={game.id} game={game as any} />
+                    <ScheduleRow key={game.id} game={game} />
                   ))}
                 </div>
               </div>
@@ -2029,7 +1999,7 @@ export default async function SchedulePage() {
                 </p>
                 <div className="space-y-1.5">
                   {cultural.map(game => (
-                    <ScheduleRow key={game.id} game={game as any} />
+                    <ScheduleRow key={game.id} game={game} />
                   ))}
                 </div>
               </div>
@@ -2041,19 +2011,17 @@ export default async function SchedulePage() {
   )
 }
 
-function ScheduleRow({ game }: { game: any }) {
+function ScheduleRow({ game }: { game: Game }) {
   const icon = game.categories ? getCategoryIcon(game.categories.name) : '🏆'
-  const statusColors = {
-    upcoming: { bg: 'var(--bg-secondary)', text: 'var(--text-muted)', dot: '#6b7280' },
-    live: { bg: 'rgba(34,197,94,0.1)', text: 'var(--live-color)', dot: 'var(--live-color)' },
-    completed: { bg: 'rgba(99,102,241,0.1)', text: '#818cf8', dot: '#818cf8' },
+  const statusColors: Record<GameStatus, { bg: string; text: string; dot: string }> = {
+    upcoming:  { bg: 'var(--bg-secondary)',      text: 'var(--text-muted)',  dot: '#6b7280' },
+    live:      { bg: 'rgba(34,197,94,0.1)',       text: 'var(--live-color)', dot: 'var(--live-color)' },
+    completed: { bg: 'rgba(99,102,241,0.1)',      text: '#818cf8',           dot: '#818cf8' },
   }
-  const s = statusColors[game.status as keyof typeof statusColors]
+  const s = statusColors[game.status]
 
   return (
-    <div
-      className="card px-3 py-2.5 flex items-center gap-3"
-    >
+    <div className="card px-3 py-2.5 flex items-center gap-3">
       <span className="text-lg shrink-0">{icon}</span>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>
@@ -2081,7 +2049,6 @@ function ScheduleRow({ game }: { game: any }) {
     </div>
   )
 }
-
 </file>
 
 <file src="components/HomeHero.tsx">
@@ -2121,10 +2088,9 @@ interface Props {
   registrationUrl?: string
 }
 
-export function HomeHero({ liveCount, totalGames, completedCount, registrationUrl = '/register' }: Props) {
+export function HomeHero({ liveCount, totalGames, completedCount, registrationUrl = '/Participate' }: Props) {
   const [mounted, setMounted]               = useState(false)
   const [timeLeft, setTimeLeft]             = useState({ h: 0, m: 0, s: 0 })
-  const [animDone, setAnimDone]             = useState(false)
   const [buttonVisible, setButtonVisible]   = useState(false)
   const [wordOpacity, setWordOpacity]       = useState(1)
   const [displayedWord, setDisplayedWord]   = useState(SEQUENCE[0].word)
@@ -2142,7 +2108,6 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
       setDisplayedColor(s.color)
       setWordOpacity(1)
       timerRef.current = setTimeout(() => {
-        setAnimDone(true)
         setTimeout(() => setButtonVisible(true), 300)
       }, 500)
       return
@@ -2196,7 +2161,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
   const festivalActive = mounted ? isFestivalActive()      : false
   const daysUntil      = mounted ? getDaysUntilFestival()  : 0
   const currentDay     = mounted ? getCurrentFestivalDay() : 1
-  const dayTheme       = DAY_THEMES[currentDay] || DAY_THEMES[1]
+  const _dayTheme      = DAY_THEMES[currentDay] || DAY_THEMES[1] // kept for potential future use
 
   return (
     <section
@@ -2207,7 +2172,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
         style={{ backgroundImage: `radial-gradient(circle at 70% 50%, var(--accent) 0%, transparent 60%)` }}
       />
 
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 transform scale-[1.15] md:scale-[1.40] -translate-y-[2vh] md:-translate-y-[5vh]">
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 transform scale-[1.035] md:scale-[1.40] -translate-y-[2vh] md:-translate-y-[5vh]">
         <BirdAnimation />
       </div>
 
@@ -2221,11 +2186,6 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
             </span>
           )}
         </div>
-
-        <link
-          href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600&display=swap"
-          rel="stylesheet"
-        />
 
         <div
           style={{
@@ -2257,7 +2217,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
                 opacity: wordOpacity,
                 transition: `opacity ${FADE_MS}ms ease`,
                 whiteSpace: 'nowrap',
-                textTransform: 'uppercase'
+                textTransform: 'uppercase',
               }}
             >
               {displayedWord}
@@ -2287,7 +2247,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
                   padding: '8px 24px',
                   border: '1px solid var(--accent)',
                   borderRadius: 4,
-                  background: 'var(--accent-glow)',
+                  background: 'rgba(255, 255, 255, 0.15)',
                   color: 'var(--accent)',
                   textDecoration: 'none',
                   cursor: 'pointer',
@@ -2297,13 +2257,12 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
                   transition: 'opacity 0.4s ease-out, transform 0.4s ease-out',
                 }}
               >
-                Register ↗
+                Participate
               </Link>
             </div>
           </div>
         </div>
 
-        {/* FIX: Increased spacer height by another 2vh to push the stats block exactly 2% further down */}
         <div className="flex-1 min-h-[19vh] md:min-h-[24vh]" />
 
         {/* Stats / countdown */}
@@ -2683,7 +2642,7 @@ export function NavBar() {
 
   return (
     <>
-      {/* Desktop Top Nav */}
+      {/* ── Desktop Top Nav ── */}
       <header className="hidden md:flex fixed top-0 left-0 right-0 z-50 h-14 items-center justify-between px-6">
         {/* Left — logo */}
         <Link href="/" className="flex items-center gap-2.5">
@@ -2696,7 +2655,7 @@ export function NavBar() {
           <span className="font-display font-bold text-base tracking-tight" style={{ color: 'var(--text-primary)' }}>
             Hostel Days
             <span className="ml-1.5 text-xs font-body font-normal" style={{ color: 'var(--text-muted)' }}>
-              2025
+              2026
             </span>
           </span>
         </Link>
@@ -2746,9 +2705,28 @@ export function NavBar() {
       {/* Desktop spacer */}
       <div className="hidden md:block h-14" />
 
-      {/* Mobile Bottom Nav — unchanged */}
+      {/* ── Mobile Top Pill — theme toggle only ── */}
+      <div className="md:hidden fixed top-4 right-4 z-50">
+        <button
+          onClick={toggle}
+          className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-medium transition-all shadow-sm"
+          style={{
+            background: 'var(--bg-card)',
+            border: '1px solid var(--border)',
+            color: 'var(--text-muted)',
+          }}
+          aria-label="Toggle theme"
+        >
+          {theme === 'dark'
+            ? <><Sun size={13} /><span>Light</span></>
+            : <><Moon size={13} /><span>Dark</span></>
+          }
+        </button>
+      </div>
+
+      {/* ── Mobile Bottom Nav ── */}
       <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around px-2 h-16 border-t safe-area-pb"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around px-2 h-16 border-t"
         style={{
           background: 'var(--bg-card)',
           borderColor: 'var(--border)',
@@ -3288,11 +3266,11 @@ export function timeAgo(time: string): string {
 }
 
 export const FESTIVAL_START = new Date(
-  process.env.NEXT_PUBLIC_FESTIVAL_START_DATE || '2025-03-10'
+  process.env.NEXT_PUBLIC_FESTIVAL_START_DATE || '2026-03-10'
 )
 
 export const FESTIVAL_END = new Date(
-  process.env.NEXT_PUBLIC_FESTIVAL_END_DATE || '2025-03-14'
+  process.env.NEXT_PUBLIC_FESTIVAL_END_DATE || '2026-03-14'
 )
 
 export function getCurrentFestivalDay(): number {
@@ -3413,7 +3391,7 @@ export default nextConfig
     "date-fns": "^4.1.0",
     "framer-motion": "^12.38.0",
     "lucide-react": "^0.441.0",
-    "next": "15.0.0",
+    "next": "16.2.1",
     "ogl": "^1.0.11",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -3428,7 +3406,7 @@ export default nextConfig
     "postcss": "^8.5.8",
     "tailwindcss": "^3.4.19",
     "eslint": "^8.57.1",
-    "eslint-config-next": "15.0.0",
+    "eslint-config-next": "16.2.1",
     "autoprefixer": "^10.4.27"
   }
 }
@@ -3447,7 +3425,7 @@ module.exports = {
 
 <file src="supabase/schema.sql">
 -- ============================================================
--- HOSTEL DAYS 2025 — Complete Supabase SQL Setup
+-- HOSTEL DAYS 2026 — Complete Supabase SQL Setup
 -- Run this in: Supabase Dashboard → SQL Editor → New Query
 -- ============================================================
 
@@ -3679,7 +3657,7 @@ on conflict (name) do nothing;
 
 do $$
 declare
-  festival_start date := '2025-03-10';  -- ← Change to your start date
+  festival_start date := '2026-03-10';  -- ← Change to your start date
   cricket_id int;
   football_id int;
   basketball_id int;
@@ -3762,7 +3740,7 @@ end $$;
 -- ── 8. SEED: SAMPLE ANNOUNCEMENTS ──────────────────────────
 
 insert into public.announcements (title, body) values
-  ('Welcome to Hostel Days 2025! 🎉', 'The biggest inter-hostel festival is here. 5 days, 25+ events, one champion. May the best hostel win!'),
+  ('Welcome to Hostel Days 2026! 🎉', 'The biggest inter-hostel festival is here. 5 days, 25+ events, one champion. May the best hostel win!'),
   ('Cricket & Football venues confirmed', 'All cricket matches will be held at Main Ground. Football matches shifted to the rear ground due to maintenance.'),
   ('Timetable Update – Day 2', 'Badminton Mixed Doubles added to Day 2 afternoon slot. Check the full schedule page.'),
   ('Registration Deadline Reminder', 'Last date for cultural event entries is tonight 10 PM. Contact coordinators immediately.');
@@ -3900,7 +3878,7 @@ export default config
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
       {
@@ -3918,7 +3896,8 @@ export default config
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
