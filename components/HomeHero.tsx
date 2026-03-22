@@ -38,13 +38,13 @@ interface Props {
 //  POSITION CONTROLS — edit these values to reposition
 // ============================================================
 
-const BIRD_DESKTOP_TRANSLATE_Y = '-2vh'   // desktop: negative = up, positive = down
+const BIRD_DESKTOP_TRANSLATE_Y = '-6vh'   // desktop: negative = up, positive = down
 const BIRD_MOBILE_TRANSLATE_Y  = '-2vh'   // mobile:  negative = up, positive = down
 
-const BIRD_DESKTOP_SCALE       = '1.3'   // desktop: smaller = shrink, larger = grow
+const BIRD_DESKTOP_SCALE       = '1.35'   // desktop: smaller = shrink, larger = grow
 const BIRD_MOBILE_SCALE        = '1.03'    // mobile:  smaller = shrink, larger = grow
 
-const TEXT_DESKTOP_PADDING_TOP = '3vh'    // desktop: smaller = up, larger = down
+const TEXT_DESKTOP_PADDING_TOP = '6vh'    // desktop: smaller = up, larger = down
 const TEXT_MOBILE_PADDING_TOP  = '3vh'    // mobile:  smaller = up, larger = down
 
 // Fine-tune the flashing word itself (independent of stats/button below it)
@@ -56,7 +56,7 @@ const WORD_MOBILE_PADDING_TOP  = '14vh'                     // mobile extra push
 
 // Spacer between the word/button block and the bottom stats/countdown
 // Shrink to pull stats UP, grow to push stats DOWN
-const STATS_DESKTOP_MIN_HEIGHT = '24vh'   // desktop: smaller = up, larger = down
+const STATS_DESKTOP_MIN_HEIGHT = '26vh'   // desktop: smaller = up, larger = down
 const STATS_MOBILE_MIN_HEIGHT  = '14vh'   // mobile:  smaller = up, larger = down
 
 // ============================================================
