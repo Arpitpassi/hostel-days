@@ -10,7 +10,7 @@ export default async function AdminDashboardPage() {
 
   if (!user) redirect('/admin/login')
 
-  const { data: profile } = await supabase
+  const { data: profile } = await (supabase as any)
     .from('profiles')
     .select('*')
     .eq('id', user.id)
@@ -18,13 +18,13 @@ export default async function AdminDashboardPage() {
 
   if (!profile?.is_admin) redirect('/?error=unauthorized')
 
-  const { data: games } = await supabase
+  const { data: games } = await (supabase as any)
     .from('games')
     .select('*, categories(id, name, type)')
     .order('day')
     .order('start_time')
 
-  const { data: categories } = await supabase
+  const { data: categories } = await (supabase as any)
     .from('categories')
     .select('*')
     .order('type')
