@@ -26,7 +26,6 @@ export default function AdminLoginPage() {
       return
     }
 
-    // Check admin status
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { setMessage({ type: 'error', text: 'Login failed.' }); setLoading(false); return }
 
@@ -36,7 +35,7 @@ export default function AdminLoginPage() {
       .eq('id', user.id)
       .single()
 
-    if (!profile?.is_admin) {
+    if (!(profile as any)?.is_admin) {
       await supabase.auth.signOut()
       setMessage({ type: 'error', text: 'You are not authorized as admin.' })
       setLoading(false)
