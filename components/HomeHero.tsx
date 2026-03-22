@@ -120,7 +120,8 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
         style={{ backgroundImage: `radial-gradient(circle at 70% 50%, var(--accent) 0%, transparent 60%)` }}
       />
 
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 transform scale-[1.15] md:scale-[1.40] -translate-y-[2vh] md:-translate-y-[5vh]">
+      {/* Bird: scale-[1.035] on mobile = original 1.15 × 0.9 ≈ 10% smaller */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 transform scale-[1.035] md:scale-[1.40] -translate-y-[2vh] md:-translate-y-[5vh]">
         <BirdAnimation />
       </div>
 
@@ -134,11 +135,6 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
             </span>
           )}
         </div>
-
-        <link
-          href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600&display=swap"
-          rel="stylesheet"
-        />
 
         <div
           style={{
@@ -216,7 +212,6 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
           </div>
         </div>
 
-        {/* FIX: Increased spacer height by another 2vh to push the stats block exactly 2% further down */}
         <div className="flex-1 min-h-[19vh] md:min-h-[24vh]" />
 
         {/* Stats / countdown */}

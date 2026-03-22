@@ -23,7 +23,7 @@ export function NavBar() {
 
   return (
     <>
-      {/* Desktop Top Nav */}
+      {/* ── Desktop Top Nav ── */}
       <header className="hidden md:flex fixed top-0 left-0 right-0 z-50 h-14 items-center justify-between px-6">
         {/* Left — logo */}
         <Link href="/" className="flex items-center gap-2.5">
@@ -86,9 +86,28 @@ export function NavBar() {
       {/* Desktop spacer */}
       <div className="hidden md:block h-14" />
 
-      {/* Mobile Bottom Nav — unchanged */}
+      {/* ── Mobile Top Pill — theme toggle only ── */}
+      <div className="md:hidden fixed top-4 right-4 z-50">
+        <button
+          onClick={toggle}
+          className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-medium transition-all shadow-sm"
+          style={{
+            background: 'var(--bg-card)',
+            border: '1px solid var(--border)',
+            color: 'var(--text-muted)',
+          }}
+          aria-label="Toggle theme"
+        >
+          {theme === 'dark'
+            ? <><Sun size={13} /><span>Light</span></>
+            : <><Moon size={13} /><span>Dark</span></>
+          }
+        </button>
+      </div>
+
+      {/* ── Mobile Bottom Nav ── */}
       <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around px-2 h-16 border-t safe-area-pb"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around px-2 h-16 border-t"
         style={{
           background: 'var(--bg-card)',
           borderColor: 'var(--border)',
