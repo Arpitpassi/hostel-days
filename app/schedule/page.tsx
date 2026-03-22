@@ -3,9 +3,29 @@ import { DAY_THEMES, formatGameTime, getCategoryIcon } from '@/lib/utils'
 import { Clock } from 'lucide-react'
 import type { Metadata } from 'next'
 import { Game, GameStatus } from '@/types'
+import { ScheduleCountdown } from './ScheduleCountdown'
+import bannerImg from './banner.jpeg'
 
 export const metadata: Metadata = { title: 'Schedule' }
 export const revalidate = 60
+
+// ============================================================
+//  BANNER IMAGE
+//  Drop your image into app/schedule/ and name it banner.jpg
+//  Set to null to hide the banner entirely.
+// ============================================================
+const BANNER_IMAGE_URL: string | null = bannerImg.src
+// To hide: const BANNER_IMAGE_URL: string | null = null
+
+// ============================================================
+//  COUNTDOWN TARGET
+//  Set the date + time of the event you want to count down to.
+//  Format: 'YYYY-MM-DDTHH:MM:SS' (24-hour, local time)
+// ============================================================
+const COUNTDOWN_TARGET = '2026-03-23T18:30:00'
+const COUNTDOWN_LABEL  = 'Flashmob starts in'
+
+// ============================================================
 
 export default async function SchedulePage() {
   const supabase = await createClient()
@@ -20,6 +40,8 @@ export default async function SchedulePage() {
 
   return (
     <div className="px-4 sm:px-6 py-4 max-w-2xl mx-auto">
+
+      {/* ── Header ── */}
       <h1
         className="font-display font-extrabold text-2xl mb-1"
         style={{ color: 'var(--text-primary)' }}
@@ -27,14 +49,30 @@ export default async function SchedulePage() {
         Schedule
       </h1>
       <p className="text-xs mb-5" style={{ color: 'var(--text-muted)' }}>
-        All events across 5 days — Hostel Days 2026
+        All events across 7 days
       </p>
 
+      {/* ── Banner image (vertical / Instagram-style) ── */}
+      {BANNER_IMAGE_URL && (
+        <div className="mb-5 rounded-2xl overflow-hidden w-full" style={{ border: '1px solid var(--border)' }}>
+          <img
+            src={BANNER_IMAGE_URL}
+            alt="Hostel Days 2026"
+            className="w-full object-cover"
+            style={{ maxHeight: '70vh', objectPosition: 'center top' }}
+          />
+        </div>
+      )}
+
+      {/* ── Countdown timer ── */}
+      <ScheduleCountdown target={COUNTDOWN_TARGET} label={COUNTDOWN_LABEL} />
+
+      {/* ── Day sections ── */}
       {days.map(day => {
         const dayGames = allGames.filter(g => g.day === day)
         if (dayGames.length === 0) return null
-        const theme = DAY_THEMES[day]
-        const sports = dayGames.filter(g => g.categories?.type === 'sports')
+        const theme   = DAY_THEMES[day]
+        const sports  = dayGames.filter(g => g.categories?.type === 'sports')
         const cultural = dayGames.filter(g => g.categories?.type === 'cultural')
 
         return (
@@ -102,9 +140,9 @@ export default async function SchedulePage() {
 function ScheduleRow({ game }: { game: Game }) {
   const icon = game.categories ? getCategoryIcon(game.categories.name) : '🏆'
   const statusColors: Record<GameStatus, { bg: string; text: string; dot: string }> = {
-    upcoming:  { bg: 'var(--bg-secondary)',      text: 'var(--text-muted)',  dot: '#6b7280' },
-    live:      { bg: 'rgba(34,197,94,0.1)',       text: 'var(--live-color)', dot: 'var(--live-color)' },
-    completed: { bg: 'rgba(99,102,241,0.1)',      text: '#818cf8',           dot: '#818cf8' },
+    upcoming:  { bg: 'var(--bg-secondary)',  text: 'var(--text-muted)',  dot: '#6b7280' },
+    live:      { bg: 'rgba(34,197,94,0.1)',  text: 'var(--live-color)', dot: 'var(--live-color)' },
+    completed: { bg: 'rgba(99,102,241,0.1)', text: '#818cf8',           dot: '#818cf8' },
   }
   const s = statusColors[game.status]
 

@@ -70,34 +70,6 @@ export default async function InfoPage() {
         </div>
       </section>
 
-      {/* Venue */}
-      <section>
-        <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
-          Venues
-        </h2>
-        <div className="card divide-y divide-[var(--border)]">
-          {[
-            { name: 'Main Ground',    events: 'Cricket, Football, Athletics',    icon: '🏟️' },
-            { name: 'Sports Complex', events: 'Badminton, TT, Basketball',       icon: '🏢' },
-            { name: 'Hostel Lawn',    events: 'Tug of War, Volleyball',          icon: '🌿' },
-            { name: 'Auditorium',     events: 'Dance, Drama, Fashion, Singing',  icon: '🎭' },
-            { name: 'Common Room',    events: 'Quiz, Debate, Art',               icon: '🏛️' },
-          ].map(v => (
-            <div key={v.name} className="px-4 py-3 flex items-center gap-3">
-              <span className="text-xl">{v.icon}</span>
-              <div>
-                <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
-                  {v.name}
-                </p>
-                <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-                  {v.events}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Contact */}
       <section>
         <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
