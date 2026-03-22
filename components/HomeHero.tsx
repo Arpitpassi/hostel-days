@@ -20,7 +20,7 @@ const SEQUENCE: Step[] = [
   { word: 'table tennis',       color: '#06b6d4' },
   { word: 'chess',              color: '#ec4899' },
   { word: 'the ultimate clash', color: '#ffffff' },
-  { word: 'hostel days 2026',   color: '#fbbf24', finale: true },
+  { word: 'hostel days 2026',   color: '#ecbe19ff', finale: true },
 ]
 
 const GAME_HOLD     = 150
