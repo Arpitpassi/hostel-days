@@ -11,7 +11,6 @@ const NAV_ITEMS = [
   { href: '/live-scores', label: 'Live', icon: Zap },
   { href: '/schedule', label: 'Schedule', icon: Calendar },
   { href: '/results', label: 'Results', icon: Trophy },
-  { href: '/info', label: 'Info', icon: Info },
   { href: '/merch', label: 'Merch', icon: ShoppingBag },
 ]
 
