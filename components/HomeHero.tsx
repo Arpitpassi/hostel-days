@@ -38,26 +38,23 @@ interface Props {
 //  POSITION CONTROLS — edit these values to reposition
 // ============================================================
 
-const BIRD_DESKTOP_TRANSLATE_Y = '-6vh'   // desktop: negative = up, positive = down
-const BIRD_MOBILE_TRANSLATE_Y  = '-2vh'   // mobile:  negative = up, positive = down
+const BIRD_DESKTOP_TRANSLATE_Y = '-6vh'
+const BIRD_MOBILE_TRANSLATE_Y  = '-2vh'
 
-const BIRD_DESKTOP_SCALE       = '1.35'   // desktop: smaller = shrink, larger = grow
-const BIRD_MOBILE_SCALE        = '1.03'    // mobile:  smaller = shrink, larger = grow
+const BIRD_DESKTOP_SCALE       = '1.35'
+const BIRD_MOBILE_SCALE        = '1.03'
 
-const TEXT_DESKTOP_PADDING_TOP = '6vh'    // desktop: smaller = up, larger = down
-const TEXT_MOBILE_PADDING_TOP  = '3vh'    // mobile:  smaller = up, larger = down
+const TEXT_DESKTOP_PADDING_TOP = '6vh'
+const TEXT_MOBILE_PADDING_TOP  = '3vh'
 
-// Fine-tune the flashing word itself (independent of stats/button below it)
-const WORD_DESKTOP_MARGIN_TOP  = '10vh'   // desktop: smaller = up, larger = down
-const WORD_MOBILE_MARGIN_TOP   = '3.5vh'  // mobile:  smaller = up, larger = down
+const WORD_DESKTOP_MARGIN_TOP  = '10vh'
+const WORD_MOBILE_MARGIN_TOP   = '3.5vh'
 
-const WORD_DESKTOP_PADDING_TOP = 'clamp(10vh, 6vw, 15vh)'  // desktop extra push
-const WORD_MOBILE_PADDING_TOP  = '14vh'                     // mobile extra push
+const WORD_DESKTOP_PADDING_TOP = 'clamp(10vh, 6vw, 15vh)'
+const WORD_MOBILE_PADDING_TOP  = '14vh'
 
-// Spacer between the word/button block and the bottom stats/countdown
-// Shrink to pull stats UP, grow to push stats DOWN
-const STATS_DESKTOP_MIN_HEIGHT = '26vh'   // desktop: smaller = up, larger = down
-const STATS_MOBILE_MIN_HEIGHT  = '14vh'   // mobile:  smaller = up, larger = down
+const STATS_DESKTOP_MIN_HEIGHT = '26vh'
+const STATS_MOBILE_MIN_HEIGHT  = '14vh'
 
 // ============================================================
 
@@ -73,7 +70,6 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const clear = () => { if (timerRef.current) clearTimeout(timerRef.current) }
 
-  // Detect mobile (< 768px = Tailwind's md breakpoint)
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)')
     setIsMobile(mq.matches)
@@ -146,7 +142,6 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
   const currentDay     = mounted ? getCurrentFestivalDay() : 1
   const _dayTheme      = DAY_THEMES[currentDay] || DAY_THEMES[1]
 
-  // Resolved values based on screen size
   const birdTranslateY  = isMobile ? BIRD_MOBILE_TRANSLATE_Y  : BIRD_DESKTOP_TRANSLATE_Y
   const birdScale       = isMobile ? BIRD_MOBILE_SCALE        : BIRD_DESKTOP_SCALE
   const textPaddingTop  = isMobile ? TEXT_MOBILE_PADDING_TOP  : TEXT_DESKTOP_PADDING_TOP
@@ -164,11 +159,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
         style={{ backgroundImage: `radial-gradient(circle at 70% 50%, var(--accent) 0%, transparent 60%)` }}
       />
 
-      {/* ————— BIRD (independent layer) —————
-          Move bird UP:    make BIRD_MOBILE_TRANSLATE_Y more negative, e.g. '-8vh'
-          Move bird DOWN:  make BIRD_MOBILE_TRANSLATE_Y more positive, e.g.  '8vh'
-          Shrink bird:     make BIRD_MOBILE_SCALE smaller,              e.g.  '0.9'
-          Grow bird:       make BIRD_MOBILE_SCALE larger,               e.g.  '1.5'  */}
+      {/* Bird */}
       <div
         className="absolute inset-0 pointer-events-none z-0 flex items-center justify-center"
         style={{ transform: `translateY(${birdTranslateY})` }}
@@ -178,14 +169,13 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
         </div>
       </div>
 
-      {/* ————— TEXT + BUTTON + STATS (independent layer) —————
-          Move text UP:   make TEXT_MOBILE_PADDING_TOP smaller, e.g. '0vh'
-          Move text DOWN: make TEXT_MOBILE_PADDING_TOP larger,  e.g. '10vh' */}
+      {/* Text + Button + Stats */}
       <div
         className="relative z-10 w-full pointer-events-auto flex flex-col items-center flex-1"
         style={{ paddingTop: textPaddingTop }}
       >
 
+        {/* Live badge */}
         <div className="flex items-center justify-center gap-2 mb-3 w-full">
           {liveCount > 0 && (
             <span className="live-badge">
@@ -195,16 +185,52 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
           )}
         </div>
 
-        {/* ————— FLASHING WORD BLOCK —————
-            Move word UP:   make WORD_MOBILE_MARGIN_TOP + WORD_MOBILE_PADDING_TOP smaller
-            Move word DOWN: make WORD_MOBILE_MARGIN_TOP + WORD_MOBILE_PADDING_TOP larger  */}
+        {/* Merch live banner — mobile only */}
+        <div
+          className="md:hidden flex items-center justify-between gap-3 w-full px-3 py-2.5 rounded-xl mb-2"
+          style={{
+            background: 'var(--bg-card)',
+            border: '1px solid var(--border)',
+            animation: 'merch-blink 2s ease-in-out infinite',
+          }}
+        >
+          <div className="flex items-center gap-2">
+            <span
+              className="w-2 h-2 rounded-full shrink-0 live-dot"
+              style={{ background: '#facc15', boxShadow: '0 0 6px #facc15' }}
+            />
+            <span className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>
+              Official Merch is Live!
+            </span>
+          </div>
+          <Link
+            href="/merch"
+            className="text-xs font-bold shrink-0"
+            style={{
+              color: 'var(--text-primary)',
+              textDecoration: 'underline',
+              textUnderlineOffset: '3px',
+            }}
+          >
+            Buy Now
+          </Link>
+        </div>
+
+        <style>{`
+          @keyframes merch-blink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.6; }
+          }
+        `}</style>
+
+        {/* Flashing word block */}
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'flex-start',
-            fontFamily: "var(--font-display)",
+            fontFamily: 'var(--font-display)',
             marginTop: wordMarginTop,
             marginBottom: '1rem',
             width: '100%',
@@ -250,7 +276,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
                   display: 'inline-block',
                   marginTop: 15,
                   marginBottom: 10,
-                  fontFamily: "var(--font-display)",
+                  fontFamily: 'var(--font-display)',
                   fontSize: 16,
                   fontWeight: 700,
                   letterSpacing: '0.15em',
@@ -273,13 +299,8 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
           </div>
         </div>
 
-        {/* ————— SPACER — controls how far down the stats/countdown sit —————
-            Move stats UP:   make STATS_MOBILE_MIN_HEIGHT smaller, e.g. '4vh'
-            Move stats DOWN: make STATS_MOBILE_MIN_HEIGHT larger,  e.g. '24vh' */}
-        <div
-          className="flex-1"
-          style={{ minHeight: statsMinHeight }}
-        />
+        {/* Spacer */}
+        <div className="flex-1" style={{ minHeight: statsMinHeight }} />
 
         {/* Stats / countdown */}
         {!festivalActive && daysUntil > 0 ? (
