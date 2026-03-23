@@ -176,7 +176,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
       >
 
         {/* Live badge */}
-        <div className="flex items-center justify-center gap-2 mb-3 w-full">
+        <div className="flex items-center justify-center gap-2 mb-1 w-full">
           {liveCount > 0 && (
             <span className="live-badge">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--live-color)] live-dot" />
@@ -185,43 +185,20 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
           )}
         </div>
 
-        {/* Merch live banner — mobile only */}
-        <div
-          className="md:hidden flex items-center justify-between gap-3 w-full px-3 py-2.5 rounded-xl mb-2"
-          style={{
-            background: 'var(--bg-card)',
-            border: '1px solid var(--border)',
-            animation: 'merch-blink 2s ease-in-out infinite',
-          }}
-        >
-          <div className="flex items-center gap-2">
-            <span
-              className="w-2 h-2 rounded-full shrink-0 live-dot"
-              style={{ background: '#facc15', boxShadow: '0 0 6px #facc15' }}
-            />
-            <span className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>
-              Official Merch is Live!
-            </span>
-          </div>
+        {/* Merch text — mobile only */}
+        <p className="md:hidden text-[11px] mb-2" style={{ color: 'var(--text-muted)' }}>
+          <span
+            className="inline-block w-1.5 h-1.5 rounded-full mr-1 live-dot align-middle"
+            style={{ background: '#facc15' }}
+          />
+          Merch is live —{' '}
           <Link
             href="/merch"
-            className="text-xs font-bold shrink-0"
-            style={{
-              color: 'var(--text-primary)',
-              textDecoration: 'underline',
-              textUnderlineOffset: '3px',
-            }}
+            style={{ color: 'var(--text-primary)', textDecoration: 'underline', textUnderlineOffset: '2px' }}
           >
             Buy Now
           </Link>
-        </div>
-
-        <style>{`
-          @keyframes merch-blink {
-            0%, 100% { opacity: 1; }
-            50%       { opacity: 0.6; }
-          }
-        `}</style>
+        </p>
 
         {/* Flashing word block */}
         <div
