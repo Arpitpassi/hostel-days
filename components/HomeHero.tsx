@@ -245,7 +245,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
           >
             <div style={{ overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
               <Link
-                href={registrationUrl}
+                href={'https://forms.gle/bwcyvvjDVhTyV72V6'}
                 style={{
                   display: 'inline-block',
                   marginTop: 15,

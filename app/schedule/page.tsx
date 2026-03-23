@@ -14,7 +14,7 @@ export const revalidate = 60
 //  Drop your image into app/schedule/ and name it banner.jpg
 //  Set to null to hide the banner entirely.
 // ============================================================
-const BANNER_IMAGE_URL: string | null = bannerImg.src
+const BANNER_IMAGE_URL: string | null = null
 // To hide: const BANNER_IMAGE_URL: string | null = null
 
 // ============================================================

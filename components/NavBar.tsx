@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Trophy, Calendar, Star, Info, Zap, Moon, Sun, Shield } from 'lucide-react'
+import { Trophy, Calendar, Star, Info, Zap, Moon, Sun, Shield, ShoppingBag } from 'lucide-react'
 import { useTheme } from './ThemeProvider'
 import { cn } from '@/lib/utils'
 
@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { href: '/schedule', label: 'Schedule', icon: Calendar },
   { href: '/results', label: 'Results', icon: Trophy },
   { href: '/info', label: 'Info', icon: Info },
+  { href: '/merch', label: 'Merch', icon: ShoppingBag },
 ]
 
 export function NavBar() {
