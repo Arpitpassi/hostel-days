@@ -41,9 +41,9 @@ const SEQUENCE: Step[] = [
   { word: 'hostel days 2026',   color: '#ecbe19ff', finale: true },
 ]
 
-const GAME_HOLD     = 100
-const ULTIMATE_HOLD = 250
-const FADE_MS       = 50
+const FADE_MS  = 0
+const MIN_HOLD = 100   // hold duration for the first word (ms)
+const MAX_HOLD = 600   // hold duration approaching the finale (ms)
 
 interface Props {
   liveCount: number
@@ -60,7 +60,7 @@ const BIRD_DESKTOP_TRANSLATE_Y = '-6vh'
 const BIRD_MOBILE_TRANSLATE_Y  = '-2vh'
 
 const BIRD_DESKTOP_TRANSLATE_X = '0px'
-const BIRD_MOBILE_TRANSLATE_X  = '-8px'   // ← move bird left/right on mobile, e.g. '-10vw' or '5%'
+const BIRD_MOBILE_TRANSLATE_X  = '-8px'
 
 const BIRD_DESKTOP_SCALE       = '1.35'
 const BIRD_MOBILE_SCALE        = '1.03'
@@ -99,6 +99,17 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
     return () => mq.removeEventListener('change', handler)
   }, [])
 
+  // Count of words that participate in the easing curve
+  // (everything except 'the ultimate clash' and the finale)
+  const easedCount = SEQUENCE.filter(s => !s.finale && s.word !== 'the ultimate clash').length
+
+  const getHold = (i: number): number => {
+    if (i >= easedCount) return MAX_HOLD   // 'the ultimate clash' gets max hold
+    const t = i / (easedCount - 1)
+    const eased = t * t                    // quadratic ease-in: starts fast, slows down
+    return Math.round(MIN_HOLD + (MAX_HOLD - MIN_HOLD) * eased)
+  }
+
   const runStep = (i: number) => {
     if (i >= SEQUENCE.length) return
     const s = SEQUENCE[i]
@@ -118,13 +129,12 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
       setDisplayedWord(s.word)
       setDisplayedColor(s.color)
       setWordOpacity(1)
-      scheduleNext(i, s)
+      scheduleNext(i)
     }, FADE_MS)
   }
 
-  const scheduleNext = (i: number, s: Step) => {
-    const hold = s.word === 'the ultimate clash' ? ULTIMATE_HOLD : GAME_HOLD
-    timerRef.current = setTimeout(() => runStep(i + 1), hold)
+  const scheduleNext = (i: number) => {
+    timerRef.current = setTimeout(() => runStep(i + 1), getHold(i))
   }
 
   useEffect(() => {
@@ -134,7 +144,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
     setWordOpacity(0)
     timerRef.current = setTimeout(() => {
       setWordOpacity(1)
-      scheduleNext(0, SEQUENCE[0])
+      scheduleNext(0)
     }, FADE_MS)
     return () => clear()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -171,10 +181,24 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
   const wordPaddingTop  = isMobile ? WORD_MOBILE_PADDING_TOP  : WORD_DESKTOP_PADDING_TOP
   const statsMinHeight  = isMobile ? STATS_MOBILE_MIN_HEIGHT  : STATS_DESKTOP_MIN_HEIGHT
 
+  const isFinale = displayedWord === 'hostel days 2026'
+
   return (
     <section
       className="relative overflow-hidden px-4 sm:px-6 max-w-2xl md:max-w-4xl mx-auto flex flex-col min-h-[40vh] md:min-h-[60vh]"
     >
+      {/* Mobile-only: only the finale "hostel days 2026" span gets 1.5x size */}
+      <style>{`
+        .homehero-finale-word {
+          font-size: inherit;
+        }
+        @media (max-width: 767px) {
+          .homehero-finale-word {
+            font-size: 30px;
+          }
+        }
+      `}</style>
+
       {/* Background gradient */}
       <div
         className="absolute inset-0 opacity-5 pointer-events-none z-0"
@@ -246,6 +270,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
             }}
           >
             <span
+              className={isFinale ? 'homehero-finale-word' : undefined}
               style={{
                 color: displayedColor,
                 fontWeight: 600,
