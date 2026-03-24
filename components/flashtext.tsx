@@ -106,6 +106,9 @@ export default function HostelDaysAnimation() {
 
   useEffect(() => () => clear(), []);
 
+  // Check if the current word is the finale "hostel days 2026"
+  const isFinaleWord = (word: string) => word === "hostel days 2026";
+
   return (
     <div
       style={{
@@ -114,19 +117,14 @@ export default function HostelDaysAnimation() {
         alignItems: "center",
         justifyContent: "flex-start",
         padding: "2rem 2.5rem",
-        fontFamily: "'Barlow Condensed', sans-serif",
+        fontFamily: '"Antic", sans-serif',
       }}
     >
-      <link
-        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600&display=swap"
-        rel="stylesheet"
-      />
-
       {!started && !done && (
         <button
           onClick={handleStart}
           style={{
-            fontFamily: "'Barlow Condensed', sans-serif",
+            fontFamily: '"Antic", sans-serif',
             fontSize: 22,
             fontWeight: 400,
             letterSpacing: "0.1em",
@@ -149,6 +147,7 @@ export default function HostelDaysAnimation() {
             fontSize: "clamp(22px, 5vw, 36px)",
             fontWeight: 400,
             whiteSpace: "nowrap",
+            fontFamily: '"Antic", sans-serif',
           }}
         >
           <span>{prefix}</span>
@@ -156,7 +155,14 @@ export default function HostelDaysAnimation() {
           <span
             style={{
               color: displayedColor,
-              fontWeight: 600,
+              fontFamily: isFinaleWord(displayedWord)
+                ? '"Google Sans Flex", sans-serif'
+                : '"Antic", sans-serif',
+              fontWeight: isFinaleWord(displayedWord) ? 700 : 600,
+              fontOpticalSizing: "auto" as any,
+              ...(isFinaleWord(displayedWord) && {
+                fontVariationSettings: '"slnt" 0, "wdth" 100, "GRAD" 0, "ROND" 0',
+              }),
               opacity: wordOpacity,
               transition: `opacity ${FADE_MS}ms ease`,
             }}
@@ -174,19 +180,28 @@ export default function HostelDaysAnimation() {
               fontSize: "clamp(22px, 5vw, 36px)",
               fontWeight: 400,
               whiteSpace: "nowrap",
+              fontFamily: '"Antic", sans-serif',
             }}
           >
             <span>welcome to</span>
             <span> </span>
-            <span style={{ color: "#fbbf24", fontWeight: 600 }}>
-              hostel days
+            <span
+              style={{
+                color: "#fbbf24",
+                fontFamily: '"Google Sans Flex", sans-serif',
+                fontWeight: 700,
+                fontOpticalSizing: "auto" as any,
+                fontVariationSettings: '"slnt" 0, "wdth" 100, "GRAD" 0, "ROND" 0',
+              }}
+            >
+              hostel days 2026
             </span>
           </p>
           <button
             onClick={handleReplay}
             style={{
               marginTop: 24,
-              fontFamily: "'Barlow Condensed', sans-serif",
+              fontFamily: '"Antic", sans-serif',
               fontSize: 16,
               fontWeight: 400,
               letterSpacing: "0.15em",
