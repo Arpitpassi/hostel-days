@@ -18,7 +18,7 @@ const SEQUENCE: Step[] = [
   { static: "get ready for", word: "table tennis",   color: "#06b6d4" },
   { static: "get ready for", word: "chess",          color: "#ec4899" },
   { static: "get ready for", word: "the ultimate clash", color: "#ffffff" },
-  { static: "get ready for",        word: "hostel days 2026",    color: "#fbbf24", finale: true },
+  { static: "get ready for", word: "hostel days 2026", color: "#fbbf24", finale: true },
 ];
 
 const GAME_HOLD = 100;
@@ -106,7 +106,6 @@ export default function HostelDaysAnimation() {
 
   useEffect(() => () => clear(), []);
 
-  // Check if the current word is the finale "hostel days 2026"
   const isFinaleWord = (word: string) => word === "hostel days 2026";
 
   return (
@@ -120,6 +119,18 @@ export default function HostelDaysAnimation() {
         fontFamily: '"Antic", sans-serif',
       }}
     >
+      {/* Mobile-only font size override: 22px * 1.5 = 33px */}
+      <style>{`
+        .flashtext-p {
+          font-size: clamp(22px, 5vw, 36px);
+        }
+        @media (max-width: 767px) {
+          .flashtext-p {
+            font-size: 33px;
+          }
+        }
+      `}</style>
+
       {!started && !done && (
         <button
           onClick={handleStart}
@@ -142,9 +153,9 @@ export default function HostelDaysAnimation() {
 
       {started && !done && (
         <p
+          className="flashtext-p"
           style={{
             margin: 0,
-            fontSize: "clamp(22px, 5vw, 36px)",
             fontWeight: 400,
             whiteSpace: "nowrap",
             fontFamily: '"Antic", sans-serif',
@@ -175,9 +186,9 @@ export default function HostelDaysAnimation() {
       {done && (
         <div>
           <p
+            className="flashtext-p"
             style={{
               margin: 0,
-              fontSize: "clamp(22px, 5vw, 36px)",
               fontWeight: 400,
               whiteSpace: "nowrap",
               fontFamily: '"Antic", sans-serif',
