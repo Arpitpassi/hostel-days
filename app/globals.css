@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --font-display: 'Google Sans Flex', sans-serif;
-  --font-body: 'Antic', sans-serif;
+  --font-display: 'Inter Tight', 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
   --font-mono: 'DM Mono', monospace;
 
   /* Light mode tokens */

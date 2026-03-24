@@ -20,12 +20,17 @@
 │   ├── live-scores
 │   │   ├── LiveScoresClient.tsx
 │   │   └── page.tsx
+│   ├── merch
+│   │   ├── merch.jpg
+│   │   └── page.tsx
 │   ├── page.tsx
 │   ├── puuch.png
 │   ├── results
 │   │   └── page.tsx
 │   ├── right_wing.png
 │   └── schedule
+│       ├── ScheduleCountdown.tsx
+│       ├── banner.jpeg
 │       └── page.tsx
 ├── components
 │   ├── HomeHero.tsx
@@ -56,7 +61,7 @@
 │   └── index.ts
 └── vercel.json
 
-14 directories, 40 files
+15 directories, 44 files
 </project_structure>
 
 <file src=".gitignore">
@@ -810,8 +815,7 @@ export default function AdminLoginPage() {
             Admin Portal
           </h1>
           <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
-            Hostel Days 2026 — Score Management
-          </p>
+            Hostel Days 2026 — Score Management          </p>
         </div>
 
         {/* Mode toggle */}
@@ -1137,7 +1141,7 @@ input, select, textarea {
 <file src="app/info/page.tsx">
 import { createClient } from '@/lib/supabase/server'
 import { timeAgo } from '@/lib/utils'
-import { Megaphone, Phone } from 'lucide-react'
+import { Megaphone } from 'lucide-react'
 import type { Metadata } from 'next'
 import { Announcement } from '@/types'
 
@@ -1192,89 +1196,38 @@ export default async function InfoPage() {
         </section>
       )}
 
-      {/* Venue */}
+      {/* About */}
       <section>
         <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
-          Venues
+          About
         </h2>
-        <div className="card divide-y divide-[var(--border)]">
-          {[
-            { name: 'Main Ground', events: 'Cricket, Football, Athletics', icon: '🏟️' },
-            { name: 'Sports Complex', events: 'Badminton, TT, Basketball', icon: '🏢' },
-            { name: 'Hostel Lawn', events: 'Tug of War, Volleyball', icon: '🌿' },
-            { name: 'Auditorium', events: 'Dance, Drama, Fashion, Singing', icon: '🎭' },
-            { name: 'Common Room', events: 'Quiz, Debate, Art', icon: '🏛️' },
-          ].map(v => (
-            <div key={v.name} className="px-4 py-3 flex items-center gap-3">
-              <span className="text-xl">{v.icon}</span>
-              <div>
-                <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
-                  {v.name}
-                </p>
-                <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-                  {v.events}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* General Rules */}
-      <section>
-        <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
-          General Rules
-        </h2>
-        <div className="card px-4 py-3 space-y-2.5">
-          {[
-            'Each hostel can enter a maximum of 2 teams per event.',
-            'Players must be currently enrolled students — ID card required.',
-            'Report to the venue 15 minutes before your scheduled game.',
-            'Disputes must be raised with the event coordinator immediately.',
-            'Decision of the referee / judges is final.',
-            'Unsportsmanlike behavior will result in immediate disqualification.',
-            'Points: Win = 3 pts · Draw = 1 pt · Loss = 0 pts',
-            'Tiebreakers decided by goal/point difference, then head-to-head.',
-          ].map((rule, i) => (
-            <div key={i} className="flex items-start gap-2.5">
-              <span
-                className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5"
-                style={{ background: 'var(--bg-secondary)', color: 'var(--text-muted)' }}
-              >
-                {i + 1}
-              </span>
-              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-                {rule}
-              </p>
-            </div>
-          ))}
+        <div className="card px-4 py-4 space-y-3">
+          <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+            Hostel Days 2026 marks a landmark celebration at the National Institute of Technology Goa, uniting students across hostels in a vibrant display of talent, teamwork, and competitive spirit.
+          </p>
+          <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+            From adrenaline-filled sports to electrifying cultural showcases, the event is designed to foster unity, creativity, and sportsmanship. It&apos;s not just an event—it&apos;s an experience that builds memories, friendships, and legacy.
+          </p>
         </div>
       </section>
 
       {/* Contact */}
       <section>
         <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
-          Contact
+          Our Team
         </h2>
         <div className="card divide-y divide-[var(--border)]">
           {[
-            { role: 'Sports Coordinator', name: 'Arjun Mehta', phone: '+91 98765 43210' },
-            { role: 'Cultural Coordinator', name: 'Priya Sharma', phone: '+91 87654 32109' },
-            { role: 'Overall Convenor', name: 'Dr. Suresh Kumar', phone: '+91 76543 21098' },
+            {  name: 'Sudhanshu Raj '},
+            {  name: 'Atharva Kant Yogi'},
+            {  name: 'Omprakash Jena'},
+            {  name: 'Arpit Passi'},
+            {  name: 'Law Kumar'},
+            {  name: 'Sanika Bandodkar'},
+            {  name: 'Swoyansu Das'},
           ].map(c => (
-            <div key={c.name} className="px-4 py-3 flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{c.name}</p>
-                <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{c.role}</p>
-              </div>
-              <a
-                href={`tel:${c.phone.replace(/\s/g, '')}`}
-                className="flex items-center gap-1 text-xs font-medium px-2.5 py-1.5 rounded-lg"
-                style={{ background: 'var(--bg-secondary)', color: 'var(--accent)' }}
-              >
-                <Phone size={11} />
-                Call
-              </a>
+            <div key={c.name} className="px-4 py-3">
+              <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{c.name}</p>
             </div>
           ))}
         </div>
@@ -1566,6 +1519,115 @@ export default async function LiveScoresPage() {
   )
 }
 
+</file>
+
+<file src="app/merch/page.tsx">
+import type { Metadata } from 'next'
+import Image from 'next/image'
+import { ShoppingBag, ExternalLink } from 'lucide-react'
+import merchImg from './merch.jpg'
+
+export const metadata: Metadata = {
+  title: 'Merch — Hostel Days 2026',
+  description: 'Official Hostel Days 2026 merch collection. Order now using the link for your year.',
+}
+
+const YEAR_ORDERS = [
+  { label: '1st Year', batch: 'Batch of 2029', url: 'https://forms.gle/eCn6zEinXqxr6ogQ8' },
+  { label: '2nd Year', batch: 'Batch of 2028', url: 'https://forms.gle/ZAJ54dpBrYAqtUTCA' },
+  { label: '3rd Year', batch: 'Batch of 2027', url: 'https://forms.gle/DspW4W7dJsvHxWeP8' },
+  { label: '4th Year', batch: 'Batch of 2026', url: 'https://forms.gle/DSgk3z9241nZkdQs8' },
+  { label: 'M.Tech',   batch: null,             url: 'https://forms.gle/MAAncpxnC5xv4eLA8' },
+  { label: 'PhD',      batch: null,             url: 'https://forms.gle/K6wrXzXx3FkumfKp7' },
+]
+
+export default function MerchPage() {
+  return (
+    <div className="px-4 sm:px-6 py-6 max-w-2xl mx-auto space-y-8">
+
+      {/* Page Header */}
+      <div className="flex items-center gap-3">
+        <div
+          className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+          style={{ background: 'var(--accent)' }}
+        >
+          <ShoppingBag size={17} className="text-white" />
+        </div>
+        <div>
+          <h1 className="font-display font-extrabold text-2xl" style={{ color: 'var(--text-primary)' }}>
+            Official Merch
+          </h1>
+          <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>
+            Hostel Days 2026 Collection
+          </p>
+        </div>
+      </div>
+
+      {/* Merch Image */}
+      <div className="card overflow-hidden rounded-2xl">
+        <Image
+          src={merchImg}
+          alt="Hostel Days 2026 official merch collection"
+          className="w-full object-cover"
+          placeholder="blur"
+          priority
+        />
+      </div>
+
+      {/* Description */}
+      <div className="card px-5 py-4 space-y-1">
+        <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+          We are pleased to introduce the <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>official Hostel Days merch collection</span>, thoughtfully designed to reflect the spirit, unity, and legacy of our campus.
+        </p>
+        <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+          To ensure a smooth ordering process, please use the specific link assigned to your year.
+        </p>
+      </div>
+
+      {/* Order Links */}
+      <div>
+        <h2
+          className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3"
+          style={{ color: 'var(--text-muted)' }}
+        >
+          📍 Select Your Year to Order
+        </h2>
+
+        <div className="space-y-2">
+          {YEAR_ORDERS.map(({ label, batch, url }) => (
+            <a
+              key={label}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card flex items-center justify-between px-4 py-3 rounded-xl transition-all hover:border-[var(--border-strong)] active:scale-[0.99] group"
+              style={{ textDecoration: 'none' }}
+            >
+              <div>
+                <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>
+                  {label}
+                </p>
+                {batch && (
+                  <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                    {batch}
+                  </p>
+                )}
+              </div>
+              <div
+                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-all group-hover:opacity-70"
+                style={{ background: 'var(--border-strong)', color: '#ffffff' }}
+              >
+                Order
+                <ExternalLink size={11} />
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  )
+}
 </file>
 
 <file src="app/page.tsx">
@@ -1909,143 +1971,459 @@ export default async function ResultsPage() {
 }
 </file>
 
-<file src="app/schedule/page.tsx">
-import { createClient } from '@/lib/supabase/server'
-import { DAY_THEMES, formatGameTime, getCategoryIcon } from '@/lib/utils'
-import { Clock } from 'lucide-react'
-import type { Metadata } from 'next'
-import { Game, GameStatus } from '@/types'
+<file src="app/schedule/ScheduleCountdown.tsx">
+'use client'
 
-export const metadata: Metadata = { title: 'Schedule' }
-export const revalidate = 60
+import { useEffect, useState } from 'react'
 
-export default async function SchedulePage() {
-  const supabase = await createClient()
-  const { data: games } = await supabase
-    .from('games')
-    .select('*, categories(id, name, type)')
-    .order('day')
-    .order('start_time')
+interface Props {
+  target: string   // 'YYYY-MM-DDTHH:MM:SS'
+  label: string
+}
 
-  const allGames = (games as unknown as Game[]) || []
-  const days = [1, 2, 3, 4, 5]
+export function ScheduleCountdown({ target, label }: Props) {
+  const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 })
+  const [expired, setExpired]   = useState(false)
+
+  useEffect(() => {
+    const targetMs = new Date(target).getTime()
+
+    const tick = () => {
+      const diff = targetMs - Date.now()
+      if (diff <= 0) { setExpired(true); return }
+      setTimeLeft({
+        d: Math.floor(diff / 86400000),
+        h: Math.floor((diff % 86400000) / 3600000),
+        m: Math.floor((diff % 3600000)  / 60000),
+        s: Math.floor((diff % 60000)    / 1000),
+      })
+    }
+
+    tick()
+    const id = setInterval(tick, 1000)
+    return () => clearInterval(id)
+  }, [target])
+
+  // Hide once the event has started
+  if (expired) return null
+
+  const units = [
+    { value: String(timeLeft.d).padStart(2, '0'), label: 'days' },
+    { value: String(timeLeft.h).padStart(2, '0'), label: 'hrs'  },
+    { value: String(timeLeft.m).padStart(2, '0'), label: 'min'  },
+    { value: String(timeLeft.s).padStart(2, '0'), label: 'sec'  },
+  ]
 
   return (
-    <div className="px-4 sm:px-6 py-4 max-w-2xl mx-auto">
-      <h1
-        className="font-display font-extrabold text-2xl mb-1"
-        style={{ color: 'var(--text-primary)' }}
-      >
-        Schedule
-      </h1>
-      <p className="text-xs mb-5" style={{ color: 'var(--text-muted)' }}>
-        All events across 5 days — Hostel Days 2026
+    <div
+      className="mb-5 rounded-xl px-4 py-4"
+      style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)' }}
+    >
+      <p className="text-xs uppercase tracking-wider font-semibold mb-3 text-center" style={{ color: 'var(--text-muted)' }}>
+        {label}
       </p>
-
-      {days.map(day => {
-        const dayGames = allGames.filter(g => g.day === day)
-        if (dayGames.length === 0) return null
-        const theme = DAY_THEMES[day]
-        const sports = dayGames.filter(g => g.categories?.type === 'sports')
-        const cultural = dayGames.filter(g => g.categories?.type === 'cultural')
-
-        return (
-          <section key={day} className="mb-8">
-            {/* Day header */}
-            <div
-              className="flex items-center gap-3 px-4 py-2.5 rounded-xl mb-3"
-              style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)' }}
-            >
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-display font-bold text-sm shrink-0"
-                style={{ background: 'var(--accent)' }}
+      <div className="flex items-center justify-center gap-3 sm:gap-6">
+        {units.map((u, i) => (
+          <div key={u.label} className="flex items-center gap-3 sm:gap-6">
+            <div className="text-center">
+              <p
+                className="font-display font-bold tabular-nums text-3xl sm:text-4xl"
+                style={{ color: 'var(--accent)' }}
               >
-                {day}
-              </div>
-              <div>
-                <p className="font-display font-bold text-sm" style={{ color: 'var(--text-primary)' }}>
-                  Day {day}
-                </p>
-                {theme && (
-                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-                    {theme.label}
-                  </p>
-                )}
-              </div>
-              <div className="ml-auto text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
-                {dayGames.length} events
-              </div>
+                {u.value}
+              </p>
+              <p className="text-[10px] uppercase tracking-wider mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                {u.label}
+              </p>
             </div>
-
-            {/* Sports */}
-            {sports.length > 0 && (
-              <div className="mb-3">
-                <p className="text-xs font-bold uppercase tracking-wider mb-1.5 px-1" style={{ color: 'var(--text-muted)' }}>
-                  ⚽ Sports
-                </p>
-                <div className="space-y-1.5">
-                  {sports.map(game => (
-                    <ScheduleRow key={game.id} game={game} />
-                  ))}
-                </div>
-              </div>
+            {i < units.length - 1 && (
+              <span className="text-xl font-bold pb-4" style={{ color: 'var(--border-strong)' }}>:</span>
             )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+</file>
 
-            {/* Cultural */}
-            {cultural.length > 0 && (
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider mb-1.5 px-1" style={{ color: 'var(--text-muted)' }}>
-                  🎭 Cultural
-                </p>
-                <div className="space-y-1.5">
-                  {cultural.map(game => (
-                    <ScheduleRow key={game.id} game={game} />
-                  ))}
-                </div>
-              </div>
-            )}
-          </section>
-        )
-      })}
+<file src="app/schedule/page.tsx">
+'use client'
+
+import React, { useState, useEffect } from 'react'
+
+// ============================================================
+// DATA
+// ============================================================
+// You can add a `brochureUrl` to specific events if they have unique PDFs.
+// For now, it defaults to a fallback PDF url.
+const FALLBACK_PDF_URL = '/HOSTEL_DAYS_SCHEDULE_DRAFT_1.pdf'
+
+const DAYS = [
+  {
+    num: 1, label: 'Day 1', date: 'Saturday, 5 April', dateISO: '2026-04-05',
+    venues: [
+      { name: 'Sports Room', events: [{ name: 'Badminton MM & FF League', icon: '🏸', time: '08:00' }] }
+    ]
+  },
+  {
+    num: 2, label: 'Day 2', date: 'Sunday, 6 April', dateISO: '2026-04-06',
+    venues: [
+      { name: 'Ground', events: [{ name: 'Cricket League', icon: '🏏', time: '07:00' }] },
+      { name: 'BA Court', events: [{ name: 'Badminton MM & FF League', icon: '🏸', time: '07:00' }] },
+      { name: 'BD Court', events: [
+          { name: 'Basketball League', icon: '🏀', time: '08:00' },
+          { name: 'Table Tennis M & F League', icon: '🏓', time: '10:00' }
+      ]}
+    ]
+  },
+  {
+    num: 3, label: 'Day 3', date: 'Monday, 7 April', dateISO: '2026-04-07',
+    venues: [
+      { name: 'Ground', events: [{ name: 'Cricket League', icon: '🏏', time: '07:00' }, { name: 'Football League', icon: '⚽', time: '17:00' }] },
+      { name: 'BA Court', events: [{ name: 'Badminton MF League', icon: '🏸', time: '07:00' }] },
+      { name: 'BD Court', events: [{ name: 'Basketball League', icon: '🏀', time: '08:00' }, { name: 'Table Tennis M & F League', icon: '🏓', time: '10:00' }] },
+      { name: 'V Court', events: [{ name: 'Volley League', icon: '🏐', time: '07:00' }] },
+      { name: 'Gyan Mandir', events: [{ name: 'Chess', icon: '♟️', time: '10:00' }, { name: 'Carrom League', icon: '🎯', time: '14:00' }] }
+    ]
+  },
+  {
+    num: 4, label: 'Day 4', date: 'Tuesday, 8 April', dateISO: '2026-04-08',
+    venues: [
+      { name: 'Ground', events: [
+          { name: 'Track Events', icon: '🏃', time: '06:00' },
+          { name: '7 Stones', icon: '🪨', time: '10:00' },
+          { name: 'Javelin', icon: '🎯', time: '10:00' },
+          { name: 'Cricket League', icon: '🏏', time: '14:00' },
+          { name: 'Football League', icon: '⚽', time: '17:00' }
+      ]},
+      { name: 'BA Court', events: [{ name: 'Badminton MF League', icon: '🏸', time: '07:00' }] },
+      { name: 'BD Court', events: [{ name: 'Basketball League', icon: '🏀', time: '08:00' }, { name: 'Table Tennis M & F League', icon: '🏓', time: '10:00' }] },
+      { name: 'V Court', events: [{ name: 'Volley League', icon: '🏐', time: '07:00' }] },
+      { name: 'Gyan Mandir', events: [{ name: 'Carrom EB Point', icon: '🎯', time: '10:00' }, { name: "Kho Kho Men's", icon: '🏃', time: '14:00' }] }
+    ]
+  },
+  {
+    num: 5, label: 'Day 5', date: 'Wednesday, 9 April', dateISO: '2026-04-09',
+    venues: [
+      { name: 'Ground', events: [{ name: 'Cricket Final', icon: '🏏', time: '08:00' }, { name: 'Football League & Final', icon: '⚽', time: '15:00' }] },
+      { name: 'BA Court', events: [{ name: 'Badminton MM & FF Final', icon: '🏸', time: '08:00' }, { name: 'Badminton MF League', icon: '🏸', time: '14:00' }] },
+      { name: 'BD Court', events: [{ name: 'Basketball League', icon: '🏀', time: '08:00' }, { name: 'Table Tennis M & F League & Final', icon: '🏓', time: '10:00' }] },
+      { name: 'V Court', events: [{ name: 'Volley League & Final', icon: '🏐', time: '07:00' }] },
+      { name: 'Gyan Mandir', events: [{ name: "Kho Kho Women's", icon: '🏃', time: '08:00' }] },
+      { name: 'Chapora Hall', events: [{ name: 'Duet Singing (6 PM – 7 PM)', icon: '🎤', time: '18:00' }, { name: 'Fashion Show (7 PM – 8:30 PM)', icon: '👗', time: '19:00' }] }
+    ]
+  },
+  {
+    num: 6, label: 'Day 6', date: 'Thursday, 10 April', dateISO: '2026-04-10',
+    venues: [
+      { name: 'Ground', events: [{ name: 'Archery', icon: '🏹', time: '08:00' }, { name: 'Basketball League', icon: '🏀', time: '10:00' }, { name: 'Basketball Finals / 1st & 2nd Year Girls', icon: '🏀', time: '14:00' }] },
+      { name: 'BA Court', events: [{ name: 'Badminton MF Final', icon: '🏸', time: '08:00' }] },
+      { name: 'NIT Goa', events: [
+          { name: 'Graffiti', icon: '🎨', time: '10:00' },
+          { name: 'Sketching & Painting', icon: '🖌️', time: '10:00' },
+          { name: 'Group + Solo + Duet Dance', icon: '💃', time: '14:00' },
+          { name: 'Instrumental (9 PM – 11 PM)', icon: '🎸', time: '21:00' },
+          { name: 'DJ Night', icon: '🎧', time: '21:00' }
+      ]}
+    ]
+  },
+  {
+    num: 7, label: 'Day 7', date: 'Sunday, 12 April', dateISO: '2026-04-12',
+    venues: [
+      { name: 'NIT Goa', events: [{ name: 'Award Distribution', icon: '🏆', time: '11:00' }] }
+    ]
+  }
+]
+
+// ============================================================
+// HELPERS
+// ============================================================
+function formatTime(t: string) {
+  const [h, m] = t.split(':').map(Number)
+  const ampm = h >= 12 ? 'PM' : 'AM'
+  const h12 = h % 12 || 12
+  return `${h12}:${String(m).padStart(2, '0')} ${ampm}`
+}
+
+function getEventTargetDate(dateISO: string, timeStr: string) {
+  const [h, m] = timeStr.split(':').map(Number)
+  const target = new Date(dateISO)
+  target.setHours(h, m, 0, 0)
+  return target
+}
+
+// ============================================================
+// COMPONENTS
+// ============================================================
+function CountdownDisplay({ targetDate }: { targetDate: Date }) {
+  const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0, expired: false })
+
+  useEffect(() => {
+    const tick = () => {
+      const diff = targetDate.getTime() - Date.now()
+      if (diff <= 0) {
+        setTimeLeft({ d: 0, h: 0, m: 0, s: 0, expired: true })
+        return
+      }
+      setTimeLeft({
+        d: Math.floor(diff / 86400000),
+        h: Math.floor((diff % 86400000) / 3600000),
+        m: Math.floor((diff % 3600000) / 60000),
+        s: Math.floor((diff % 60000) / 1000),
+        expired: false
+      })
+    }
+    
+    tick()
+    const interval = setInterval(tick, 1000)
+    return () => clearInterval(interval)
+  }, [targetDate])
+
+  if (timeLeft.expired) {
+    return <div className="text-center text-[13px] text-[var(--live-color)] font-semibold">Event is happening now!</div>
+  }
+
+  const pad = (n: number) => String(n).padStart(2, '0')
+
+  return (
+    <div className="flex justify-center items-center gap-2.5">
+      <div className="text-center">
+        <div className="font-display font-extrabold text-4xl text-[var(--text-primary)] leading-none tabular-nums">{pad(timeLeft.d)}</div>
+        <div className="text-[10px] uppercase tracking-[0.08em] text-[var(--text-muted)] mt-1.5 font-medium">days</div>
+      </div>
+      <span className="font-display font-bold text-xl text-[var(--border-strong)] pb-4 opacity-70">:</span>
+      
+      <div className="text-center">
+        <div className="font-display font-extrabold text-4xl text-[var(--text-primary)] leading-none tabular-nums">{pad(timeLeft.h)}</div>
+        <div className="text-[10px] uppercase tracking-[0.08em] text-[var(--text-muted)] mt-1.5 font-medium">hrs</div>
+      </div>
+      <span className="font-display font-bold text-xl text-[var(--border-strong)] pb-4 opacity-70">:</span>
+      
+      <div className="text-center">
+        <div className="font-display font-extrabold text-4xl text-[var(--text-primary)] leading-none tabular-nums">{pad(timeLeft.m)}</div>
+        <div className="text-[10px] uppercase tracking-[0.08em] text-[var(--text-muted)] mt-1.5 font-medium">min</div>
+      </div>
+      <span className="font-display font-bold text-xl text-[var(--border-strong)] pb-4 opacity-70">:</span>
+      
+      <div className="text-center">
+        <div className="font-display font-extrabold text-4xl text-[var(--text-primary)] leading-none tabular-nums">{pad(timeLeft.s)}</div>
+        <div className="text-[10px] uppercase tracking-[0.08em] text-[var(--text-muted)] mt-1.5 font-medium">sec</div>
+      </div>
     </div>
   )
 }
 
-function ScheduleRow({ game }: { game: Game }) {
-  const icon = game.categories ? getCategoryIcon(game.categories.name) : '🏆'
-  const statusColors: Record<GameStatus, { bg: string; text: string; dot: string }> = {
-    upcoming:  { bg: 'var(--bg-secondary)',      text: 'var(--text-muted)',  dot: '#6b7280' },
-    live:      { bg: 'rgba(34,197,94,0.1)',       text: 'var(--live-color)', dot: 'var(--live-color)' },
-    completed: { bg: 'rgba(99,102,241,0.1)',      text: '#818cf8',           dot: '#818cf8' },
-  }
-  const s = statusColors[game.status]
+export default function SchedulePage() {
+  const [activeDayIdx, setActiveDayIdx] = useState(0)
+  const [selectedEvent, setSelectedEvent] = useState<any>(null)
+  const [isPdfOpen, setIsPdfOpen] = useState(false)
+
+  const activeDay = DAYS[activeDayIdx]
+  const totalEvents = activeDay.venues.reduce((acc, v) => acc + v.events.length, 0)
+
+  // Handle escape key to close modals sequentially
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (isPdfOpen) setIsPdfOpen(false)
+        else if (selectedEvent) setSelectedEvent(null)
+      }
+    }
+    window.addEventListener('keydown', handleEsc)
+    return () => window.removeEventListener('keydown', handleEsc)
+  }, [isPdfOpen, selectedEvent])
+
+  // Lock body scroll when any modal is open
+  useEffect(() => {
+    if (selectedEvent || isPdfOpen) document.body.style.overflow = 'hidden'
+    else document.body.style.overflow = ''
+  }, [selectedEvent, isPdfOpen])
 
   return (
-    <div className="card px-3 py-2.5 flex items-center gap-3">
-      <span className="text-lg shrink-0">{icon}</span>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>
-          {game.team_a} <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>vs</span> {game.team_b}
+    <div className="min-h-screen bg-[var(--bg-primary)] font-body text-[var(--text-primary)] transition-colors duration-300">
+      <div className="max-w-[720px] mx-auto px-4 py-5 pb-16">
+        
+        {/* ── Header ── */}
+        <h1 className="font-display font-extrabold text-[26px] tracking-tight leading-tight mb-0.5">
+          Schedule
+        </h1>
+        <p className="text-xs text-[var(--text-muted)] mb-5">
+          Hostel Days 2026 — 7 days · All events
         </p>
-        <p className="text-xs mt-0.5 truncate" style={{ color: 'var(--text-muted)' }}>
-          {game.event_name} · {game.categories?.name}
-        </p>
+
+        {/* ── Day Tabs ── */}
+        <div className="flex gap-1.5 mb-5 overflow-x-auto pb-1 scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
+          {DAYS.map((day, idx) => {
+            const isActive = idx === activeDayIdx;
+            return (
+              <button
+                key={day.num}
+                onClick={() => setActiveDayIdx(idx)}
+                className={`shrink-0 px-4 py-1.5 rounded-full border font-display text-xs font-semibold transition-all whitespace-nowrap
+                  ${isActive 
+                    ? 'bg-[var(--accent)] text-white border-[var(--accent)] shadow-sm' 
+                    : 'bg-[var(--bg-card)] text-[var(--text-muted)] border-[var(--border)] hover:border-[var(--border-strong)] hover:text-[var(--text-primary)]'
+                  }`}
+              >
+                {day.label}
+              </button>
+            )
+          })}
+        </div>
+
+        {/* ── Active Day Section ── */}
+        <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border)] mb-3.5 transition-colors">
+            <div className="w-[34px] h-[34px] rounded-[10px] bg-[var(--accent)] text-white flex items-center justify-center font-display font-extrabold text-sm shrink-0 shadow-sm">
+              {activeDay.num}
+            </div>
+            <div>
+              <div className="font-display font-bold text-sm text-[var(--text-primary)]">{activeDay.label}</div>
+              <div className="text-[11px] text-[var(--text-muted)]">{activeDay.date}</div>
+            </div>
+            <div className="ml-auto text-[11px] text-[var(--text-muted)] font-medium">
+              {totalEvents} event{totalEvents !== 1 && 's'}
+            </div>
+          </div>
+
+          {/* Venues & Events */}
+          {activeDay.venues.map((venue, vIdx) => (
+            <div key={vIdx} className="mb-4.5">
+              <div className="text-[10px] font-bold uppercase tracking-[0.08em] text-[var(--text-muted)] mb-1.5 pl-0.5">
+                📍 {venue.name}
+              </div>
+              
+              {venue.events.map((ev, eIdx) => (
+                <div
+                  key={eIdx}
+                  onClick={() => setSelectedEvent({ ev, day: activeDay, venue })}
+                  className="group flex items-center gap-3 px-3.5 py-2.5 rounded-[10px] bg-[var(--bg-card)] border border-[var(--border)] mb-1.5 cursor-pointer hover:border-[var(--border-strong)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:-translate-y-[1px] transition-all overflow-hidden animate-in fade-in slide-in-from-bottom-2"
+                  style={{ animationDelay: `${eIdx * 40}ms`, animationFillMode: 'both' }}
+                >
+                  <div className="w-[34px] h-[34px] rounded-lg bg-[var(--bg-secondary)] flex items-center justify-center text-base shrink-0 transition-colors">
+                    {ev.icon}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-display font-semibold text-[13px] text-[var(--text-primary)] truncate transition-colors">
+                      {ev.name}
+                    </div>
+                    <div className="text-[11px] text-[var(--text-muted)] mt-[1px] transition-colors">
+                      {venue.name} · {formatTime(ev.time)}
+                    </div>
+                  </div>
+                  <span className="text-[var(--text-muted)] text-sm shrink-0 opacity-50 group-hover:opacity-100 transition-opacity">›</span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="shrink-0 flex flex-col items-end gap-1">
-        {game.start_time && (
-          <span className="flex items-center gap-1 text-xs" style={{ color: 'var(--text-muted)' }}>
-            <Clock size={10} />
-            {formatGameTime(game.start_time)}
-          </span>
-        )}
-        <span
-          className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wide"
-          style={{ background: s.bg, color: s.text }}
+
+      {/* ── EVENT MODAL ── */}
+      {selectedEvent && (
+        <div 
+          className="fixed inset-0 bg-black/55 dark:bg-black/80 backdrop-blur-[6px] z-[100] flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={(e) => { if (e.target === e.currentTarget) setSelectedEvent(null) }}
         >
-          <span className="w-1.5 h-1.5 rounded-full" style={{ background: s.dot }} />
-          {game.status}
-        </span>
-      </div>
+          <div className="w-full max-w-[440px] rounded-[24px] bg-[var(--bg-card)] border border-[var(--border)] overflow-hidden animate-in slide-in-from-bottom-8 sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200 shadow-xl">
+            
+            {/* Modal Header */}
+            <div className="flex items-start justify-between px-6 pt-6 pb-5 border-b border-[var(--border)]">
+              <div>
+                <div className="font-display font-bold text-[18px] text-[var(--text-primary)]">
+                  {selectedEvent.ev.name}
+                </div>
+                <div className="text-[13px] text-[var(--text-muted)] mt-1">
+                  {selectedEvent.day.label} · {selectedEvent.venue.name} · {formatTime(selectedEvent.ev.time)}
+                </div>
+              </div>
+              <button 
+                onClick={() => setSelectedEvent(null)}
+                className="w-8 h-8 rounded-full bg-[var(--bg-secondary)] border border-[var(--border)] flex items-center justify-center text-base text-[var(--text-muted)] hover:bg-[var(--border)] transition-colors shrink-0"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Countdown Box */}
+            <div className="border-b border-[var(--border)] px-6 py-6">
+              <div className="text-[11px] uppercase tracking-[0.1em] font-bold text-[var(--text-muted)] text-center mb-4">
+                Starts in
+              </div>
+              <CountdownDisplay 
+                targetDate={getEventTargetDate(selectedEvent.day.dateISO, selectedEvent.ev.time)} 
+              />
+            </div>
+
+            {/* Event Brochure Button */}
+            <div className="p-5 px-6 pb-6">
+              <div className="text-[11px] uppercase tracking-[0.1em] font-bold text-[var(--text-muted)] mb-3">
+                Event Details
+              </div>
+              <div 
+                onClick={() => setIsPdfOpen(true)}
+                className="flex items-center gap-4 p-3.5 px-4 rounded-[12px] bg-[var(--bg-secondary)] border border-[var(--border)] cursor-pointer hover:border-[var(--border-strong)] transition-colors"
+              >
+                {/* Accent Icon Box */}
+                <div className="w-[42px] h-[42px] rounded-[10px] bg-[var(--accent)] flex items-center justify-center shrink-0">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <div className="font-display font-semibold text-[14px] text-[var(--text-primary)]">
+                    Event Brochure
+                  </div>
+                  <div className="text-[12px] text-[var(--text-muted)] mt-0.5">
+                    Tap to view guidelines & rules
+                  </div>
+                </div>
+                <span className="text-[var(--text-muted)] text-sm opacity-50">›</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* ── PDF VIEWER OVERLAY ── */}
+      {isPdfOpen && (
+        <div 
+          className="fixed inset-0 bg-black/75 backdrop-blur-md z-[200] flex flex-col items-center justify-center p-5 animate-in fade-in duration-200"
+          onClick={(e) => { if (e.target === e.currentTarget) setIsPdfOpen(false) }}
+        >
+          <div className="w-full max-w-[700px] h-[85vh] rounded-2xl overflow-hidden bg-[var(--bg-card)] border border-[var(--border)] flex flex-col animate-in zoom-in-95 duration-200 shadow-2xl">
+            
+            {/* PDF Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)] bg-[var(--bg-secondary)] shrink-0">
+              <div className="flex items-center gap-2">
+                <span className="font-display font-bold text-[13px] text-[var(--text-primary)]">
+                  {selectedEvent?.ev.name || 'Event'} — Brochure
+                </span>
+              </div>
+              <button 
+                onClick={() => setIsPdfOpen(false)}
+                className="w-8 h-8 rounded-lg bg-[var(--bg-card)] border border-[var(--border-strong)] flex items-center justify-center text-base text-[var(--text-muted)] hover:border-[var(--text-muted)] transition-colors shrink-0"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Iframe for PDF display */}
+            <iframe
+              className="flex-1 w-full border-none bg-white min-h-0"
+              src={selectedEvent?.ev.brochureUrl || FALLBACK_PDF_URL}
+              title={`${selectedEvent?.ev.name || 'Event'} Brochure`}
+            />
+            
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -2074,7 +2452,7 @@ const SEQUENCE: Step[] = [
   { word: 'table tennis',       color: '#06b6d4' },
   { word: 'chess',              color: '#ec4899' },
   { word: 'the ultimate clash', color: '#ffffff' },
-  { word: 'hostel days 2026',   color: '#fbbf24', finale: true },
+  { word: 'hostel days 2026',   color: '#ecbe19ff', finale: true },
 ]
 
 const GAME_HOLD     = 150
@@ -2088,6 +2466,33 @@ interface Props {
   registrationUrl?: string
 }
 
+// ============================================================
+//  POSITION CONTROLS — edit these values to reposition
+// ============================================================
+
+const BIRD_DESKTOP_TRANSLATE_Y = '-6vh'
+const BIRD_MOBILE_TRANSLATE_Y  = '-2vh'
+
+const BIRD_DESKTOP_TRANSLATE_X = '0px'
+const BIRD_MOBILE_TRANSLATE_X  = '-8px'   // ← move bird left/right on mobile, e.g. '-10vw' or '5%'
+
+const BIRD_DESKTOP_SCALE       = '1.35'
+const BIRD_MOBILE_SCALE        = '1.03'
+
+const TEXT_DESKTOP_PADDING_TOP = '6vh'
+const TEXT_MOBILE_PADDING_TOP  = '3vh'
+
+const WORD_DESKTOP_MARGIN_TOP  = '10vh'
+const WORD_MOBILE_MARGIN_TOP   = '3.5vh'
+
+const WORD_DESKTOP_PADDING_TOP = 'clamp(10vh, 6vw, 15vh)'
+const WORD_MOBILE_PADDING_TOP  = '14vh'
+
+const STATS_DESKTOP_MIN_HEIGHT = '26vh'
+const STATS_MOBILE_MIN_HEIGHT  = '14vh'
+
+// ============================================================
+
 export function HomeHero({ liveCount, totalGames, completedCount, registrationUrl = '/Participate' }: Props) {
   const [mounted, setMounted]               = useState(false)
   const [timeLeft, setTimeLeft]             = useState({ h: 0, m: 0, s: 0 })
@@ -2095,9 +2500,18 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
   const [wordOpacity, setWordOpacity]       = useState(1)
   const [displayedWord, setDisplayedWord]   = useState(SEQUENCE[0].word)
   const [displayedColor, setDisplayedColor] = useState(SEQUENCE[0].color)
+  const [isMobile, setIsMobile]             = useState(false)
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const clear = () => { if (timerRef.current) clearTimeout(timerRef.current) }
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    setIsMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
 
   const runStep = (i: number) => {
     if (i >= SEQUENCE.length) return
@@ -2161,24 +2575,44 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
   const festivalActive = mounted ? isFestivalActive()      : false
   const daysUntil      = mounted ? getDaysUntilFestival()  : 0
   const currentDay     = mounted ? getCurrentFestivalDay() : 1
-  const _dayTheme      = DAY_THEMES[currentDay] || DAY_THEMES[1] // kept for potential future use
+  const _dayTheme      = DAY_THEMES[currentDay] || DAY_THEMES[1]
+
+  const birdTranslateY  = isMobile ? BIRD_MOBILE_TRANSLATE_Y  : BIRD_DESKTOP_TRANSLATE_Y
+  const birdTranslateX  = isMobile ? BIRD_MOBILE_TRANSLATE_X  : BIRD_DESKTOP_TRANSLATE_X
+  const birdScale       = isMobile ? BIRD_MOBILE_SCALE        : BIRD_DESKTOP_SCALE
+  const textPaddingTop  = isMobile ? TEXT_MOBILE_PADDING_TOP  : TEXT_DESKTOP_PADDING_TOP
+  const wordMarginTop   = isMobile ? WORD_MOBILE_MARGIN_TOP   : WORD_DESKTOP_MARGIN_TOP
+  const wordPaddingTop  = isMobile ? WORD_MOBILE_PADDING_TOP  : WORD_DESKTOP_PADDING_TOP
+  const statsMinHeight  = isMobile ? STATS_MOBILE_MIN_HEIGHT  : STATS_DESKTOP_MIN_HEIGHT
 
   return (
     <section
-      className="relative overflow-hidden px-4 sm:px-6 max-w-2xl md:max-w-4xl mx-auto flex flex-col justify-start min-h-[40vh] md:min-h-[60vh] pt-[3vh] md:pt-[5vh] pb-4 md:pb-6"
+      className="relative overflow-hidden px-4 sm:px-6 max-w-2xl md:max-w-4xl mx-auto flex flex-col min-h-[40vh] md:min-h-[60vh]"
     >
+      {/* Background gradient */}
       <div
         className="absolute inset-0 opacity-5 pointer-events-none z-0"
         style={{ backgroundImage: `radial-gradient(circle at 70% 50%, var(--accent) 0%, transparent 60%)` }}
       />
 
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 transform scale-[1.035] md:scale-[1.40] -translate-y-[2vh] md:-translate-y-[5vh]">
-        <BirdAnimation />
+      {/* Bird */}
+      <div
+        className="absolute inset-0 pointer-events-none z-0 flex items-center justify-center"
+        style={{ transform: `translateX(${birdTranslateX}) translateY(${birdTranslateY})` }}
+      >
+        <div style={{ width: '100%', maxWidth: '500px', transform: `scale(${birdScale})` }}>
+          <BirdAnimation />
+        </div>
       </div>
 
-      <div className="relative z-10 w-full pointer-events-auto flex flex-col items-center flex-1">
+      {/* Text + Button + Stats */}
+      <div
+        className="relative z-10 w-full pointer-events-auto flex flex-col items-center flex-1"
+        style={{ paddingTop: textPaddingTop }}
+      >
 
-        <div className="flex items-center justify-center gap-2 mb-3 w-full">
+        {/* Live badge */}
+        <div className="flex items-center justify-center gap-2 mb-1 w-full">
           {liveCount > 0 && (
             <span className="live-badge">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--live-color)] live-dot" />
@@ -2187,23 +2621,38 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
           )}
         </div>
 
+        {/* Merch text — mobile only */}
+        <p className="md:hidden text-[11px] mb-2" style={{ color: 'var(--text-muted)' }}>
+          <span
+            className="inline-block w-1.5 h-1.5 rounded-full mr-1 live-dot align-middle"
+            style={{ background: '#facc15' }}
+          />
+          Merch is live —{' '}
+          <Link
+            href="/merch"
+            style={{ color: 'var(--text-primary)', textDecoration: 'underline', textUnderlineOffset: '2px' }}
+          >
+            Buy Now
+          </Link>
+        </p>
+
+        {/* Flashing word block */}
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'flex-start',
-            fontFamily: "var(--font-display)",
-            marginTop: '10vh',
+            fontFamily: 'var(--font-display)',
+            marginTop: wordMarginTop,
             marginBottom: '1rem',
             width: '100%',
           }}
         >
-          {/* Main Flashing Text */}
           <p
             style={{
               margin: 0,
-              paddingTop: 'clamp(10vh, 6vw, 15vh)',
+              paddingTop: wordPaddingTop,
               fontSize: 'clamp(22px, 7vw, 64px)',
               fontWeight: 400,
               textAlign: 'center',
@@ -2224,7 +2673,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
             </span>
           </p>
 
-          {/* Button Wrapper */}
+          {/* Participate button */}
           <div
             style={{
               display: 'grid',
@@ -2235,20 +2684,20 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
           >
             <div style={{ overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
               <Link
-                href={registrationUrl}
+                href={'https://forms.gle/bwcyvvjDVhTyV72V6'}
                 style={{
                   display: 'inline-block',
                   marginTop: 15,
                   marginBottom: 10,
-                  fontFamily: "var(--font-display)",
+                  fontFamily: 'var(--font-display)',
                   fontSize: 16,
                   fontWeight: 700,
                   letterSpacing: '0.15em',
                   padding: '8px 24px',
                   border: '1px solid var(--accent)',
                   borderRadius: 4,
-                  background: 'rgba(255, 255, 255, 0.15)',
-                  color: 'var(--accent)',
+                  background: 'rgba(140, 108, 152, 0.15)',
+                  color: '#ffffff',
                   textDecoration: 'none',
                   cursor: 'pointer',
                   textTransform: 'uppercase' as const,
@@ -2263,7 +2712,8 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
           </div>
         </div>
 
-        <div className="flex-1 min-h-[19vh] md:min-h-[24vh]" />
+        {/* Spacer */}
+        <div className="flex-1" style={{ minHeight: statsMinHeight }} />
 
         {/* Stats / countdown */}
         {!festivalActive && daysUntil > 0 ? (
@@ -2621,7 +3071,7 @@ export function LiveTicker({ games }: Props) {
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Trophy, Calendar, Star, Info, Zap, Moon, Sun, Shield } from 'lucide-react'
+import { Trophy, Calendar, Star, Info, Zap, Moon, Sun, Shield, ShoppingBag } from 'lucide-react'
 import { useTheme } from './ThemeProvider'
 import { cn } from '@/lib/utils'
 
@@ -2630,7 +3080,7 @@ const NAV_ITEMS = [
   { href: '/live-scores', label: 'Live', icon: Zap },
   { href: '/schedule', label: 'Schedule', icon: Calendar },
   { href: '/results', label: 'Results', icon: Trophy },
-  { href: '/info', label: 'Info', icon: Info },
+  { href: '/merch', label: 'Merch', icon: ShoppingBag },
 ]
 
 export function NavBar() {
