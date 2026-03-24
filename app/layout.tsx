@@ -30,9 +30,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="dark">
       <head>
-        <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Antic&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap');
-        `}</style>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Antic&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className="overflow-x-hidden">
         <ThemeProvider>
