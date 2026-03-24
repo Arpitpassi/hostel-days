@@ -41,6 +41,9 @@ interface Props {
 const BIRD_DESKTOP_TRANSLATE_Y = '-6vh'
 const BIRD_MOBILE_TRANSLATE_Y  = '-2vh'
 
+const BIRD_DESKTOP_TRANSLATE_X = '0px'
+const BIRD_MOBILE_TRANSLATE_X  = '-8px'   // ← move bird left/right on mobile, e.g. '-10vw' or '5%'
+
 const BIRD_DESKTOP_SCALE       = '1.35'
 const BIRD_MOBILE_SCALE        = '1.03'
 
@@ -143,6 +146,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
   const _dayTheme      = DAY_THEMES[currentDay] || DAY_THEMES[1]
 
   const birdTranslateY  = isMobile ? BIRD_MOBILE_TRANSLATE_Y  : BIRD_DESKTOP_TRANSLATE_Y
+  const birdTranslateX  = isMobile ? BIRD_MOBILE_TRANSLATE_X  : BIRD_DESKTOP_TRANSLATE_X
   const birdScale       = isMobile ? BIRD_MOBILE_SCALE        : BIRD_DESKTOP_SCALE
   const textPaddingTop  = isMobile ? TEXT_MOBILE_PADDING_TOP  : TEXT_DESKTOP_PADDING_TOP
   const wordMarginTop   = isMobile ? WORD_MOBILE_MARGIN_TOP   : WORD_DESKTOP_MARGIN_TOP
@@ -162,7 +166,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
       {/* Bird */}
       <div
         className="absolute inset-0 pointer-events-none z-0 flex items-center justify-center"
-        style={{ transform: `translateY(${birdTranslateY})` }}
+        style={{ transform: `translateX(${birdTranslateX}) translateY(${birdTranslateY})` }}
       >
         <div style={{ width: '100%', maxWidth: '500px', transform: `scale(${birdScale})` }}>
           <BirdAnimation />
