@@ -37,8 +37,8 @@ const SEQUENCE: Step[] = [
   { word: 'dj night',           color: '#818cf8' },
 
   // — finale —
-  { word: 'the ultimate clash', color: '#ffffff' },
-  { word: 'hostel days 2026',   color: '#ecbe19ff', finale: true },
+  { word: 'the ultimate clash', color: '#e1d3e8' },
+  { word: 'hostel days 2026',   color: '#ffd12aff', finale: true },
 ]
 
 const FADE_MS  = 0
