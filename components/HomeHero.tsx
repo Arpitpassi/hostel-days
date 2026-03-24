@@ -12,6 +12,7 @@ interface Step {
 }
 
 const SEQUENCE: Step[] = [
+  // — original sports —
   { word: 'cricket',            color: '#f59e0b' },
   { word: 'football',           color: '#22c55e' },
   { word: 'basketball',         color: '#f97316' },
@@ -19,11 +20,28 @@ const SEQUENCE: Step[] = [
   { word: 'badminton',          color: '#a855f7' },
   { word: 'table tennis',       color: '#06b6d4' },
   { word: 'chess',              color: '#ec4899' },
+
+  // — new from schedule —
+  { word: 'carrom',             color: '#84cc16' },
+  { word: 'track events',       color: '#f43f5e' },
+  { word: '7 stones',           color: '#fb923c' },
+  { word: 'javelin',            color: '#34d399' },
+  { word: 'kho kho',            color: '#facc15' },
+  { word: 'archery',            color: '#38bdf8' },
+  { word: 'duet singing',       color: '#e879f9' },
+  { word: 'fashion show',       color: '#f472b6' },
+  { word: 'graffiti',           color: '#4ade80' },
+  { word: 'sketching',          color: '#fb7185' },
+  { word: 'dance',              color: '#c084fc' },
+  { word: 'instrumental',       color: '#fbbf24' },
+  { word: 'dj night',           color: '#818cf8' },
+
+  // — finale —
   { word: 'the ultimate clash', color: '#ffffff' },
   { word: 'hostel days 2026',   color: '#ecbe19ff', finale: true },
 ]
 
-const GAME_HOLD     = 150
+const GAME_HOLD     = 100
 const ULTIMATE_HOLD = 250
 const FADE_MS       = 50
 
