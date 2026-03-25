@@ -70,23 +70,26 @@ export default async function InfoPage() {
         </div>
       </section>
 
-      {/* Contact */}
+      {/* Our Team */}
       <section>
         <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
           Our Team
         </h2>
         <div className="card divide-y divide-[var(--border)]">
           {[
-            {  name: 'Sudhanshu Raj '},
-            {  name: 'Atharva Kant Yogi'},
-            {  name: 'Omprakash Jena'},
-            {  name: 'Arpit Passi'},
-            {  name: 'Law Kumar'},
-            {  name: 'Sanika Bandodkar'},
-            {  name: 'Swoyansu Das'},
+            { name: 'Sudhanshu Raj',    role: 'Convenor'       },
+            { name: 'Omprakash Jena',   role: 'Convenor'       },
+            { name: 'Atharva Kant Yogi', role: null            },
+            { name: 'Law Kumar',        role: 'Event Manager'  },
+            { name: 'Arpit Passi',      role: 'Website Dev'    },
+            { name: 'Sanika Bandodkar', role: 'Designer'       },
+            { name: 'Swoyansu Das',     role: 'Designer'       },
           ].map(c => (
-            <div key={c.name} className="px-4 py-3">
+            <div key={c.name} className="px-4 py-3 flex items-center justify-between">
               <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{c.name}</p>
+              {c.role && (
+                <p className="text-xs font-medium" style={{ color: 'var(--accent)' }}>{c.role}</p>
+              )}
             </div>
           ))}
         </div>
