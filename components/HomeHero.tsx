@@ -30,11 +30,11 @@ const SEQUENCE: Step[] = [
   { word: 'archery',            color: '#38bdf8' },
   { word: 'duet singing',       color: '#e879f9' },
   { word: 'fashion show',       color: '#f472b6' },
-  { word: 'graffiti',           color: '#4ade80' },
+  { word: 'dj night',           color: '#4ade80' },
   { word: 'sketching',          color: '#fb7185' },
   { word: 'dance',              color: '#c084fc' },
   { word: 'instrumental',       color: '#fbbf24' },
-  { word: 'dj night',           color: '#818cf8' },
+  { word: 'graffiti',           color: '#818cf8' },
 
   // — finale —
   { word: 'the ultimate clash', color: '#e1d3e8' },
@@ -43,7 +43,7 @@ const SEQUENCE: Step[] = [
 
 const FADE_MS  = 0
 const MIN_HOLD = 100   // hold duration for the first word (ms)
-const MAX_HOLD = 600   // hold duration approaching the finale (ms)
+const MAX_HOLD = 400  // hold duration approaching the finale (ms)
 
 interface Props {
   liveCount: number
