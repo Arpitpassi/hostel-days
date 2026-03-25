@@ -11,77 +11,95 @@ const FALLBACK_PDF_URL = '/HOSTEL_DAYS_SCHEDULE_DRAFT_1.pdf'
 
 const DAYS = [
   {
-    num: 1, label: 'Day 1', date: 'Saturday, 5 April', dateISO: '2026-04-05',
+    num: 1, label: 'Day 1', date: 'Saturday, 4 April', dateISO: '2026-04-04',
     venues: [
-      { name: 'Sports Room', events: [{ name: 'Badminton MM & FF League', icon: '🏸', time: '08:00' }] }
+      { name: 'Sports Room', events: [{ name: 'Badminton MM & FF League', icon: '🏸', time: '08:00', endTime: '10:00' }] }
     ]
   },
   {
-    num: 2, label: 'Day 2', date: 'Sunday, 6 April', dateISO: '2026-04-06',
+    num: 2, label: 'Day 2', date: 'Sunday, 5 April', dateISO: '2026-04-05',
     venues: [
-      { name: 'Ground', events: [{ name: 'Cricket League', icon: '🏏', time: '07:00' }] },
-      { name: 'BA Court', events: [{ name: 'Badminton MM & FF League', icon: '🏸', time: '07:00' }] },
-      { name: 'BD Court', events: [
-          { name: 'Basketball League', icon: '🏀', time: '08:00' },
-          { name: 'Table Tennis M & F League', icon: '🏓', time: '10:00' }
+      { name: 'BD Court', events: [{ name: 'Badminton MM & FF League', icon: '🏸', time: '21:00', endTime: '23:00' }] }
+    ]
+  },
+  {
+    num: 3, label: 'Day 3', date: 'Monday, 6 April', dateISO: '2026-04-06',
+    venues: [
+      { name: 'BA Court', events: [{ name: 'Basketball League', icon: '🏀', time: '07:00', endTime: '08:00' }] },
+      { name: 'Ground', events: [{ name: 'Football League', icon: '⚽', time: '17:00', endTime: '19:00' }] },
+      { name: 'EB Point', events: [{ name: '7 Stones', icon: '🪨', time: '17:00', endTime: '18:00' }] },
+      { name: 'Gyan Mandir', events: [{ name: 'Carrom League', icon: '🎯', time: '18:00', endTime: '20:00' }] },
+      { name: 'BD Court', events: [{ name: 'Table Tennis M & F League', icon: '🏓', time: '18:00', endTime: '19:00' }] }
+    ]
+  },
+  {
+    num: 4, label: 'Day 4', date: 'Tuesday, 7 April', dateISO: '2026-04-07',
+    venues: [
+      { name: 'BA Court', events: [{ name: 'Basketball League', icon: '🏀', time: '07:00', endTime: '08:00' }] },
+      { name: 'Sports Room', events: [{ name: 'Javelin', icon: '🎯', time: '06:00', endTime: '08:00' }] },
+      { name: 'BD Court', events: [{ name: 'Badminton MM & FF League', icon: '🏸', time: '09:00', endTime: '11:00' }] },
+      { name: 'Ground', events: [{ name: 'Football League & Final', icon: '⚽', time: '17:00', endTime: '19:00' }] },
+      { name: 'Gyan Mandir', events: [{ name: 'Carrom', icon: '🎯', time: '17:00', endTime: '19:00' }] },
+      { name: 'BD Court', events: [{ name: 'Table Tennis M & F League', icon: '🏓', time: '17:00', endTime: '19:00' }] }
+    ]
+  },
+  {
+    num: 5, label: 'Day 5', date: 'Wednesday, 8 April', dateISO: '2026-04-08',
+    venues: [
+      { name: 'BA Court', events: [{ name: 'Basketball League', icon: '🏀', time: '07:00', endTime: '08:00' }] },
+      { name: 'EB Point', events: [{ name: 'Tug of War', icon: '💪', time: '07:00', endTime: '08:00' }] },
+      { name: 'BD Court', events: [{ name: 'Badminton MF League', icon: '🏸', time: '09:00', endTime: '11:00' }] },
+      { name: 'V Court', events: [{ name: 'Volley League', icon: '🏐', time: '17:00', endTime: '20:00' }] },
+      { name: 'Gyan Mandir', events: [
+        { name: 'Table Tennis M & F League & Final', icon: '🏓', time: '17:00', endTime: '20:00' },
+        { name: "Kho Kho Men's", icon: '🏃', time: '17:00', endTime: '19:00' }
       ]}
     ]
   },
   {
-    num: 3, label: 'Day 3', date: 'Monday, 7 April', dateISO: '2026-04-07',
+    num: 6, label: 'Day 6', date: 'Thursday, 9 April', dateISO: '2026-04-09',
     venues: [
-      { name: 'Ground', events: [{ name: 'Cricket League', icon: '🏏', time: '07:00' }, { name: 'Football League', icon: '⚽', time: '17:00' }] },
-      { name: 'BA Court', events: [{ name: 'Badminton MF League', icon: '🏸', time: '07:00' }] },
-      { name: 'BD Court', events: [{ name: 'Basketball League', icon: '🏀', time: '08:00' }, { name: 'Table Tennis M & F League', icon: '🏓', time: '10:00' }] },
-      { name: 'V Court', events: [{ name: 'Volley League', icon: '🏐', time: '07:00' }] },
-      { name: 'Gyan Mandir', events: [{ name: 'Chess', icon: '♟️', time: '10:00' }, { name: 'Carrom League', icon: '🎯', time: '14:00' }] }
+      { name: 'NIT Goa', events: [{ name: 'Track Events', icon: '🏃', time: '06:00', endTime: '08:00' }] },
+      { name: 'V Court', events: [{ name: 'Volley League & Final', icon: '🏐', time: '17:00', endTime: '20:00' }] },
+      { name: 'BA Court', events: [{ name: 'Basketball Finals / 1st & 2nd Year Girls', icon: '🏀', time: '09:00', endTime: '11:00' }] },
+      { name: 'BD Court', events: [{ name: 'Badminton MM FF MF Final', icon: '🏸', time: '09:00', endTime: '11:00' }] },
+      { name: 'Gyan Mandir', events: [{ name: "Kho Kho Women's", icon: '🏃', time: '17:00', endTime: '19:00' }] }
     ]
   },
   {
-    num: 4, label: 'Day 4', date: 'Tuesday, 8 April', dateISO: '2026-04-08',
+    num: 7, label: 'Day 7', date: 'Friday, 10 April', dateISO: '2026-04-10',
     venues: [
-      { name: 'Ground', events: [
-          { name: 'Track Events', icon: '🏃', time: '06:00' },
-          { name: '7 Stones', icon: '🪨', time: '10:00' },
-          { name: 'Javelin', icon: '🎯', time: '10:00' },
-          { name: 'Cricket League', icon: '🏏', time: '14:00' },
-          { name: 'Football League', icon: '⚽', time: '17:00' }
+      { name: 'Ground', events: [{ name: 'Cricket League', icon: '🏏', time: '06:00', endTime: '20:00' }] },
+      { name: 'Chapora Hall', events: [
+        { name: 'Duet Singing (5 PM – 6:30 PM)', icon: '🎤', time: '17:00', endTime: '18:30' },
+        { name: 'Fashion Show (6:30 PM – 8:30 PM)', icon: '👗', time: '18:30', endTime: '20:30' }
       ]},
-      { name: 'BA Court', events: [{ name: 'Badminton MF League', icon: '🏸', time: '07:00' }] },
-      { name: 'BD Court', events: [{ name: 'Basketball League', icon: '🏀', time: '08:00' }, { name: 'Table Tennis M & F League', icon: '🏓', time: '10:00' }] },
-      { name: 'V Court', events: [{ name: 'Volley League', icon: '🏐', time: '07:00' }] },
-      { name: 'Gyan Mandir', events: [{ name: 'Carrom EB Point', icon: '🎯', time: '10:00' }, { name: "Kho Kho Men's", icon: '🏃', time: '14:00' }] }
+      { name: 'NIT Goa', events: [{ name: 'Instrumental (9 PM – 11 PM)', icon: '🎸', time: '21:00', endTime: '23:00' }] }
     ]
   },
   {
-    num: 5, label: 'Day 5', date: 'Wednesday, 9 April', dateISO: '2026-04-09',
+    num: 8, label: 'Day 8', date: 'Saturday, 11 April', dateISO: '2026-04-11',
     venues: [
-      { name: 'Ground', events: [{ name: 'Cricket Final', icon: '🏏', time: '08:00' }, { name: 'Football League & Final', icon: '⚽', time: '15:00' }] },
-      { name: 'BA Court', events: [{ name: 'Badminton MM & FF Final', icon: '🏸', time: '08:00' }, { name: 'Badminton MF League', icon: '🏸', time: '14:00' }] },
-      { name: 'BD Court', events: [{ name: 'Basketball League', icon: '🏀', time: '08:00' }, { name: 'Table Tennis M & F League & Final', icon: '🏓', time: '10:00' }] },
-      { name: 'V Court', events: [{ name: 'Volley League & Final', icon: '🏐', time: '07:00' }] },
-      { name: 'Gyan Mandir', events: [{ name: "Kho Kho Women's", icon: '🏃', time: '08:00' }] },
-      { name: 'Chapora Hall', events: [{ name: 'Duet Singing (6 PM – 7 PM)', icon: '🎤', time: '18:00' }, { name: 'Fashion Show (7 PM – 8:30 PM)', icon: '👗', time: '19:00' }] }
-    ]
-  },
-  {
-    num: 6, label: 'Day 6', date: 'Thursday, 10 April', dateISO: '2026-04-10',
-    venues: [
-      { name: 'Ground', events: [{ name: 'Archery', icon: '🏹', time: '08:00' }, { name: 'Basketball League', icon: '🏀', time: '10:00' }, { name: 'Basketball Finals / 1st & 2nd Year Girls', icon: '🏀', time: '14:00' }] },
-      { name: 'BA Court', events: [{ name: 'Badminton MF Final', icon: '🏸', time: '08:00' }] },
+      { name: 'Ground', events: [{ name: 'Cricket League', icon: '🏏', time: '06:00', endTime: '13:00' }] },
+      { name: 'EB Point', events: [{ name: 'Sketching', icon: '✏️', time: '09:00', endTime: '12:00' }] },
+      { name: 'Gyan Mandir', events: [{ name: 'Chess', icon: '♟️', time: '08:00', endTime: '13:00' }] },
       { name: 'NIT Goa', events: [
-          { name: 'Graffiti', icon: '🎨', time: '10:00' },
-          { name: 'Sketching & Painting', icon: '🖌️', time: '10:00' },
-          { name: 'Group + Solo + Duet Dance', icon: '💃', time: '14:00' },
-          { name: 'Instrumental (9 PM – 11 PM)', icon: '🎸', time: '21:00' },
-          { name: 'DJ Night', icon: '🎧', time: '21:00' }
+        { name: 'Treasure Hunt', icon: '🗺️', time: '09:00', endTime: '13:00' },
+        { name: 'Group + Solo + Duet Dance', icon: '💃', time: '19:00', endTime: '22:00' }
       ]}
     ]
   },
   {
-    num: 7, label: 'Day 7', date: 'Sunday, 12 April', dateISO: '2026-04-12',
+    num: 9, label: 'Day 9', date: 'Sunday, 12 April', dateISO: '2026-04-12',
     venues: [
-      { name: 'NIT Goa', events: [{ name: 'Award Distribution', icon: '🏆', time: '11:00' }] }
+      { name: 'Ground', events: [{ name: 'Cricket Final', icon: '🏏', time: '06:00', endTime: '19:00' }] },
+      { name: 'EB Point', events: [{ name: 'Painting', icon: '🎨', time: '09:00', endTime: '14:00' }] },
+      { name: 'Gyan Mandir', events: [{ name: 'Graffiti', icon: '🖌️', time: '13:00', endTime: '16:00' }] },
+      { name: 'BA Court', events: [{ name: 'Archery', icon: '🏹', time: '08:00', endTime: '11:00' }] },
+      { name: 'NIT Goa', events: [
+        { name: 'Award Distribution', icon: '🏆', time: '17:00', endTime: '19:00' },
+        { name: 'DJ Night', icon: '🎧', time: '20:00', endTime: '23:00' }
+      ]}
     ]
   }
 ]
