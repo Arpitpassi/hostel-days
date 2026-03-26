@@ -80,8 +80,8 @@ export default async function InfoPage() {
             { name: 'Sudhanshu Raj',    role: 'Convenor'       },
             { name: 'Omprakash Jena',   role: 'Convenor'       },
             { name: 'Atharva Kant Yogi', role: null            },
-            { name: 'Law Kumar',        role: 'Event Manager'  },
-            { name: 'Arpit Passi',      role: 'Website Dev'    },
+            { name: 'Law Kumar',        role: 'Operations Lead'  },
+            { name: 'Arpit Passi',      role: 'Dev Ops'    },
             { name: 'Sanika Bandodkar', role: 'Designer'       },
             { name: 'Swoyansu Das',     role: 'Designer'       },
           ].map(c => (
