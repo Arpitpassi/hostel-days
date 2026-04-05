@@ -11,6 +11,11 @@ function getPdfSrc(page: number) {
   return `${BROCHURE_PDF_URL}#page=${page}`
 }
 
+function getViewerSrc(page: number) {
+  const url = encodeURIComponent(BROCHURE_PDF_URL)
+  return `https://docs.google.com/viewer?url=${url}&embedded=true#page=${page}`
+}
+
 // ============================================================
 // DATA
 // ============================================================
@@ -234,13 +239,12 @@ export default function SchedulePage() {
     ? getPdfSrc(selectedEvent.ev.pdfPage)
     : ''
 
-  // On mobile, tapping "Event Brochure" opens the PDF directly in a new tab
+  const viewerSrc = selectedEvent
+    ? getViewerSrc(selectedEvent.ev.pdfPage)
+    : ''
+
   const handleBrochureClick = () => {
-    if (isMobile) {
-      window.open(pdfSrc, '_blank', 'noopener,noreferrer')
-    } else {
-      setIsPdfOpen(true)
-    }
+    setIsPdfOpen(true)
   }
 
   return (
@@ -390,12 +394,10 @@ export default function SchedulePage() {
                     Event Brochure
                   </div>
                   <div className="text-[12px] text-[var(--text-muted)] mt-0.5">
-                    {isMobile ? 'Tap to open in browser' : 'Click to view guidelines & rules'}
+                    Tap to view guidelines & rules
                   </div>
                 </div>
-                <span className="text-[var(--text-muted)] text-sm opacity-50">
-                  {isMobile ? '↗' : '›'}
-                </span>
+                <span className="text-[var(--text-muted)] text-sm opacity-50">›</span>
               </div>
             </div>
 
@@ -403,8 +405,8 @@ export default function SchedulePage() {
         </div>
       )}
 
-      {/* ── PDF VIEWER OVERLAY (desktop only) ── */}
-      {isPdfOpen && selectedEvent && !isMobile && (
+      {/* ── PDF VIEWER OVERLAY ── */}
+      {isPdfOpen && selectedEvent && (
         <div
           className="fixed inset-0 bg-black/75 backdrop-blur-md z-[200] flex flex-col items-center justify-center p-5 animate-in fade-in duration-200"
           onClick={(e) => { if (e.target === e.currentTarget) setIsPdfOpen(false) }}
@@ -449,10 +451,10 @@ export default function SchedulePage() {
               </div>
             </div>
 
-            {/* PDF iframe */}
+            {/* PDF iframe via Google Docs viewer — works on mobile & desktop */}
             <iframe
               className="flex-1 w-full border-none bg-white min-h-0"
-              src={pdfSrc}
+              src={viewerSrc}
               title={`${selectedEvent.ev.name} Brochure`}
             />
 
