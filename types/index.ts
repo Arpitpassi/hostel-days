@@ -1,5 +1,6 @@
-export type GameStatus = 'upcoming' | 'live' | 'completed'
+export type GameStatus   = 'upcoming' | 'live' | 'completed'
 export type CategoryType = 'sports' | 'cultural'
+export type EventType    = 'sports' | 'cultural'
 
 export interface Profile {
   id: string
@@ -20,12 +21,23 @@ export interface Game {
   start_time: string | null
   category_id: number | null
   event_name: string
+  event_type: EventType
+
+  // Sports head-to-head
   team_a: string
   team_b: string
   score_a: number
   score_b: number
-  status: GameStatus
   winner: string | null
+
+  // Cultural / positional
+  pos_1: string | null
+  pos_2: string | null
+  pos_3: string | null
+  pos_4: string | null
+
+  status: GameStatus
+  venue: string | null
   created_at: string
   categories?: Category
 }

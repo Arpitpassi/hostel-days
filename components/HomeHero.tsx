@@ -237,9 +237,9 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
             className="inline-block w-1.5 h-1.5 rounded-full mr-1 live-dot align-middle"
             style={{ background: '#facc15' }}
           />
-          Merch is live —{' '}
+          Leaderboard is live —{' '}
           <Link
-            href="/merch"
+            href="/results"
             style={{ color: 'var(--text-primary)', textDecoration: 'underline', textUnderlineOffset: '2px' }}
           >
             Buy Now
