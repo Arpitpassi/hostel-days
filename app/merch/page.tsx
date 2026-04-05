@@ -46,9 +46,6 @@ export default function MerchPage() {
         <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           We are pleased to introduce the <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>official Hostel Days merch collection</span>, thoughtfully designed to reflect the spirit, unity, and legacy of our campus.
         </p>
-        <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
-          To ensure a smooth ordering process, please use the specific link assigned to your year.
-        </p>
       </div>
 
     </div>
