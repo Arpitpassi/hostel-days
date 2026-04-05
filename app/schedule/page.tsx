@@ -28,7 +28,7 @@ const DAYS = [
       { name: 'Ground', events: [{ name: 'Football League', icon: '⚽', time: '17:00', endTime: '19:00', type: 'sports' as const, pdfPage: 11 }] },
       { name: 'Gyan Mandir', events: [{ name: 'Carrom League', icon: '🎯', time: '17:00', endTime: '20:00', type: 'sports' as const, pdfPage: 27 }] },
       { name: 'BD Court', events: [{ name: 'Table Tennis M & F League', icon: '🏓', time: '17:00', endTime: '19:00', type: 'sports' as const, pdfPage: 25 }] },
-      { name: 'BD Court', events: [{ name: 'Badminton MM & FF League', icon: '🏸', time: '20:30', endTime: '23:00', type: 'sports' as const, pdfPage: 13 }] },
+      { name: 'BD Court', events: [{ name: 'Badminton Mixed League', icon: '🏸', time: '20:30', endTime: '23:00', type: 'sports' as const, pdfPage: 13 }] },
     ]
   },
   {
@@ -45,7 +45,7 @@ const DAYS = [
     num: 4, label: 'Day 4', date: 'Wednesday, 8 April', dateISO: '2026-04-08',
     venues: [
       { name: 'BA Court', events: [{ name: 'Basketball League', icon: '🏀', time: '20:30', endTime: '23:00', type: 'sports' as const, pdfPage: 1 }] },
-      { name: 'BD Court', events: [{ name: 'Badminton MF League', icon: '🏸', time: '20:30', endTime: '23:00', type: 'sports' as const, pdfPage: 13 }] },
+      { name: 'BD Court', events: [{ name: 'Badminton Mixed League', icon: '🏸', time: '20:30', endTime: '23:00', type: 'sports' as const, pdfPage: 13 }] },
       { name: 'V Court', events: [{ name: 'Volley League', icon: '🏐', time: '18:00', endTime: '19:00', type: 'sports' as const, pdfPage: 9 }] },
       { name: 'Gyan Mandir', events: [
         { name: 'Table Tennis M & F League & Final', icon: '🏓', time: '17:00', endTime: '20:00', type: 'sports' as const, pdfPage: 25 },
