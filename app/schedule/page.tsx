@@ -13,7 +13,7 @@ function getPdfSrc(page: number) {
 
 function getViewerSrc(page: number) {
   const url = encodeURIComponent(BROCHURE_PDF_URL)
-  return `https://docs.google.com/viewer?url=${url}&embedded=true#page=${page}`
+  return `https://mozilla.github.io/pdf.js/web/viewer.html?file=${url}#page=${page}`
 }
 
 // ============================================================
