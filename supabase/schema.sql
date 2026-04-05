@@ -314,7 +314,7 @@ end $$;
 -- ── 8. SEED: SAMPLE ANNOUNCEMENTS ──────────────────────────
 
 insert into public.announcements (title, body) values
-  ('Welcome to Hostel Days 2026! 🎉', 'The biggest inter-hostel festival is here. 5 days, 25+ events, one champion. May the best hostel win!'),
+  ('Welcome to Hostel Days 2026! 🎉', 'The biggest inter-hostel festival is here. 5 days, 25+ events, one champion. May the best batch win!'),
   ('Cricket & Football venues confirmed', 'All cricket matches will be held at Main Ground. Football matches shifted to the rear ground due to maintenance.'),
   ('Timetable Update – Day 2', 'Badminton Mixed Doubles added to Day 2 afternoon slot. Check the full schedule page.'),
   ('Registration Deadline Reminder', 'Last date for cultural event entries is tonight 10 PM. Contact coordinators immediately.');
