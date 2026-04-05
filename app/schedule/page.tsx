@@ -198,7 +198,11 @@ interface SelectedEvent {
 }
 
 export default function SchedulePage() {
-  const [activeDayIdx, setActiveDayIdx] = useState(0)
+  const [activeDayIdx, setActiveDayIdx] = useState(() => {
+    const todayISO = new Date().toISOString().slice(0, 10)
+    const idx = DAYS.findIndex(d => d.dateISO === todayISO)
+    return idx >= 0 ? idx : 0
+  })
   const [selectedEvent, setSelectedEvent] = useState<SelectedEvent | null>(null)
   const [isPdfOpen, setIsPdfOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
@@ -255,6 +259,7 @@ export default function SchedulePage() {
         <div className="flex gap-1.5 mb-5 overflow-x-auto pb-1 scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
           {DAYS.map((day, idx) => {
             const isActive = idx === activeDayIdx
+            const isToday = day.dateISO === new Date().toISOString().slice(0, 10)
             return (
               <button
                 key={day.num}
@@ -265,7 +270,7 @@ export default function SchedulePage() {
                     : 'bg-[var(--bg-card)] text-[var(--text-muted)] border-[var(--border)] hover:border-[var(--border-strong)] hover:text-[var(--text-primary)]'
                   }`}
               >
-                {day.label}
+                {day.label}{isToday ? ' · Today' : ''}
               </button>
             )
           })}

@@ -1211,23 +1211,26 @@ export default async function InfoPage() {
         </div>
       </section>
 
-      {/* Contact */}
+      {/* Our Team */}
       <section>
         <h2 className="section-header font-display font-bold text-sm uppercase tracking-wide mb-3" style={{ color: 'var(--text-muted)' }}>
           Our Team
         </h2>
         <div className="card divide-y divide-[var(--border)]">
           {[
-            {  name: 'Sudhanshu Raj '},
-            {  name: 'Atharva Kant Yogi'},
-            {  name: 'Omprakash Jena'},
-            {  name: 'Arpit Passi'},
-            {  name: 'Law Kumar'},
-            {  name: 'Sanika Bandodkar'},
-            {  name: 'Swoyansu Das'},
+            { name: 'Sudhanshu Raj',    role: 'Convenor'       },
+            { name: 'Omprakash Jena',   role: 'Convenor'       },
+            { name: 'Atharva Kant Yogi', role: null            },
+            { name: 'Law Kumar',        role: 'Operations Lead'  },
+            { name: 'Arpit Passi',      role: 'Dev Ops'    },
+            { name: 'Sanika Bandodkar', role: 'Designer'       },
+            { name: 'Swoyansu Das',     role: 'Designer'       },
           ].map(c => (
-            <div key={c.name} className="px-4 py-3">
+            <div key={c.name} className="px-4 py-3 flex items-center justify-between">
               <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{c.name}</p>
+              {c.role && (
+                <p className="text-xs font-medium" style={{ color: 'var(--accent)' }}>{c.role}</p>
+              )}
             </div>
           ))}
         </div>
@@ -1244,6 +1247,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { NavBar } from '@/components/NavBar'
+import Script from 'next/script'
 
 export const metadata: Metadata = {
   title: {
@@ -1272,12 +1276,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="dark">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Inter+Tight:wght@400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
-        />
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Antic&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap');
+        `}</style>
       </head>
       <body className="overflow-x-hidden">
         <ThemeProvider>
@@ -1286,6 +1287,19 @@ export default function RootLayout({
             {children}
           </main>
         </ThemeProvider>
+
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-ZVDTBRNJFH"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-ZVDTBRNJFH');
+          `}
+        </Script>
       </body>
     </html>
   )
@@ -2053,85 +2067,107 @@ export function ScheduleCountdown({ target, label }: Props) {
 import React, { useState, useEffect } from 'react'
 
 // ============================================================
+// PDF CONFIG — replace these URLs after uploading to Vercel Blob
+// ============================================================
+const SPORTS_PDF_URL = 'https://YOUR_BLOB_URL/sports-brochure.pdf'
+const CULTURAL_PDF_URL = 'https://YOUR_BLOB_URL/cultural-brochure.pdf'
+
+function getPdfSrc(type: 'sports' | 'cultural', page: number) {
+  const base = type === 'sports' ? SPORTS_PDF_URL : CULTURAL_PDF_URL
+  return `${base}#page=${page}`
+}
+
+// ============================================================
 // DATA
 // ============================================================
-// You can add a `brochureUrl` to specific events if they have unique PDFs.
-// For now, it defaults to a fallback PDF url.
-const FALLBACK_PDF_URL = '/HOSTEL_DAYS_SCHEDULE_DRAFT_1.pdf'
-
 const DAYS = [
   {
-    num: 1, label: 'Day 1', date: 'Saturday, 5 April', dateISO: '2026-04-05',
+    num: 1, label: 'Day 1', date: 'Sunday, 5 April', dateISO: '2026-04-05',
     venues: [
-      { name: 'Sports Room', events: [{ name: 'Badminton MM & FF League', icon: '🏸', time: '08:00' }] }
+      { name: 'BD Court', events: [{ name: 'Badminton MM & FF League', icon: '🏸', time: '21:00', endTime: '23:00', type: 'sports' as const, pdfPage: 1 }] }
     ]
   },
   {
-    num: 2, label: 'Day 2', date: 'Sunday, 6 April', dateISO: '2026-04-06',
+    num: 2, label: 'Day 2', date: 'Monday, 6 April', dateISO: '2026-04-06',
     venues: [
-      { name: 'Ground', events: [{ name: 'Cricket League', icon: '🏏', time: '07:00' }] },
-      { name: 'BA Court', events: [{ name: 'Badminton MM & FF League', icon: '🏸', time: '07:00' }] },
-      { name: 'BD Court', events: [
-          { name: 'Basketball League', icon: '🏀', time: '08:00' },
-          { name: 'Table Tennis M & F League', icon: '🏓', time: '10:00' }
+      { name: 'BA Court', events: [{ name: 'Basketball League', icon: '🏀', time: '06:00', endTime: '08:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'Ground', events: [{ name: 'Football League', icon: '⚽', time: '17:00', endTime: '19:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'EB Point', events: [{ name: '7 Stones', icon: '🪨', time: '17:00', endTime: '18:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'Gyan Mandir', events: [{ name: 'Carrom League', icon: '🎯', time: '18:00', endTime: '20:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'BD Court', events: [{ name: 'Table Tennis M & F League', icon: '🏓', time: '18:00', endTime: '19:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'BA Court', events: [{ name: 'Basketball League', icon: '🏀', time: '21:00', endTime: '23:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'BD Court', events: [{ name: 'Badminton MM & FF League', icon: '🏸', time: '21:00', endTime: '23:00', type: 'sports' as const, pdfPage: 1 }] },
+    ]
+  },
+  {
+    num: 3, label: 'Day 3', date: 'Tuesday, 7 April', dateISO: '2026-04-07',
+    venues: [
+      { name: 'BA Court', events: [{ name: 'Basketball League', icon: '🏀', time: '06:00', endTime: '08:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'Sports Room', events: [{ name: 'Javelin', icon: '🎯', time: '06:00', endTime: '08:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'Ground', events: [{ name: 'Football League & Final', icon: '⚽', time: '17:00', endTime: '19:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'Gyan Mandir', events: [{ name: 'Carrom', icon: '🎯', time: '17:00', endTime: '20:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'BD Court', events: [{ name: 'Table Tennis M & F League', icon: '🏓', time: '17:00', endTime: '20:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'BA Court', events: [{ name: 'Basketball League', icon: '🏀', time: '21:00', endTime: '23:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'BD Court', events: [{ name: 'Badminton MM & FF League', icon: '🏸', time: '21:00', endTime: '23:00', type: 'sports' as const, pdfPage: 1 }] },
+    ]
+  },
+  {
+    num: 4, label: 'Day 4', date: 'Wednesday, 8 April', dateISO: '2026-04-08',
+    venues: [
+      { name: 'BA Court', events: [{ name: 'Basketball League', icon: '🏀', time: '07:00', endTime: '08:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'EB Point', events: [{ name: 'Tug of War', icon: '💪', time: '07:00', endTime: '08:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'BD Court', events: [{ name: 'Badminton MF League', icon: '🏸', time: '09:00', endTime: '11:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'V Court', events: [{ name: 'Volley League', icon: '🏐', time: '17:00', endTime: '20:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'Gyan Mandir', events: [
+        { name: 'Table Tennis M & F League & Final', icon: '🏓', time: '17:00', endTime: '20:00', type: 'sports' as const, pdfPage: 1 },
+        { name: "Kho Kho Men's", icon: '🏃', time: '17:00', endTime: '19:00', type: 'sports' as const, pdfPage: 1 }
       ]}
     ]
   },
   {
-    num: 3, label: 'Day 3', date: 'Monday, 7 April', dateISO: '2026-04-07',
+    num: 5, label: 'Day 5', date: 'Thursday, 9 April', dateISO: '2026-04-09',
     venues: [
-      { name: 'Ground', events: [{ name: 'Cricket League', icon: '🏏', time: '07:00' }, { name: 'Football League', icon: '⚽', time: '17:00' }] },
-      { name: 'BA Court', events: [{ name: 'Badminton MF League', icon: '🏸', time: '07:00' }] },
-      { name: 'BD Court', events: [{ name: 'Basketball League', icon: '🏀', time: '08:00' }, { name: 'Table Tennis M & F League', icon: '🏓', time: '10:00' }] },
-      { name: 'V Court', events: [{ name: 'Volley League', icon: '🏐', time: '07:00' }] },
-      { name: 'Gyan Mandir', events: [{ name: 'Chess', icon: '♟️', time: '10:00' }, { name: 'Carrom League', icon: '🎯', time: '14:00' }] }
+      { name: 'NIT Goa', events: [{ name: 'Track Events', icon: '🏃', time: '06:00', endTime: '08:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'V Court', events: [{ name: 'Volley League & Final', icon: '🏐', time: '17:00', endTime: '20:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'BA Court', events: [{ name: 'Basketball Finals / 1st & 2nd Year Girls', icon: '🏀', time: '21:00', endTime: '23:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'BD Court', events: [{ name: 'Badminton MM FF MF Final', icon: '🏸', time: '09:00', endTime: '11:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'Gyan Mandir', events: [{ name: "Kho Kho Women's", icon: '🏃', time: '17:00', endTime: '19:00', type: 'sports' as const, pdfPage: 1 }] }
     ]
   },
   {
-    num: 4, label: 'Day 4', date: 'Tuesday, 8 April', dateISO: '2026-04-08',
+    num: 6, label: 'Day 6', date: 'Friday, 10 April', dateISO: '2026-04-10',
     venues: [
-      { name: 'Ground', events: [
-          { name: 'Track Events', icon: '🏃', time: '06:00' },
-          { name: '7 Stones', icon: '🪨', time: '10:00' },
-          { name: 'Javelin', icon: '🎯', time: '10:00' },
-          { name: 'Cricket League', icon: '🏏', time: '14:00' },
-          { name: 'Football League', icon: '⚽', time: '17:00' }
+      { name: 'Ground', events: [{ name: 'Cricket League', icon: '🏏', time: '06:00', endTime: '19:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'Chapora Hall', events: [
+        { name: 'Duet Singing', icon: '🎤', time: '17:00', endTime: '18:30', type: 'cultural' as const, pdfPage: 1 },
+        { name: 'Fashion Show', icon: '👗', time: '18:30', endTime: '20:30', type: 'cultural' as const, pdfPage: 1 }
       ]},
-      { name: 'BA Court', events: [{ name: 'Badminton MF League', icon: '🏸', time: '07:00' }] },
-      { name: 'BD Court', events: [{ name: 'Basketball League', icon: '🏀', time: '08:00' }, { name: 'Table Tennis M & F League', icon: '🏓', time: '10:00' }] },
-      { name: 'V Court', events: [{ name: 'Volley League', icon: '🏐', time: '07:00' }] },
-      { name: 'Gyan Mandir', events: [{ name: 'Carrom EB Point', icon: '🎯', time: '10:00' }, { name: "Kho Kho Men's", icon: '🏃', time: '14:00' }] }
+      { name: 'NIT Goa', events: [{ name: 'Instrumental', icon: '🎸', time: '21:00', endTime: '23:00', type: 'cultural' as const, pdfPage: 1 }] }
     ]
   },
   {
-    num: 5, label: 'Day 5', date: 'Wednesday, 9 April', dateISO: '2026-04-09',
+    num: 7, label: 'Day 7', date: 'Saturday, 11 April', dateISO: '2026-04-11',
     venues: [
-      { name: 'Ground', events: [{ name: 'Cricket Final', icon: '🏏', time: '08:00' }, { name: 'Football League & Final', icon: '⚽', time: '15:00' }] },
-      { name: 'BA Court', events: [{ name: 'Badminton MM & FF Final', icon: '🏸', time: '08:00' }, { name: 'Badminton MF League', icon: '🏸', time: '14:00' }] },
-      { name: 'BD Court', events: [{ name: 'Basketball League', icon: '🏀', time: '08:00' }, { name: 'Table Tennis M & F League & Final', icon: '🏓', time: '10:00' }] },
-      { name: 'V Court', events: [{ name: 'Volley League & Final', icon: '🏐', time: '07:00' }] },
-      { name: 'Gyan Mandir', events: [{ name: "Kho Kho Women's", icon: '🏃', time: '08:00' }] },
-      { name: 'Chapora Hall', events: [{ name: 'Duet Singing (6 PM – 7 PM)', icon: '🎤', time: '18:00' }, { name: 'Fashion Show (7 PM – 8:30 PM)', icon: '👗', time: '19:00' }] }
-    ]
-  },
-  {
-    num: 6, label: 'Day 6', date: 'Thursday, 10 April', dateISO: '2026-04-10',
-    venues: [
-      { name: 'Ground', events: [{ name: 'Archery', icon: '🏹', time: '08:00' }, { name: 'Basketball League', icon: '🏀', time: '10:00' }, { name: 'Basketball Finals / 1st & 2nd Year Girls', icon: '🏀', time: '14:00' }] },
-      { name: 'BA Court', events: [{ name: 'Badminton MF Final', icon: '🏸', time: '08:00' }] },
+      { name: 'Ground', events: [{ name: 'Cricket League', icon: '🏏', time: '06:00', endTime: '13:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'EB Point', events: [{ name: 'Sketching', icon: '✏️', time: '09:00', endTime: '12:00', type: 'cultural' as const, pdfPage: 1 }] },
+      { name: 'Gyan Mandir', events: [{ name: 'Chess', icon: '♟️', time: '08:00', endTime: '13:00', type: 'sports' as const, pdfPage: 1 }] },
       { name: 'NIT Goa', events: [
-          { name: 'Graffiti', icon: '🎨', time: '10:00' },
-          { name: 'Sketching & Painting', icon: '🖌️', time: '10:00' },
-          { name: 'Group + Solo + Duet Dance', icon: '💃', time: '14:00' },
-          { name: 'Instrumental (9 PM – 11 PM)', icon: '🎸', time: '21:00' },
-          { name: 'DJ Night', icon: '🎧', time: '21:00' }
+        { name: 'Treasure Hunt', icon: '🗺️', time: '08:00', endTime: '13:00', type: 'cultural' as const, pdfPage: 1 },
+        { name: 'Group + Solo + Duet Dance', icon: '💃', time: '19:00', endTime: '23:00', type: 'cultural' as const, pdfPage: 1 }
       ]}
     ]
   },
   {
-    num: 7, label: 'Day 7', date: 'Sunday, 12 April', dateISO: '2026-04-12',
+    num: 8, label: 'Day 8', date: 'Sunday, 12 April', dateISO: '2026-04-12',
     venues: [
-      { name: 'NIT Goa', events: [{ name: 'Award Distribution', icon: '🏆', time: '11:00' }] }
+      { name: 'Ground', events: [{ name: 'Cricket Final', icon: '🏏', time: '06:00', endTime: '19:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'EB Point', events: [{ name: 'Painting', icon: '🎨', time: '09:00', endTime: '12:00', type: 'cultural' as const, pdfPage: 1 }] },
+      { name: 'Gyan Mandir', events: [{ name: 'Graffiti', icon: '🖌️', time: '13:00', endTime: '16:00', type: 'cultural' as const, pdfPage: 1 }] },
+      { name: 'BA Court', events: [{ name: 'Archery', icon: '🏹', time: '08:00', endTime: '11:00', type: 'sports' as const, pdfPage: 1 }] },
+      { name: 'NIT Goa', events: [
+        { name: 'Award Distribution', icon: '🏆', time: '17:00', endTime: '19:00', type: 'cultural' as const, pdfPage: 1 },
+        { name: 'DJ Night', icon: '🎧', time: '20:00', endTime: '22:00', type: 'cultural' as const, pdfPage: 1 }
+      ]}
     ]
   }
 ]
@@ -2174,7 +2210,6 @@ function CountdownDisplay({ targetDate }: { targetDate: Date }) {
         expired: false
       })
     }
-    
     tick()
     const interval = setInterval(tick, 1000)
     return () => clearInterval(interval)
@@ -2193,19 +2228,16 @@ function CountdownDisplay({ targetDate }: { targetDate: Date }) {
         <div className="text-[10px] uppercase tracking-[0.08em] text-[var(--text-muted)] mt-1.5 font-medium">days</div>
       </div>
       <span className="font-display font-bold text-xl text-[var(--border-strong)] pb-4 opacity-70">:</span>
-      
       <div className="text-center">
         <div className="font-display font-extrabold text-4xl text-[var(--text-primary)] leading-none tabular-nums">{pad(timeLeft.h)}</div>
         <div className="text-[10px] uppercase tracking-[0.08em] text-[var(--text-muted)] mt-1.5 font-medium">hrs</div>
       </div>
       <span className="font-display font-bold text-xl text-[var(--border-strong)] pb-4 opacity-70">:</span>
-      
       <div className="text-center">
         <div className="font-display font-extrabold text-4xl text-[var(--text-primary)] leading-none tabular-nums">{pad(timeLeft.m)}</div>
         <div className="text-[10px] uppercase tracking-[0.08em] text-[var(--text-muted)] mt-1.5 font-medium">min</div>
       </div>
       <span className="font-display font-bold text-xl text-[var(--border-strong)] pb-4 opacity-70">:</span>
-      
       <div className="text-center">
         <div className="font-display font-extrabold text-4xl text-[var(--text-primary)] leading-none tabular-nums">{pad(timeLeft.s)}</div>
         <div className="text-[10px] uppercase tracking-[0.08em] text-[var(--text-muted)] mt-1.5 font-medium">sec</div>
@@ -2214,15 +2246,31 @@ function CountdownDisplay({ targetDate }: { targetDate: Date }) {
   )
 }
 
+type EventType = 'sports' | 'cultural'
+
+interface Event {
+  name: string
+  icon: string
+  time: string
+  endTime: string
+  type: EventType
+  pdfPage: number
+}
+
+interface SelectedEvent {
+  ev: Event
+  day: typeof DAYS[0]
+  venue: { name: string; events: Event[] }
+}
+
 export default function SchedulePage() {
   const [activeDayIdx, setActiveDayIdx] = useState(0)
-  const [selectedEvent, setSelectedEvent] = useState<any>(null)
+  const [selectedEvent, setSelectedEvent] = useState<SelectedEvent | null>(null)
   const [isPdfOpen, setIsPdfOpen] = useState(false)
 
   const activeDay = DAYS[activeDayIdx]
   const totalEvents = activeDay.venues.reduce((acc, v) => acc + v.events.length, 0)
 
-  // Handle escape key to close modals sequentially
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -2234,16 +2282,21 @@ export default function SchedulePage() {
     return () => window.removeEventListener('keydown', handleEsc)
   }, [isPdfOpen, selectedEvent])
 
-  // Lock body scroll when any modal is open
   useEffect(() => {
     if (selectedEvent || isPdfOpen) document.body.style.overflow = 'hidden'
     else document.body.style.overflow = ''
   }, [selectedEvent, isPdfOpen])
 
+  const pdfSrc = selectedEvent
+    ? getPdfSrc(selectedEvent.ev.type, selectedEvent.ev.pdfPage)
+    : ''
+
+  const pdfLabel = selectedEvent?.ev.type === 'cultural' ? 'Cultural Brochure' : 'Sports Brochure'
+
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] font-body text-[var(--text-primary)] transition-colors duration-300">
       <div className="max-w-[720px] mx-auto px-4 py-5 pb-16">
-        
+
         {/* ── Header ── */}
         <h1 className="font-display font-extrabold text-[26px] tracking-tight leading-tight mb-0.5">
           Schedule
@@ -2255,14 +2308,14 @@ export default function SchedulePage() {
         {/* ── Day Tabs ── */}
         <div className="flex gap-1.5 mb-5 overflow-x-auto pb-1 scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
           {DAYS.map((day, idx) => {
-            const isActive = idx === activeDayIdx;
+            const isActive = idx === activeDayIdx
             return (
               <button
                 key={day.num}
                 onClick={() => setActiveDayIdx(idx)}
                 className={`shrink-0 px-4 py-1.5 rounded-full border font-display text-xs font-semibold transition-all whitespace-nowrap
-                  ${isActive 
-                    ? 'bg-[var(--accent)] text-white border-[var(--accent)] shadow-sm' 
+                  ${isActive
+                    ? 'bg-[var(--accent)] text-white border-[var(--accent)] shadow-sm'
                     : 'bg-[var(--bg-card)] text-[var(--text-muted)] border-[var(--border)] hover:border-[var(--border-strong)] hover:text-[var(--text-primary)]'
                   }`}
               >
@@ -2293,7 +2346,6 @@ export default function SchedulePage() {
               <div className="text-[10px] font-bold uppercase tracking-[0.08em] text-[var(--text-muted)] mb-1.5 pl-0.5">
                 📍 {venue.name}
               </div>
-              
               {venue.events.map((ev, eIdx) => (
                 <div
                   key={eIdx}
@@ -2312,6 +2364,14 @@ export default function SchedulePage() {
                       {venue.name} · {formatTime(ev.time)}
                     </div>
                   </div>
+                  {/* Sports/Cultural badge */}
+                  <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full shrink-0
+                    ${ev.type === 'cultural'
+                      ? 'bg-purple-500/10 text-purple-400'
+                      : 'bg-blue-500/10 text-blue-400'
+                    }`}>
+                    {ev.type}
+                  </span>
                   <span className="text-[var(--text-muted)] text-sm shrink-0 opacity-50 group-hover:opacity-100 transition-opacity">›</span>
                 </div>
               ))}
@@ -2322,12 +2382,12 @@ export default function SchedulePage() {
 
       {/* ── EVENT MODAL ── */}
       {selectedEvent && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/55 dark:bg-black/80 backdrop-blur-[6px] z-[100] flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200"
           onClick={(e) => { if (e.target === e.currentTarget) setSelectedEvent(null) }}
         >
           <div className="w-full max-w-[440px] rounded-[24px] bg-[var(--bg-card)] border border-[var(--border)] overflow-hidden animate-in slide-in-from-bottom-8 sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200 shadow-xl">
-            
+
             {/* Modal Header */}
             <div className="flex items-start justify-between px-6 pt-6 pb-5 border-b border-[var(--border)]">
               <div>
@@ -2338,7 +2398,7 @@ export default function SchedulePage() {
                   {selectedEvent.day.label} · {selectedEvent.venue.name} · {formatTime(selectedEvent.ev.time)}
                 </div>
               </div>
-              <button 
+              <button
                 onClick={() => setSelectedEvent(null)}
                 className="w-8 h-8 rounded-full bg-[var(--bg-secondary)] border border-[var(--border)] flex items-center justify-center text-base text-[var(--text-muted)] hover:bg-[var(--border)] transition-colors shrink-0"
               >
@@ -2351,8 +2411,8 @@ export default function SchedulePage() {
               <div className="text-[11px] uppercase tracking-[0.1em] font-bold text-[var(--text-muted)] text-center mb-4">
                 Starts in
               </div>
-              <CountdownDisplay 
-                targetDate={getEventTargetDate(selectedEvent.day.dateISO, selectedEvent.ev.time)} 
+              <CountdownDisplay
+                targetDate={getEventTargetDate(selectedEvent.day.dateISO, selectedEvent.ev.time)}
               />
             </div>
 
@@ -2361,11 +2421,10 @@ export default function SchedulePage() {
               <div className="text-[11px] uppercase tracking-[0.1em] font-bold text-[var(--text-muted)] mb-3">
                 Event Details
               </div>
-              <div 
+              <div
                 onClick={() => setIsPdfOpen(true)}
                 className="flex items-center gap-4 p-3.5 px-4 rounded-[12px] bg-[var(--bg-secondary)] border border-[var(--border)] cursor-pointer hover:border-[var(--border-strong)] transition-colors"
               >
-                {/* Accent Icon Box */}
                 <div className="w-[42px] h-[42px] rounded-[10px] bg-[var(--accent)] flex items-center justify-center shrink-0">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -2377,7 +2436,7 @@ export default function SchedulePage() {
                 </div>
                 <div className="flex-1">
                   <div className="font-display font-semibold text-[14px] text-[var(--text-primary)]">
-                    Event Brochure
+                    {pdfLabel}
                   </div>
                   <div className="text-[12px] text-[var(--text-muted)] mt-0.5">
                     Tap to view guidelines & rules
@@ -2392,21 +2451,28 @@ export default function SchedulePage() {
       )}
 
       {/* ── PDF VIEWER OVERLAY ── */}
-      {isPdfOpen && (
-        <div 
+      {isPdfOpen && selectedEvent && (
+        <div
           className="fixed inset-0 bg-black/75 backdrop-blur-md z-[200] flex flex-col items-center justify-center p-5 animate-in fade-in duration-200"
           onClick={(e) => { if (e.target === e.currentTarget) setIsPdfOpen(false) }}
         >
           <div className="w-full max-w-[700px] h-[85vh] rounded-2xl overflow-hidden bg-[var(--bg-card)] border border-[var(--border)] flex flex-col animate-in zoom-in-95 duration-200 shadow-2xl">
-            
+
             {/* PDF Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)] bg-[var(--bg-secondary)] shrink-0">
               <div className="flex items-center gap-2">
+                <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full
+                  ${selectedEvent.ev.type === 'cultural'
+                    ? 'bg-purple-500/10 text-purple-400'
+                    : 'bg-blue-500/10 text-blue-400'
+                  }`}>
+                  {selectedEvent.ev.type}
+                </span>
                 <span className="font-display font-bold text-[13px] text-[var(--text-primary)]">
-                  {selectedEvent?.ev.name || 'Event'} — Brochure
+                  {selectedEvent.ev.name} — Brochure
                 </span>
               </div>
-              <button 
+              <button
                 onClick={() => setIsPdfOpen(false)}
                 className="w-8 h-8 rounded-lg bg-[var(--bg-card)] border border-[var(--border-strong)] flex items-center justify-center text-base text-[var(--text-muted)] hover:border-[var(--text-muted)] transition-colors shrink-0"
               >
@@ -2414,13 +2480,13 @@ export default function SchedulePage() {
               </button>
             </div>
 
-            {/* Iframe for PDF display */}
+            {/* PDF iframe */}
             <iframe
               className="flex-1 w-full border-none bg-white min-h-0"
-              src={selectedEvent?.ev.brochureUrl || FALLBACK_PDF_URL}
-              title={`${selectedEvent?.ev.name || 'Event'} Brochure`}
+              src={pdfSrc}
+              title={`${selectedEvent.ev.name} Brochure`}
             />
-            
+
           </div>
         </div>
       )}
@@ -2444,6 +2510,7 @@ interface Step {
 }
 
 const SEQUENCE: Step[] = [
+  // — original sports —
   { word: 'cricket',            color: '#f59e0b' },
   { word: 'football',           color: '#22c55e' },
   { word: 'basketball',         color: '#f97316' },
@@ -2451,13 +2518,30 @@ const SEQUENCE: Step[] = [
   { word: 'badminton',          color: '#a855f7' },
   { word: 'table tennis',       color: '#06b6d4' },
   { word: 'chess',              color: '#ec4899' },
-  { word: 'the ultimate clash', color: '#ffffff' },
-  { word: 'hostel days 2026',   color: '#ecbe19ff', finale: true },
+
+  // — new from schedule —
+  { word: 'carrom',             color: '#84cc16' },
+  { word: 'track events',       color: '#f43f5e' },
+  { word: '7 stones',           color: '#fb923c' },
+  { word: 'javelin',            color: '#34d399' },
+  { word: 'kho kho',            color: '#facc15' },
+  { word: 'archery',            color: '#38bdf8' },
+  { word: 'duet singing',       color: '#e879f9' },
+  { word: 'fashion show',       color: '#f472b6' },
+  { word: 'dj night',           color: '#4ade80' },
+  { word: 'sketching',          color: '#fb7185' },
+  { word: 'dance',              color: '#c084fc' },
+  { word: 'instrumental',       color: '#fbbf24' },
+  { word: 'graffiti',           color: '#818cf8' },
+
+  // — finale —
+  { word: 'the ultimate clash', color: '#e1d3e8' },
+  { word: 'hostel days 2026',   color: '#e2bc34ff', finale: true },
 ]
 
-const GAME_HOLD     = 150
-const ULTIMATE_HOLD = 250
-const FADE_MS       = 50
+const FADE_MS  = 0
+const MIN_HOLD = 100   // hold duration for the first word (ms)
+const MAX_HOLD = 400  // hold duration approaching the finale (ms)
 
 interface Props {
   liveCount: number
@@ -2474,7 +2558,7 @@ const BIRD_DESKTOP_TRANSLATE_Y = '-6vh'
 const BIRD_MOBILE_TRANSLATE_Y  = '-2vh'
 
 const BIRD_DESKTOP_TRANSLATE_X = '0px'
-const BIRD_MOBILE_TRANSLATE_X  = '-8px'   // ← move bird left/right on mobile, e.g. '-10vw' or '5%'
+const BIRD_MOBILE_TRANSLATE_X  = '-8px'
 
 const BIRD_DESKTOP_SCALE       = '1.35'
 const BIRD_MOBILE_SCALE        = '1.03'
@@ -2513,6 +2597,17 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
     return () => mq.removeEventListener('change', handler)
   }, [])
 
+  // Count of words that participate in the easing curve
+  // (everything except 'the ultimate clash' and the finale)
+  const easedCount = SEQUENCE.filter(s => !s.finale && s.word !== 'the ultimate clash').length
+
+  const getHold = (i: number): number => {
+    if (i >= easedCount) return MAX_HOLD   // 'the ultimate clash' gets max hold
+    const t = i / (easedCount - 1)
+    const eased = t * t                    // quadratic ease-in: starts fast, slows down
+    return Math.round(MIN_HOLD + (MAX_HOLD - MIN_HOLD) * eased)
+  }
+
   const runStep = (i: number) => {
     if (i >= SEQUENCE.length) return
     const s = SEQUENCE[i]
@@ -2532,13 +2627,12 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
       setDisplayedWord(s.word)
       setDisplayedColor(s.color)
       setWordOpacity(1)
-      scheduleNext(i, s)
+      scheduleNext(i)
     }, FADE_MS)
   }
 
-  const scheduleNext = (i: number, s: Step) => {
-    const hold = s.word === 'the ultimate clash' ? ULTIMATE_HOLD : GAME_HOLD
-    timerRef.current = setTimeout(() => runStep(i + 1), hold)
+  const scheduleNext = (i: number) => {
+    timerRef.current = setTimeout(() => runStep(i + 1), getHold(i))
   }
 
   useEffect(() => {
@@ -2548,7 +2642,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
     setWordOpacity(0)
     timerRef.current = setTimeout(() => {
       setWordOpacity(1)
-      scheduleNext(0, SEQUENCE[0])
+      scheduleNext(0)
     }, FADE_MS)
     return () => clear()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -2585,10 +2679,24 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
   const wordPaddingTop  = isMobile ? WORD_MOBILE_PADDING_TOP  : WORD_DESKTOP_PADDING_TOP
   const statsMinHeight  = isMobile ? STATS_MOBILE_MIN_HEIGHT  : STATS_DESKTOP_MIN_HEIGHT
 
+  const isFinale = displayedWord === 'hostel days 2026'
+
   return (
     <section
       className="relative overflow-hidden px-4 sm:px-6 max-w-2xl md:max-w-4xl mx-auto flex flex-col min-h-[40vh] md:min-h-[60vh]"
     >
+      {/* Mobile-only: only the finale "hostel days 2026" span gets 1.5x size */}
+      <style>{`
+        .homehero-finale-word {
+          font-size: inherit;
+        }
+        @media (max-width: 767px) {
+          .homehero-finale-word {
+            font-size: 30px;
+          }
+        }
+      `}</style>
+
       {/* Background gradient */}
       <div
         className="absolute inset-0 opacity-5 pointer-events-none z-0"
@@ -2660,6 +2768,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
             }}
           >
             <span
+              className={isFinale ? 'homehero-finale-word' : undefined}
               style={{
                 color: displayedColor,
                 fontWeight: 600,
@@ -3283,7 +3392,7 @@ const SEQUENCE: Step[] = [
   { static: "get ready for", word: "table tennis",   color: "#06b6d4" },
   { static: "get ready for", word: "chess",          color: "#ec4899" },
   { static: "get ready for", word: "the ultimate clash", color: "#ffffff" },
-  { static: "get ready for",        word: "hostel days 2026",    color: "#fbbf24", finale: true },
+  { static: "get ready for", word: "hostel days 2026", color: "#fbbf24", finale: true },
 ];
 
 const GAME_HOLD = 100;
@@ -3371,6 +3480,8 @@ export default function HostelDaysAnimation() {
 
   useEffect(() => () => clear(), []);
 
+  const isFinaleWord = (word: string) => word === "hostel days 2026";
+
   return (
     <div
       style={{
@@ -3379,19 +3490,26 @@ export default function HostelDaysAnimation() {
         alignItems: "center",
         justifyContent: "flex-start",
         padding: "2rem 2.5rem",
-        fontFamily: "'Barlow Condensed', sans-serif",
+        fontFamily: '"Antic", sans-serif',
       }}
     >
-      <link
-        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600&display=swap"
-        rel="stylesheet"
-      />
+      {/* Mobile-only font size override: 22px * 1.5 = 33px */}
+      <style>{`
+        .flashtext-p {
+          font-size: clamp(22px, 5vw, 36px);
+        }
+        @media (max-width: 767px) {
+          .flashtext-p {
+            font-size: 33px;
+          }
+        }
+      `}</style>
 
       {!started && !done && (
         <button
           onClick={handleStart}
           style={{
-            fontFamily: "'Barlow Condensed', sans-serif",
+            fontFamily: '"Antic", sans-serif',
             fontSize: 22,
             fontWeight: 400,
             letterSpacing: "0.1em",
@@ -3409,11 +3527,12 @@ export default function HostelDaysAnimation() {
 
       {started && !done && (
         <p
+          className="flashtext-p"
           style={{
             margin: 0,
-            fontSize: "clamp(22px, 5vw, 36px)",
             fontWeight: 400,
             whiteSpace: "nowrap",
+            fontFamily: '"Antic", sans-serif',
           }}
         >
           <span>{prefix}</span>
@@ -3421,7 +3540,14 @@ export default function HostelDaysAnimation() {
           <span
             style={{
               color: displayedColor,
-              fontWeight: 600,
+              fontFamily: isFinaleWord(displayedWord)
+                ? '"Google Sans Flex", sans-serif'
+                : '"Antic", sans-serif',
+              fontWeight: isFinaleWord(displayedWord) ? 700 : 600,
+              fontOpticalSizing: "auto" as any,
+              ...(isFinaleWord(displayedWord) && {
+                fontVariationSettings: '"slnt" 0, "wdth" 100, "GRAD" 0, "ROND" 0',
+              }),
               opacity: wordOpacity,
               transition: `opacity ${FADE_MS}ms ease`,
             }}
@@ -3434,24 +3560,33 @@ export default function HostelDaysAnimation() {
       {done && (
         <div>
           <p
+            className="flashtext-p"
             style={{
               margin: 0,
-              fontSize: "clamp(22px, 5vw, 36px)",
               fontWeight: 400,
               whiteSpace: "nowrap",
+              fontFamily: '"Antic", sans-serif',
             }}
           >
             <span>welcome to</span>
             <span> </span>
-            <span style={{ color: "#fbbf24", fontWeight: 600 }}>
-              hostel days
+            <span
+              style={{
+                color: "#fbbf24",
+                fontFamily: '"Google Sans Flex", sans-serif',
+                fontWeight: 700,
+                fontOpticalSizing: "auto" as any,
+                fontVariationSettings: '"slnt" 0, "wdth" 100, "GRAD" 0, "ROND" 0',
+              }}
+            >
+              hostel days 2026
             </span>
           </p>
           <button
             onClick={handleReplay}
             style={{
               marginTop: 24,
-              fontFamily: "'Barlow Condensed', sans-serif",
+              fontFamily: '"Antic", sans-serif',
               fontSize: 16,
               fontWeight: 400,
               letterSpacing: "0.15em",
@@ -3835,6 +3970,7 @@ export default nextConfig
     "@radix-ui/react-tabs": "^1.1.13",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.99.3",
+    "@vercel/blob": "^2.3.2",
     "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
