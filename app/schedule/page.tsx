@@ -390,24 +390,35 @@ export default function SchedulePage() {
 
             {/* PDF Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)] bg-[var(--bg-secondary)] shrink-0">
-              <div className="flex items-center gap-2">
-                <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full
+              <div className="flex items-center gap-2 overflow-hidden">
+                <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full shrink-0
                   ${selectedEvent.ev.type === 'cultural'
                     ? 'bg-purple-500/10 text-purple-400'
                     : 'bg-blue-500/10 text-blue-400'
                   }`}>
                   {selectedEvent.ev.type}
                 </span>
-                <span className="font-display font-bold text-[13px] text-[var(--text-primary)]">
-                  {selectedEvent.ev.name} — Brochure
+                <span className="font-display font-bold text-[13px] text-[var(--text-primary)] truncate max-w-[120px] sm:max-w-[250px]">
+                  {selectedEvent.ev.name}
                 </span>
               </div>
-              <button
-                onClick={() => setIsPdfOpen(false)}
-                className="w-8 h-8 rounded-lg bg-[var(--bg-card)] border border-[var(--border-strong)] flex items-center justify-center text-base text-[var(--text-muted)] hover:border-[var(--text-muted)] transition-colors shrink-0"
-              >
-                ✕
-              </button>
+              <div className="flex items-center gap-2 shrink-0">
+                {/* Direct open link for mobile users */}
+                <a 
+                  href={pdfSrc} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-[11px] font-bold uppercase tracking-wide px-3 py-1.5 rounded-lg bg-[var(--accent)] text-white hover:opacity-90 transition-opacity whitespace-nowrap"
+                >
+                  Open Native
+                </a>
+                <button
+                  onClick={() => setIsPdfOpen(false)}
+                  className="w-8 h-8 rounded-lg bg-[var(--bg-card)] border border-[var(--border-strong)] flex items-center justify-center text-base text-[var(--text-muted)] hover:border-[var(--text-muted)] transition-colors shrink-0"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
 
             {/* PDF iframe */}
