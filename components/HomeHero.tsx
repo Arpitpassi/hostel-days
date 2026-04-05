@@ -242,7 +242,7 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
             href="/results"
             style={{ color: 'var(--text-primary)', textDecoration: 'underline', textUnderlineOffset: '2px' }}
           >
-            Buy Now
+            check it out
           </Link>
         </p>
 
