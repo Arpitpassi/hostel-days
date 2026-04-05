@@ -79,10 +79,8 @@ const DAYS = [
       { name: 'Ground', events: [{ name: 'Cricket League', icon: '🏏', time: '06:00', endTime: '13:00', type: 'sports' as const, pdfPage: 1 }] },
       { name: 'EB Point', events: [{ name: 'Sketching', icon: '✏️', time: '09:00', endTime: '12:00', type: 'cultural' as const, pdfPage: 1 }] },
       { name: 'Gyan Mandir', events: [{ name: 'Chess', icon: '♟️', time: '08:00', endTime: '13:00', type: 'sports' as const, pdfPage: 17 }] },
-            { name: 'EB Point', events: [{ name: '7 Stones', icon: '🪨', time: '7:00', endTime: '11:00', type: 'sports' as const, pdfPage: 23 }] },
-                  { name: 'BA Court', events: [{ name: 'Archery', icon: '🏹', time: '08:00', endTime: '11:00', type: 'sports' as const, pdfPage: 37 }] },
-
-
+      { name: 'EB Point', events: [{ name: '7 Stones', icon: '🪨', time: '7:00', endTime: '11:00', type: 'sports' as const, pdfPage: 23 }] },
+      { name: 'BA Court', events: [{ name: 'Archery', icon: '🏹', time: '08:00', endTime: '11:00', type: 'sports' as const, pdfPage: 37 }] },
       { name: 'NIT Goa', events: [
         { name: 'Treasure Hunt', icon: '🗺️', time: '08:00', endTime: '13:00', type: 'cultural' as const, pdfPage: 1 },
         { name: 'Group + Solo + Duet Dance', icon: '💃', time: '18:00', endTime: '23:00', type: 'cultural' as const, pdfPage: 50 }
@@ -94,8 +92,7 @@ const DAYS = [
     venues: [
       { name: 'EB Point', events: [{ name: 'Painting', icon: '🎨', time: '09:00', endTime: '12:00', type: 'cultural' as const, pdfPage: 61 }] },
       { name: 'Gyan Mandir', events: [{ name: 'Graffiti', icon: '🖌️', time: '13:00', endTime: '16:00', type: 'cultural' as const, pdfPage: 59 }] },
-            { name: 'EB Point', events: [{ name: 'Tug of War', icon: '💪', time: '09:00', endTime: '11:00', type: 'sports' as const, pdfPage: 20 }] },
-
+      { name: 'EB Point', events: [{ name: 'Tug of War', icon: '💪', time: '09:00', endTime: '11:00', type: 'sports' as const, pdfPage: 20 }] },
       { name: 'NIT Goa', events: [
         { name: 'Award Distribution', icon: '🏆', time: '17:00', endTime: '19:00', type: 'cultural' as const, pdfPage: 1 },
         { name: 'DJ Night', icon: '🎧', time: '19:00', endTime: '22:00', type: 'cultural' as const, pdfPage: 1 }
@@ -119,6 +116,11 @@ function getEventTargetDate(dateISO: string, timeStr: string) {
   const target = new Date(dateISO)
   target.setHours(h, m, 0, 0)
   return target
+}
+
+function isMobileDevice() {
+  if (typeof navigator === 'undefined') return false
+  return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent)
 }
 
 // ============================================================
@@ -199,6 +201,11 @@ export default function SchedulePage() {
   const [activeDayIdx, setActiveDayIdx] = useState(0)
   const [selectedEvent, setSelectedEvent] = useState<SelectedEvent | null>(null)
   const [isPdfOpen, setIsPdfOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsMobile(isMobileDevice())
+  }, [])
 
   const activeDay = DAYS[activeDayIdx]
   const totalEvents = activeDay.venues.reduce((acc, v) => acc + v.events.length, 0)
@@ -223,6 +230,15 @@ export default function SchedulePage() {
     ? getPdfSrc(selectedEvent.ev.pdfPage)
     : ''
 
+  // On mobile, tapping "Event Brochure" opens the PDF directly in a new tab
+  const handleBrochureClick = () => {
+    if (isMobile) {
+      window.open(pdfSrc, '_blank', 'noopener,noreferrer')
+    } else {
+      setIsPdfOpen(true)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] font-body text-[var(--text-primary)] transition-colors duration-300">
       <div className="max-w-[720px] mx-auto px-4 py-5 pb-16">
@@ -232,7 +248,7 @@ export default function SchedulePage() {
           Schedule
         </h1>
         <p className="text-xs text-[var(--text-muted)] mb-5">
-          Hostel Days 2026 — 7 days · All events
+          Hostel Days 2026 — 8 days · All events
         </p>
 
         {/* ── Day Tabs ── */}
@@ -352,7 +368,7 @@ export default function SchedulePage() {
                 Event Details
               </div>
               <div
-                onClick={() => setIsPdfOpen(true)}
+                onClick={handleBrochureClick}
                 className="flex items-center gap-4 p-3.5 px-4 rounded-[12px] bg-[var(--bg-secondary)] border border-[var(--border)] cursor-pointer hover:border-[var(--border-strong)] transition-colors"
               >
                 <div className="w-[42px] h-[42px] rounded-[10px] bg-[var(--accent)] flex items-center justify-center shrink-0">
@@ -369,10 +385,12 @@ export default function SchedulePage() {
                     Event Brochure
                   </div>
                   <div className="text-[12px] text-[var(--text-muted)] mt-0.5">
-                    Tap to view guidelines & rules
+                    {isMobile ? 'Tap to open in browser' : 'Click to view guidelines & rules'}
                   </div>
                 </div>
-                <span className="text-[var(--text-muted)] text-sm opacity-50">›</span>
+                <span className="text-[var(--text-muted)] text-sm opacity-50">
+                  {isMobile ? '↗' : '›'}
+                </span>
               </div>
             </div>
 
@@ -380,8 +398,8 @@ export default function SchedulePage() {
         </div>
       )}
 
-      {/* ── PDF VIEWER OVERLAY ── */}
-      {isPdfOpen && selectedEvent && (
+      {/* ── PDF VIEWER OVERLAY (desktop only) ── */}
+      {isPdfOpen && selectedEvent && !isMobile && (
         <div
           className="fixed inset-0 bg-black/75 backdrop-blur-md z-[200] flex flex-col items-center justify-center p-5 animate-in fade-in duration-200"
           onClick={(e) => { if (e.target === e.currentTarget) setIsPdfOpen(false) }}
@@ -390,27 +408,32 @@ export default function SchedulePage() {
 
             {/* PDF Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)] bg-[var(--bg-secondary)] shrink-0">
-              <div className="flex items-center gap-2 overflow-hidden">
-                <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full shrink-0
+              <div className="flex items-center gap-2">
+                <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full
                   ${selectedEvent.ev.type === 'cultural'
                     ? 'bg-purple-500/10 text-purple-400'
                     : 'bg-blue-500/10 text-blue-400'
                   }`}>
                   {selectedEvent.ev.type}
                 </span>
-                <span className="font-display font-bold text-[13px] text-[var(--text-primary)] truncate max-w-[120px] sm:max-w-[250px]">
-                  {selectedEvent.ev.name}
+                <span className="font-display font-bold text-[13px] text-[var(--text-primary)]">
+                  {selectedEvent.ev.name} — Brochure
                 </span>
               </div>
-              <div className="flex items-center gap-2 shrink-0">
-                {/* Direct open link for mobile users */}
-                <a 
-                  href={pdfSrc} 
-                  target="_blank" 
+              <div className="flex items-center gap-2">
+                {/* Open in new tab */}
+                <a
+                  href={pdfSrc}
+                  target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[11px] font-bold uppercase tracking-wide px-3 py-1.5 rounded-lg bg-[var(--accent)] text-white hover:opacity-90 transition-opacity whitespace-nowrap"
+                  className="w-8 h-8 rounded-lg bg-[var(--bg-card)] border border-[var(--border-strong)] flex items-center justify-center text-[var(--text-muted)] hover:border-[var(--text-muted)] transition-colors shrink-0"
+                  title="Open in new tab"
                 >
-                  Open Native
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15 3 21 3 21 9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
                 </a>
                 <button
                   onClick={() => setIsPdfOpen(false)}
