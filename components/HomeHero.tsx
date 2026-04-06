@@ -12,7 +12,6 @@ interface Step {
 }
 
 const SEQUENCE: Step[] = [
-  // — original sports —
   { word: 'cricket',            color: '#f59e0b' },
   { word: 'football',           color: '#22c55e' },
   { word: 'basketball',         color: '#f97316' },
@@ -20,8 +19,6 @@ const SEQUENCE: Step[] = [
   { word: 'badminton',          color: '#a855f7' },
   { word: 'table tennis',       color: '#06b6d4' },
   { word: 'chess',              color: '#ec4899' },
-
-  // — new from schedule —
   { word: 'carrom',             color: '#84cc16' },
   { word: 'track events',       color: '#f43f5e' },
   { word: '7 stones',           color: '#fb923c' },
@@ -35,15 +32,13 @@ const SEQUENCE: Step[] = [
   { word: 'dance',              color: '#c084fc' },
   { word: 'instrumental',       color: '#fbbf24' },
   { word: 'graffiti',           color: '#818cf8' },
-
-  // — finale —
   { word: 'the ultimate clash', color: '#e1d3e8' },
   { word: 'hostel days 2026',   color: '#e2bc34ff', finale: true },
 ]
 
 const FADE_MS  = 0
-const MIN_HOLD = 100   // hold duration for the first word (ms)
-const MAX_HOLD = 400  // hold duration approaching the finale (ms)
+const MIN_HOLD = 100
+const MAX_HOLD = 400
 
 interface Props {
   liveCount: number
@@ -52,32 +47,20 @@ interface Props {
   registrationUrl?: string
 }
 
-// ============================================================
-//  POSITION CONTROLS — edit these values to reposition
-// ============================================================
-
 const BIRD_DESKTOP_TRANSLATE_Y = '-6vh'
 const BIRD_MOBILE_TRANSLATE_Y  = '-2vh'
-
 const BIRD_DESKTOP_TRANSLATE_X = '0px'
 const BIRD_MOBILE_TRANSLATE_X  = '-8px'
-
 const BIRD_DESKTOP_SCALE       = '1.35'
 const BIRD_MOBILE_SCALE        = '1.03'
-
 const TEXT_DESKTOP_PADDING_TOP = '6vh'
 const TEXT_MOBILE_PADDING_TOP  = '3vh'
-
 const WORD_DESKTOP_MARGIN_TOP  = '10vh'
 const WORD_MOBILE_MARGIN_TOP   = '3.5vh'
-
 const WORD_DESKTOP_PADDING_TOP = 'clamp(10vh, 6vw, 15vh)'
 const WORD_MOBILE_PADDING_TOP  = '14vh'
-
 const STATS_DESKTOP_MIN_HEIGHT = '26vh'
 const STATS_MOBILE_MIN_HEIGHT  = '14vh'
-
-// ============================================================
 
 export function HomeHero({ liveCount, totalGames, completedCount, registrationUrl = '/Participate' }: Props) {
   const [mounted, setMounted]               = useState(false)
@@ -99,14 +82,12 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
     return () => mq.removeEventListener('change', handler)
   }, [])
 
-  // Count of words that participate in the easing curve
-  // (everything except 'the ultimate clash' and the finale)
   const easedCount = SEQUENCE.filter(s => !s.finale && s.word !== 'the ultimate clash').length
 
   const getHold = (i: number): number => {
-    if (i >= easedCount) return MAX_HOLD   // 'the ultimate clash' gets max hold
+    if (i >= easedCount) return MAX_HOLD
     const t = i / (easedCount - 1)
-    const eased = t * t                    // quadratic ease-in: starts fast, slows down
+    const eased = t * t
     return Math.round(MIN_HOLD + (MAX_HOLD - MIN_HOLD) * eased)
   }
 
@@ -185,9 +166,8 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
 
   return (
     <section
-      className="relative overflow-hidden px-4 sm:px-6 max-w-2xl md:max-w-4xl mx-auto flex flex-col min-h-[40vh] md:min-h-[60vh]"
+      className="relative px-4 sm:px-6 max-w-2xl md:max-w-4xl mx-auto flex flex-col min-h-[40vh] md:min-h-[60vh]"
     >
-      {/* Mobile-only: only the finale "hostel days 2026" span gets 1.5x size */}
       <style>{`
         .homehero-finale-word {
           font-size: inherit;
@@ -220,16 +200,6 @@ export function HomeHero({ liveCount, totalGames, completedCount, registrationUr
         className="relative z-10 w-full pointer-events-auto flex flex-col items-center flex-1"
         style={{ paddingTop: textPaddingTop }}
       >
-
-        {/* Live badge */}
-        <div className="flex items-center justify-center gap-2 mb-1 w-full">
-          {liveCount > 0 && (
-            <span className="live-badge">
-              <span className="w-1.5 h-1.5 rounded-full bg-[var(--live-color)] live-dot" />
-              {liveCount} Live
-            </span>
-          )}
-        </div>
 
         {/* Merch text — mobile only */}
         <p className="md:hidden text-[11px] mb-2" style={{ color: 'var(--text-muted)' }}>
