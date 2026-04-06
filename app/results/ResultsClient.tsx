@@ -5,7 +5,8 @@ import { Trophy, ChevronDown, ChevronUp, Medal } from 'lucide-react'
 import { Game } from '@/types'
 import { getCategoryIcon } from '@/lib/utils'
 
-// ── Hardcoded leaderboard (update as standings change) ────────────────────────
+// ── Hardcoded leaderboard ─────────────────────────────────────────────────────
+// Update these numbers manually as standings change
 const LEADERBOARD = [
   { pos: 1,  team: 'M.Tech & PhD',   points: 600 },
   { pos: 2,  team: 'Batch Of 2026',  points: 450 },
@@ -21,99 +22,62 @@ const MEDAL: Record<number, { bg: string; text: string; badge: string }> = {
   3: { bg: 'rgba(180,120,60,0.10)',  text: '#b47a3c', badge: '🥉' },
 }
 
-// ── Round detection (for by-event section) ────────────────────────────────────
-type RoundType = 'final' | 'semifinal' | 'other'
+// ── Round label detection ─────────────────────────────────────────────────────
+type RoundType = 'final' | 'semifinal' | 'league' | 'other'
+
 function detectRound(name: string): RoundType {
   const l = name.toLowerCase()
-  if (l.includes('semi')) return 'semifinal'
-  if (l.includes('final')) return 'final'
+  if (l.includes('final') && !l.includes('semi')) return 'final'
+  if (l.includes('semi'))   return 'semifinal'
+  if (l.includes('league') || l.includes('group') || l.includes('pool')) return 'league'
   return 'other'
 }
 
 const ROUND_STYLE: Record<RoundType, { bg: string; color: string; label: string }> = {
-  final:     { bg: 'rgba(251,191,36,0.15)', color: '#f59e0b',           label: 'Final' },
-  semifinal: { bg: 'rgba(99,102,241,0.15)', color: '#818cf8',           label: 'Semi'  },
-  other:     { bg: 'var(--bg-secondary)',    color: 'var(--text-muted)', label: 'Group' },
+  final:     { bg: 'rgba(251,191,36,0.15)',  color: '#f59e0b', label: 'Final'    },
+  semifinal: { bg: 'rgba(99,102,241,0.15)',  color: '#818cf8', label: 'Semi'     },
+  league:    { bg: 'rgba(34,197,94,0.10)',   color: '#22c55e', label: 'League'   },
+  other:     { bg: 'var(--bg-secondary)',    color: 'var(--text-muted)', label: 'Match' },
 }
 
-const POS_LABEL: Record<number, string> = { 1: '1st', 2: '2nd', 3: '3rd', 4: '4th' }
-
-// ── Leaderboard component ─────────────────────────────────────────────────────
+// ── Leaderboard ───────────────────────────────────────────────────────────────
 function LeaderboardTable() {
   return (
     <div className="card overflow-hidden mb-8">
-      {/* Header */}
-      <div
-        className="flex items-center gap-2 px-4 py-3 border-b"
-        style={{ borderColor: 'var(--border)', background: 'var(--bg-secondary)' }}
-      >
+      <div className="flex items-center gap-2 px-4 py-3 border-b"
+        style={{ borderColor: 'var(--border)', background: 'var(--bg-secondary)' }}>
         <Trophy size={14} style={{ color: 'var(--text-muted)' }} />
         <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>
           Overall Standings
         </span>
-        <span
-          className="ml-auto text-[10px] font-medium px-2 py-0.5 rounded-full"
-          style={{ background: 'var(--bg-card)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}
-        >
+        <span className="ml-auto text-[10px] font-medium px-2 py-0.5 rounded-full"
+          style={{ background: 'var(--bg-card)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>
           Live · Day 1
         </span>
       </div>
 
-      {/* Column labels */}
-      <div
-        className="grid px-4 py-1.5 text-[10px] font-semibold uppercase tracking-wide border-b"
-        style={{
-          gridTemplateColumns: '2.5rem 1fr 5rem',
-          background: 'var(--bg-secondary)',
-          color: 'var(--text-muted)',
-          borderColor: 'var(--border)',
-        }}
-      >
+      <div className="grid px-4 py-1.5 text-[10px] font-semibold uppercase tracking-wide border-b"
+        style={{ gridTemplateColumns: '2.5rem 1fr 5rem', background: 'var(--bg-secondary)', color: 'var(--text-muted)', borderColor: 'var(--border)' }}>
         <span>Pos.</span>
         <span>Team</span>
         <span className="text-right">Points</span>
       </div>
 
-      {/* Rows */}
       {LEADERBOARD.map(entry => {
         const medal = MEDAL[entry.pos]
         return (
-          <div
-            key={entry.pos}
-            className="grid items-center px-4 py-3.5 border-b last:border-0 transition-colors"
-            style={{
-              gridTemplateColumns: '2.5rem 1fr 5rem',
-              borderColor: 'var(--border)',
-              background: medal ? medal.bg : 'transparent',
-            }}
-          >
-            {/* Position */}
+          <div key={entry.pos}
+            className="grid items-center px-4 py-3.5 border-b last:border-0"
+            style={{ gridTemplateColumns: '2.5rem 1fr 5rem', borderColor: 'var(--border)', background: medal ? medal.bg : 'transparent' }}>
             <div className="flex items-center">
-              {medal ? (
-                <span className="text-xl leading-none">{medal.badge}</span>
-              ) : (
-                <span
-                  className="font-display font-bold text-base tabular-nums"
-                  style={{ color: 'var(--text-muted)' }}
-                >
-                  {entry.pos}
-                </span>
-              )}
+              {medal
+                ? <span className="text-xl leading-none">{medal.badge}</span>
+                : <span className="font-display font-bold text-base tabular-nums" style={{ color: 'var(--text-muted)' }}>{entry.pos}</span>}
             </div>
-
-            {/* Team */}
-            <p
-              className="font-display font-bold text-sm"
-              style={{ color: medal ? medal.text : 'var(--text-primary)' }}
-            >
+            <p className="font-display font-bold text-sm" style={{ color: medal ? medal.text : 'var(--text-primary)' }}>
               {entry.team}
             </p>
-
-            {/* Points */}
-            <p
-              className="font-display font-extrabold text-xl tabular-nums text-right"
-              style={{ color: medal ? medal.text : 'var(--text-primary)' }}
-            >
+            <p className="font-display font-extrabold text-xl tabular-nums text-right" style={{ color: medal ? medal.text : 'var(--text-primary)' }}>
               {entry.points}
             </p>
           </div>
@@ -123,7 +87,56 @@ function LeaderboardTable() {
   )
 }
 
-// ── By-event section ──────────────────────────────────────────────────────────
+// ── Individual match result rows ──────────────────────────────────────────────
+function SportsResult({ game }: { game: Game }) {
+  if (game.team_a === '-' || !game.team_a) return null
+  const winA = game.winner === game.team_a
+  const winB = game.winner === game.team_b
+
+  return (
+    <div className="flex items-center gap-3 py-2.5 px-4">
+      <div className={`flex-1 flex items-center gap-1.5 min-w-0 ${winA ? '' : 'opacity-50'}`}>
+        {winA && <Trophy size={11} className="text-yellow-400 shrink-0" />}
+        <p className="font-semibold text-xs truncate" style={{ color: 'var(--text-primary)' }}>{game.team_a}</p>
+        <span className="ml-auto font-display font-bold text-base tabular-nums shrink-0"
+          style={{ color: winA ? 'var(--live-color)' : 'var(--text-secondary)' }}>
+          {game.score_a}
+        </span>
+      </div>
+      <span className="text-[10px] font-bold shrink-0" style={{ color: 'var(--border-strong)' }}>:</span>
+      <div className={`flex-1 flex items-center gap-1.5 flex-row-reverse min-w-0 ${winB ? '' : 'opacity-50'}`}>
+        {winB && <Trophy size={11} className="text-yellow-400 shrink-0" />}
+        <p className="font-semibold text-xs truncate text-right" style={{ color: 'var(--text-primary)' }}>{game.team_b}</p>
+        <span className="mr-auto font-display font-bold text-base tabular-nums shrink-0"
+          style={{ color: winB ? 'var(--live-color)' : 'var(--text-secondary)' }}>
+          {game.score_b}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+function CulturalResult({ game }: { game: Game }) {
+  const positions: [string, string | null][] = [
+    ['🥇', game.pos_1], ['🥈', game.pos_2], ['🥉', game.pos_3], ['4th', game.pos_4],
+  ]
+  const set = positions.filter(([, v]) => v)
+  if (set.length === 0) return (
+    <p className="px-4 py-2 text-xs italic" style={{ color: 'var(--text-muted)' }}>Positions not yet entered.</p>
+  )
+  return (
+    <div className="px-4 py-2.5 space-y-1.5">
+      {set.map(([medal, team]) => (
+        <div key={medal} className="flex items-center gap-2.5">
+          <span className="text-base w-7 text-center">{medal}</span>
+          <span className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>{team}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ── Category Accordion ────────────────────────────────────────────────────────
 interface CategoryGroup { categoryName: string; type: string; games: Game[] }
 
 function groupByCategory(games: Game[]): CategoryGroup[] {
@@ -134,126 +147,87 @@ function groupByCategory(games: Game[]): CategoryGroup[] {
     if (!map[name]) map[name] = { categoryName: name, type, games: [] }
     map[name].games.push(g)
   })
-  return Object.values(map).sort((a, b) => a.categoryName.localeCompare(b.categoryName))
-}
-
-function CulturalResult({ game }: { game: Game }) {
-  const positions: [string, string | null][] = [
-    ['🥇', game.pos_1], ['🥈', game.pos_2], ['🥉', game.pos_3], ['4th', game.pos_4],
-  ]
-  const set = positions.filter(([, v]) => v)
-  if (set.length === 0) {
-    return (
-      <p className="px-4 py-3 text-xs italic" style={{ color: 'var(--text-muted)' }}>
-        Positions not yet entered.
-      </p>
-    )
-  }
-  return (
-    <div className="px-4 py-3 space-y-1.5">
-      {set.map(([medal, team]) => (
-        <div key={medal} className="flex items-center gap-3">
-          <span className="text-base w-7 text-center">{medal}</span>
-          <span className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>{team}</span>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function SportsResult({ game }: { game: Game }) {
-  const winA = game.winner === game.team_a
-  const winB = game.winner === game.team_b
-  if (game.team_a === '-' || !game.team_a) return null
-  return (
-    <div className="flex items-center gap-3 px-4 py-2.5">
-      <div className={`flex-1 flex items-center gap-1.5 min-w-0 ${winA ? '' : 'opacity-50'}`}>
-        {winA && <Trophy size={11} className="text-yellow-400 shrink-0" />}
-        <p className="font-semibold text-xs truncate" style={{ color: 'var(--text-primary)' }}>{game.team_a}</p>
-        <span
-          className="ml-auto font-display font-bold text-base tabular-nums shrink-0"
-          style={{ color: winA ? 'var(--live-color)' : 'var(--text-secondary)' }}
-        >
-          {game.score_a}
-        </span>
-      </div>
-      <span className="text-[10px] font-bold shrink-0" style={{ color: 'var(--border-strong)' }}>:</span>
-      <div className={`flex-1 flex items-center gap-1.5 flex-row-reverse min-w-0 ${winB ? '' : 'opacity-50'}`}>
-        {winB && <Trophy size={11} className="text-yellow-400 shrink-0" />}
-        <p className="font-semibold text-xs truncate text-right" style={{ color: 'var(--text-primary)' }}>{game.team_b}</p>
-        <span
-          className="mr-auto font-display font-bold text-base tabular-nums shrink-0"
-          style={{ color: winB ? 'var(--live-color)' : 'var(--text-secondary)' }}
-        >
-          {game.score_b}
-        </span>
-      </div>
-    </div>
-  )
+  return Object.values(map).sort((a, b) => {
+    // Finals first within sports, then alphabetical
+    if (a.type !== b.type) return a.type === 'sports' ? -1 : 1
+    return a.categoryName.localeCompare(b.categoryName)
+  })
 }
 
 function CategoryAccordion({ group }: { group: CategoryGroup }) {
   const [open, setOpen] = useState(false)
-  const icon  = getCategoryIcon(group.categoryName)
-  const first = group.games.find(g => g.pos_1 || g.winner)
-  const topTeam = first?.pos_1 ?? first?.winner ?? null
+  const icon = getCategoryIcon(group.categoryName)
+  const isCultural = group.type === 'cultural'
+
+  // Find the highest-priority result (final winner, or pos_1 for cultural)
+  const finalGame = group.games.find(g => detectRound(g.event_name) === 'final')
+    ?? group.games.find(g => g.winner || g.pos_1)
+  const topResult = finalGame?.pos_1 ?? finalGame?.winner ?? null
+
+  // Sort: finals first, then semis, then league/other
+  const sortedGames = [...group.games].sort((a, b) => {
+    const order: Record<RoundType, number> = { final: 0, semifinal: 1, league: 2, other: 3 }
+    return order[detectRound(a.event_name)] - order[detectRound(b.event_name)]
+  })
 
   return (
     <div className="card overflow-hidden mb-2">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-[var(--bg-secondary)]"
+        className="w-full flex items-center gap-3 px-4 py-3.5 text-left transition-colors hover:bg-[var(--bg-secondary)]"
       >
-        <span className="text-base w-7 text-center shrink-0">{icon}</span>
+        <span className="text-lg w-7 text-center shrink-0">{icon}</span>
 
         <div className="flex-1 min-w-0">
-          <p className="font-display font-bold text-sm" style={{ color: 'var(--text-primary)' }}>
+          <p className="font-display font-bold text-sm leading-tight" style={{ color: 'var(--text-primary)' }}>
             {group.categoryName}
           </p>
-          {topTeam && (
-            <p className="text-[10px] flex items-center gap-1 mt-0.5" style={{ color: '#f59e0b' }}>
-              <Trophy size={9} />{topTeam}
+          {topResult ? (
+            <p className="text-[11px] flex items-center gap-1 mt-0.5" style={{ color: '#f59e0b' }}>
+              <Trophy size={9} /> {topResult}
+            </p>
+          ) : (
+            <p className="text-[11px] mt-0.5" style={{ color: 'var(--text-muted)' }}>
+              {group.games.length} match{group.games.length > 1 ? 'es' : ''}
             </p>
           )}
         </div>
 
-        <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full shrink-0 ${
-          group.type === 'cultural' ? 'bg-purple-500/10 text-purple-400' : 'bg-blue-500/10 text-blue-400'
+        <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full shrink-0 mr-1 ${
+          isCultural ? 'bg-purple-500/10 text-purple-400' : 'bg-blue-500/10 text-blue-400'
         }`}>
           {group.type}
         </span>
 
-        <span className="text-xs tabular-nums shrink-0" style={{ color: 'var(--text-muted)' }}>
-          {group.games.length}
-        </span>
-
-        <span style={{ color: 'var(--text-muted)' }}>
-          {open ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
-        </span>
+        {open ? <ChevronUp size={15} style={{ color: 'var(--text-muted)' }} /> : <ChevronDown size={15} style={{ color: 'var(--text-muted)' }} />}
       </button>
 
       {open && (
         <div className="border-t" style={{ borderColor: 'var(--border)' }}>
-          {group.games.map(game => {
+          {sortedGames.map((game, i) => {
             const round = detectRound(game.event_name)
             const rs    = ROUND_STYLE[round]
             return (
               <div key={game.id} className="border-b last:border-0" style={{ borderColor: 'var(--border)' }}>
-                <div className="px-4 pt-2 pb-1 flex items-center gap-2 text-[10px]" style={{ color: 'var(--text-muted)' }}>
-                  {game.event_type === 'sports' && (
-                    <span
-                      className="font-bold uppercase tracking-wide px-1.5 py-0.5 rounded text-[9px]"
-                      style={{ background: rs.bg, color: rs.color }}
-                    >
-                      {rs.label}
-                    </span>
+                {/* Match header */}
+                <div className="px-4 pt-2.5 pb-1 flex items-center gap-2">
+                  <span
+                    className="text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded shrink-0"
+                    style={{ background: rs.bg, color: rs.color }}
+                  >
+                    {rs.label}
+                  </span>
+                  <span className="text-[11px] font-medium truncate" style={{ color: 'var(--text-muted)' }}>
+                    {game.event_name}
+                  </span>
+                  {game.day && (
+                    <span className="ml-auto text-[10px] shrink-0" style={{ color: 'var(--text-muted)' }}>D{game.day}</span>
                   )}
-                  <span>{game.event_name}</span>
                 </div>
-                {game.event_type === 'cultural'
+                {/* Result */}
+                {isCultural
                   ? <CulturalResult game={game} />
-                  : <SportsResult   game={game} />
-                }
+                  : <SportsResult   game={game} />}
               </div>
             )
           })}
@@ -268,6 +242,8 @@ interface Props { completed: Game[] }
 
 export default function ResultsClient({ completed }: Props) {
   const groups = groupByCategory(completed)
+  const sportsGroups   = groups.filter(g => g.type === 'sports')
+  const culturalGroups = groups.filter(g => g.type === 'cultural')
 
   return (
     <div className="px-4 sm:px-6 py-4 max-w-2xl mx-auto pb-10">
@@ -278,24 +254,46 @@ export default function ResultsClient({ completed }: Props) {
         {completed.length} completed event{completed.length !== 1 ? 's' : ''}
       </p>
 
-      {/* Always-visible hardcoded leaderboard */}
+      {/* Hardcoded leaderboard — update LEADERBOARD array at top of file */}
       <LeaderboardTable />
 
-      {/* By-event accordion — only shown once events complete */}
+      {/* By-event accordion */}
       {completed.length > 0 && (
         <>
-          <div className="flex items-center gap-2 mb-3">
-            <Medal size={13} style={{ color: 'var(--text-muted)' }} />
-            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>
-              By Event
-            </span>
-            <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
-          </div>
+          {sportsGroups.length > 0 && (
+            <div className="mb-6">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-sm">⚽</span>
+                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Sports</span>
+                <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
+              </div>
+              {sportsGroups.map(group => (
+                <CategoryAccordion key={group.categoryName} group={group} />
+              ))}
+            </div>
+          )}
 
-          {groups.map(group => (
-            <CategoryAccordion key={group.categoryName} group={group} />
-          ))}
+          {culturalGroups.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-sm">🎭</span>
+                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Cultural</span>
+                <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
+              </div>
+              {culturalGroups.map(group => (
+                <CategoryAccordion key={group.categoryName} group={group} />
+              ))}
+            </div>
+          )}
         </>
+      )}
+
+      {completed.length === 0 && (
+        <div className="card p-10 text-center mt-4">
+          <p className="text-3xl mb-2">🏆</p>
+          <p className="font-semibold text-sm" style={{ color: 'var(--text-secondary)' }}>No results yet</p>
+          <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Results will appear here as events complete</p>
+        </div>
       )}
     </div>
   )

@@ -29,10 +29,10 @@ const DAYS = [
   {
     num: 2, label: 'Day 2', date: 'Monday, 6 April', dateISO: '2026-04-06',
     venues: [
-      { name: 'BA Court', events: [{ name: 'Basketball League', icon: '🏀', time: '20:30', endTime: '23:00', type: 'sports' as const, pdfPage: 5 }] },
+      { name: 'Basketball Court', events: [{ name: 'Basketball League', icon: '🏀', time: '20:30', endTime: '23:00', type: 'sports' as const, pdfPage: 5 }] },
       { name: 'Ground', events: [{ name: 'Football League', icon: '⚽', time: '17:00', endTime: '19:00', type: 'sports' as const, pdfPage: 11 }] },
       { name: 'Gyan Mandir', events: [{ name: 'Carrom League', icon: '🎯', time: '17:00', endTime: '20:00', type: 'sports' as const, pdfPage: 27 }] },
-      { name: 'BD Court', events: [{ name: 'Table Tennis M & F League', icon: '🏓', time: '17:00', endTime: '19:00', type: 'sports' as const, pdfPage: 25 }] },
+      { name: 'Sports Room', events: [{ name: 'Table Tennis M & F League', icon: '🏓', time: '17:00', endTime: '19:00', type: 'sports' as const, pdfPage: 25 }] },
       { name: 'BD Court', events: [{ name: 'Badminton Mixed League', icon: '🏸', time: '20:30', endTime: '23:00', type: 'sports' as const, pdfPage: 13 }] },
     ]
   },
@@ -41,7 +41,7 @@ const DAYS = [
     venues: [
       { name: 'Ground', events: [{ name: 'Football League & Final', icon: '⚽', time: '17:00', endTime: '19:00', type: 'sports' as const, pdfPage: 11 }] },
       { name: 'Gyan Mandir', events: [{ name: 'Carrom', icon: '🎯', time: '17:00', endTime: '20:00', type: 'sports' as const, pdfPage: 27 }] },
-      { name: 'BD Court', events: [{ name: 'Table Tennis M & F League', icon: '🏓', time: '17:00', endTime: '20:00', type: 'sports' as const, pdfPage: 25 }] },
+      { name: 'Sports Room', events: [{ name: 'Table Tennis M & F League', icon: '🏓', time: '17:00', endTime: '20:00', type: 'sports' as const, pdfPage: 25 }] },
       { name: 'BA Court', events: [{ name: 'Basketball League', icon: '🏀', time: '20:30', endTime: '23:00', type: 'sports' as const, pdfPage: 1 }] },
       { name: 'BD Court', events: [{ name: 'Badminton MM & FF League', icon: '🏸', time: '21:00', endTime: '23:00', type: 'sports' as const, pdfPage: 13 }] },
     ]
