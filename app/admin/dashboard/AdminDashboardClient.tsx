@@ -8,6 +8,7 @@ import {
   LogOut, Plus, Minus, Zap, Shield, Loader2, X,
   Trophy, Search, ChevronDown, CheckCircle2, Clock,
 } from 'lucide-react'
+import { normalizeVenue } from '@/lib/utils'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const HOSTELS = [
@@ -273,7 +274,7 @@ function GameCard({ game, saving, savedId, onUpdate }: {
           <p className="text-[11px] mt-0.5" style={{ color: 'var(--text-muted)' }}>
             Day {game.day}
             {game.categories?.name ? ` · ${game.categories.name}` : ''}
-            {game.venue ? ` · ${game.venue}` : ''}
+{game.venue ? ` · ${normalizeVenue(game.venue, game.categories?.name)}` : ''}
           </p>
           {/* Quick preview */}
           {!isCultural && game.team_a !== '-' && game.team_a ? (

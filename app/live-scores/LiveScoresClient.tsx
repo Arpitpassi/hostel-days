@@ -2,7 +2,7 @@
 
 import { Game, Category } from '@/types'
 import { useRealtimeGames } from '@/hooks/useRealtimeGames'
-import { getCategoryIcon } from '@/lib/utils'
+import { getCategoryIcon, normalizeVenue } from '@/lib/utils'
 
 interface Props { initialGames: Game[]; categories: Category[] }
 
@@ -48,7 +48,8 @@ function LiveCategoryCard({ group }: { group: LiveGroup }) {
           </p>
         )}
         {game.venue && (
-          <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-muted)' }}>📍 {game.venue}</p>
+  <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-muted)' }}>📍 {normalizeVenue(game.venue, group.categoryName)}
+</p>
         )}
       </div>
 

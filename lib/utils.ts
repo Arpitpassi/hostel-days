@@ -58,6 +58,17 @@ export function isFestivalActive(): boolean {
   return now >= FESTIVAL_START && now <= FESTIVAL_END
 }
 
+// ── Venue name overrides ───────────────────────────────────────────────────────
+// categoryName is optional — when provided, the override only applies to that category
+export function normalizeVenue(venue: string | null | undefined, categoryName?: string): string | null {
+  if (!venue) return null
+  if (
+    venue.trim().toLowerCase() === 'bd court' &&
+    categoryName?.toLowerCase() === 'table tennis'
+  ) return 'Sports Room'
+  return venue
+}
+
 export const CATEGORY_ICONS: Record<string, string> = {
   Cricket: '🏏',
   Football: '⚽',
