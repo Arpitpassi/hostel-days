@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server'
-import { LiveTicker } from '@/components/LiveTicker'
 import { HomeHero } from '@/components/HomeHero'
 import Link from 'next/link'
 import { Zap, Calendar, Trophy, Info } from 'lucide-react'
@@ -101,9 +100,6 @@ export default async function HomePage() {
 
   return (
     <div>
-      {/* Live Ticker */}
-      {liveGames.length > 0 && <LiveTicker games={liveGames} />}
-
       {/* Hero */}
       <HomeHero
         liveCount={liveGames.length}
