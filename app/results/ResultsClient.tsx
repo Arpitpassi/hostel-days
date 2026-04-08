@@ -15,6 +15,54 @@ const LEADERBOARD = [
   { pos: 5,  team: 'Batch Of 2029',  points: 0   },
 ]
 
+// ── Image Data Extracted ──────────────────────────────────────────────────────
+const SCANNED_RESULTS: Partial<Game>[] = [
+  // 🏀 Basketball
+  { id: 'bball-1', event_name: 'League Match', team_a: 'Batch Of 2028', team_b: 'Batch Of 2027', score_a: '19', score_b: '29', winner: 'Batch Of 2027', categories: { name: 'Basketball', type: 'sports' } as any },
+
+  // 🏓 Men's Table Tennis
+  { id: 'mtt-1', event_name: 'League Match 1', team_a: 'Batch Of 2027', team_b: 'Batch Of 2028', score_a: '2', score_b: '0', winner: 'Batch Of 2027', categories: { name: 'Men\'s Table Tennis', type: 'sports' } as any },
+  { id: 'mtt-2', event_name: 'League Match 2', team_a: 'Batch Of 2027', team_b: 'Batch Of 2028', score_a: '0', score_b: '2', winner: 'Batch Of 2028', categories: { name: 'Men\'s Table Tennis', type: 'sports' } as any },
+  { id: 'mtt-3', event_name: 'League Match 3', team_a: 'Batch Of 2027', team_b: 'Batch Of 2028', score_a: '2', score_b: '0', winner: 'Batch Of 2027', categories: { name: 'Men\'s Table Tennis', type: 'sports' } as any },
+  { id: 'mtt-4', event_name: 'League Match 4', team_a: 'Batch Of 2027', team_b: 'Batch Of 2028', score_a: '1', score_b: '2', winner: 'Batch Of 2028', categories: { name: 'Men\'s Table Tennis', type: 'sports' } as any },
+  { id: 'mtt-5', event_name: 'League Match 5', team_a: 'Batch Of 2027', team_b: 'Batch Of 2028', score_a: '2', score_b: '1', winner: 'Batch Of 2027', categories: { name: 'Men\'s Table Tennis', type: 'sports' } as any },
+
+  // 🏸 Badminton Mixed Doubles
+  { id: 'bmd-1', event_name: 'League Match', team_a: 'Batch Of 2026', team_b: 'M.tech PhD', score_a: '2', score_b: '1', winner: 'Batch Of 2026', categories: { name: 'Badminton Mixed Doubles', type: 'sports' } as any },
+  { id: 'bmd-2', event_name: 'League Match', team_a: 'Batch Of 2027', team_b: 'Batch Of 2028', score_a: '2', score_b: '0', winner: 'Batch Of 2027', categories: { name: 'Badminton Mixed Doubles', type: 'sports' } as any },
+  { id: 'bmd-3', event_name: 'League Match', team_a: 'Batch Of 2026', team_b: 'Batch Of 2029', score_a: '1', score_b: '2', winner: 'Batch Of 2029', categories: { name: 'Badminton Mixed Doubles', type: 'sports' } as any },
+  { id: 'bmd-4', event_name: 'League Match', team_a: 'Batch Of 2027', team_b: 'M.tech PhD', score_a: '2', score_b: '1', winner: 'Batch Of 2027', categories: { name: 'Badminton Mixed Doubles', type: 'sports' } as any },
+  { id: 'bmd-5', event_name: 'League Match', team_a: 'Batch Of 2029', team_b: 'Batch Of 2028', score_a: '1', score_b: '2', winner: 'Batch Of 2028', categories: { name: 'Badminton Mixed Doubles', type: 'sports' } as any },
+
+  // 🏓 Table Tennis Women's
+  { id: 'wtt-1', event_name: 'League Match', team_a: 'Batch Of 2027', team_b: 'Batch Of 2026', score_a: '2', score_b: '0', winner: 'Batch Of 2027', categories: { name: 'Women\'s Table Tennis', type: 'sports' } as any },
+  { id: 'wtt-2', event_name: 'League Match', team_a: 'Batch Of 2028', team_b: 'M.tech PhD', score_a: '2', score_b: '0', winner: 'Batch Of 2028', categories: { name: 'Women\'s Table Tennis', type: 'sports' } as any },
+  { id: 'wtt-3', event_name: 'League Match', team_a: 'Batch Of 2028', team_b: 'Batch Of 2027', score_a: '2', score_b: '0', winner: 'Batch Of 2028', categories: { name: 'Women\'s Table Tennis', type: 'sports' } as any },
+  { id: 'wtt-4', event_name: 'League Match', team_a: 'Batch Of 2028', team_b: 'Batch Of 2029', score_a: '2', score_b: '0', winner: 'Batch Of 2028', categories: { name: 'Women\'s Table Tennis', type: 'sports' } as any },
+  { id: 'wtt-5', event_name: 'League Match', team_a: 'Batch Of 2028', team_b: 'Batch Of 2026', score_a: '2', score_b: '0', winner: 'Batch Of 2028', categories: { name: 'Women\'s Table Tennis', type: 'sports' } as any },
+  { id: 'wtt-6', event_name: 'League Match', team_a: 'Batch Of 2027', team_b: 'M.tech PhD', score_a: '2', score_b: '0', winner: 'Batch Of 2027', categories: { name: 'Women\'s Table Tennis', type: 'sports' } as any },
+  { id: 'wtt-7', event_name: 'League Match', team_a: 'Batch Of 2029', team_b: 'M.tech PhD', score_a: '0', score_b: '2', winner: 'M.tech PhD', categories: { name: 'Women\'s Table Tennis', type: 'sports' } as any },
+  { id: 'wtt-8', event_name: 'League Match', team_a: 'Batch Of 2029', team_b: 'Batch Of 2027', score_a: '2', score_b: '0', winner: 'Batch Of 2029', categories: { name: 'Women\'s Table Tennis', type: 'sports' } as any },
+  { id: 'wtt-9', event_name: 'League Match', team_a: 'Batch Of 2029', team_b: 'Batch Of 2026', score_a: '2', score_b: '0', winner: 'Batch Of 2029', categories: { name: 'Women\'s Table Tennis', type: 'sports' } as any },
+  { id: 'wtt-10', event_name: 'League Match', team_a: 'Batch Of 2026', team_b: 'M.tech PhD', score_a: '0', score_b: '2', winner: 'M.tech PhD', categories: { name: 'Women\'s Table Tennis', type: 'sports' } as any },
+
+  // 🎯 Carrom
+  { id: 'car-1', event_name: 'League Match', team_a: 'Batch Of 2026', team_b: 'M.tech PhD', score_a: '', score_b: '', winner: 'Batch Of 2026', categories: { name: 'Carrom', type: 'sports' } as any },
+  { id: 'car-2', event_name: 'League Match', team_a: 'Batch Of 2028', team_b: 'Batch Of 2027', score_a: '', score_b: '', winner: 'Batch Of 2028', categories: { name: 'Carrom', type: 'sports' } as any },
+  { id: 'car-3', event_name: 'League Match', team_a: 'Batch Of 2026', team_b: 'Batch Of 2029', score_a: '', score_b: '', winner: 'Batch Of 2026', categories: { name: 'Carrom', type: 'sports' } as any },
+  { id: 'car-4', event_name: 'League Match', team_a: 'Batch Of 2027', team_b: 'M.tech PhD', score_a: '', score_b: '', winner: 'Batch Of 2027', categories: { name: 'Carrom', type: 'sports' } as any },
+  { id: 'car-5', event_name: 'League Match', team_a: 'Batch Of 2028', team_b: 'Batch Of 2029', score_a: '', score_b: '', winner: 'Batch Of 2028', categories: { name: 'Carrom', type: 'sports' } as any },
+  { id: 'car-6', event_name: 'League Match', team_a: 'Batch Of 2029', team_b: 'M.tech PhD', score_a: '', score_b: '', winner: 'M.tech PhD', categories: { name: 'Carrom', type: 'sports' } as any },
+  { id: 'car-7', event_name: 'League Match', team_a: 'Batch Of 2028', team_b: 'Batch Of 2026', score_a: '', score_b: '', winner: 'Batch Of 2026', categories: { name: 'Carrom', type: 'sports' } as any },
+  { id: 'car-8', event_name: 'League Match', team_a: 'Batch Of 2027', team_b: 'Batch Of 2029', score_a: '', score_b: '', winner: 'Batch Of 2027', categories: { name: 'Carrom', type: 'sports' } as any },
+  { id: 'car-9', event_name: 'League Match', team_a: 'Batch Of 2028', team_b: 'M.tech PhD', score_a: '', score_b: '', winner: 'M.tech PhD', categories: { name: 'Carrom', type: 'sports' } as any },
+  { id: 'car-10', event_name: 'League Match', team_a: 'Batch Of 2027', team_b: 'Batch Of 2026', score_a: '', score_b: '', winner: 'Batch Of 2026', categories: { name: 'Carrom', type: 'sports' } as any },
+
+  // 🏐 Volleyball
+  { id: 'vol-1', event_name: 'League Match', team_a: 'Batch Of 2028', team_b: 'Batch Of 2026', score_a: '0', score_b: '2', winner: 'Batch Of 2026', categories: { name: 'Volleyball', type: 'sports' } as any },
+  { id: 'vol-2', event_name: 'League Match', team_a: 'Batch Of 2029', team_b: 'M.tech PhD', score_a: '0', score_b: '2', winner: 'M.tech PhD', categories: { name: 'Volleyball', type: 'sports' } as any }
+]
+
 // ── Medal styles ──────────────────────────────────────────────────────────────
 const MEDAL: Record<number, { bg: string; text: string; badge: string }> = {
   1: { bg: 'rgba(251,191,36,0.12)',  text: '#f59e0b', badge: '🥇' },
@@ -241,7 +289,10 @@ function CategoryAccordion({ group }: { group: CategoryGroup }) {
 interface Props { completed: Game[] }
 
 export default function ResultsClient({ completed }: Props) {
-  const groups = groupByCategory(completed)
+  // Merge live Supabase data with the hardcoded scanned matches 
+  const mergedCompleted = [...completed, ...SCANNED_RESULTS as Game[]]
+  
+  const groups = groupByCategory(mergedCompleted)
   const sportsGroups   = groups.filter(g => g.type === 'sports')
   const culturalGroups = groups.filter(g => g.type === 'cultural')
 
@@ -251,14 +302,14 @@ export default function ResultsClient({ completed }: Props) {
         Results
       </h1>
       <p className="text-xs mb-6" style={{ color: 'var(--text-muted)' }}>
-        {completed.length} completed event{completed.length !== 1 ? 's' : ''}
+        {mergedCompleted.length} completed event{mergedCompleted.length !== 1 ? 's' : ''}
       </p>
 
-      {/* Hardcoded leaderboard — update LEADERBOARD array at top of file */}
+      {/* Hardcoded leaderboard */}
       <LeaderboardTable />
 
       {/* By-event accordion */}
-      {completed.length > 0 && (
+      {mergedCompleted.length > 0 && (
         <>
           {sportsGroups.length > 0 && (
             <div className="mb-6">
@@ -288,7 +339,7 @@ export default function ResultsClient({ completed }: Props) {
         </>
       )}
 
-      {completed.length === 0 && (
+      {mergedCompleted.length === 0 && (
         <div className="card p-10 text-center mt-4">
           <p className="text-3xl mb-2">🏆</p>
           <p className="font-semibold text-sm" style={{ color: 'var(--text-secondary)' }}>No results yet</p>
