@@ -3,8 +3,8 @@ import { LiveScoresClient } from './LiveScoresClient'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Live Scores',
-  description: 'Real-time live scores for all Hostel Days 2026 matches. Auto-updating scores with no refresh needed.',
+  title: 'Live Events',
+  description: 'Real-time live events for all Hostel Days 2026 matches.',
 }
 
 export const revalidate = 0

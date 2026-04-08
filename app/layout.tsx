@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: '%s | Hostel Days 2026',
   },
   description:
-    'Live scores, schedules, and results for Hostel Days 2026 — the biggest inter-hostel cultural and sports festival. 5 days of fierce competition!',
+    'Live evnts, schedules, and results for Hostel Days 2026 — the biggest inter-hostel cultural and sports festival. 5 days of fierce competition!',
   keywords: ['hostel days', 'college festival', 'live scores', 'sports', 'cultural'],
   openGraph: {
     title: 'Hostel Days 2026',

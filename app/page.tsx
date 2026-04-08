@@ -123,7 +123,7 @@ export default async function HomePage() {
             </div>
             <div>
               <p className="font-display font-bold text-sm md:text-lg" style={{ color: 'var(--text-primary)' }}>
-                Live Scores
+                Live Events
               </p>
               {liveGames.length > 0 ? (
                 <p className="text-xs md:text-sm mt-0.5" style={{ color: 'var(--live-color)' }}>
