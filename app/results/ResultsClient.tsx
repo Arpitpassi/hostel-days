@@ -7,13 +7,12 @@ import { getCategoryIcon } from '@/lib/utils'
 
 // ── Hardcoded leaderboard ─────────────────────────────────────────────────────
 const LEADERBOARD = [
-  { pos: 1, team: 'Batch Of 2027', points: 1832.5 },
-  { pos: 2, team: 'Batch Of 2026', points: 1817.5 },
-  { pos: 3, team: 'Batch Of 2028', points: 1615   },
-  { pos: 4, team: 'Batch Of 2029', points: 1540   },
-  { pos: 5, team: 'M.Tech & PhD',  points: 745    },
+  { pos: 1, team: 'Batch Of 2028', points: 6215 },
+  { pos: 2, team: 'Batch Of 2029', points: 5048 },
+  { pos: 3, team: 'Batch Of 2026', points: 4613 },
+  { pos: 4, team: 'Batch Of 2027', points: 4408 },
+  { pos: 5, team: 'M.Tech & PhD',  points: 945  },
 ]
-
 // ── Scanned results ───────────────────────────────────────────────────────────
 const SCANNED_RESULTS: Partial<Game>[] = [
   { id: 1001, event_name: 'League Match', team_a: 'Batch Of 2028', team_b: 'Batch Of 2027', score_a: 19, score_b: 29, winner: 'Batch Of 2027', categories: { id: 0, name: 'Basketball', type: 'sports' } },
