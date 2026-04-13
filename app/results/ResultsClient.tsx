@@ -13,8 +13,6 @@ const LEADERBOARD = [
   { pos: 4, team: 'Batch Of 2027', points: 4408 },
   { pos: 5, team: 'M.Tech & PhD',  points: 945  },
 ]
-// ── Scanned results ───────────────────────────────────────────────────────────
-
 
 // ── Medal styles ──────────────────────────────────────────────────────────────
 const MEDAL: Record<number, { bg: string; text: string; badge: string }> = {
@@ -183,7 +181,7 @@ function LeaderboardTable() {
             className="ml-auto text-[10px] font-medium px-2 py-0.5 rounded-full"
             style={{ background: 'var(--bg-card)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}
           >
-            Live · Day 8
+            Final · Day 8
           </span>
         </div>
 
@@ -220,7 +218,6 @@ function LeaderboardTable() {
                   background: medal ? medal.bg : 'transparent',
                   opacity: row.visible ? 1 : 0,
                   transform: `translateY(${yOffset}px)`,
-                  // ── ANIMATION CHANGE: smoother ease-in-out, no bounce ──
                   transition: row.visible
                     ? 'transform 0.8s cubic-bezier(0.65,0,0.35,1), opacity 0.5s cubic-bezier(0.4,0,0.2,1), background 0.6s ease'
                     : 'opacity 0.3s ease',
@@ -258,7 +255,6 @@ function LeaderboardTable() {
                       : 'var(--text-muted)',
                     fontVariantNumeric: 'tabular-nums',
                     letterSpacing: '-0.01em',
-                    // ── ANIMATION CHANGE: smoother color transition ──
                     transition: 'color 0.5s cubic-bezier(0.4,0,0.2,1)',
                   }}
                 >
@@ -454,14 +450,58 @@ function CategoryAccordion({ group }: { group: CategoryGroup }) {
 interface Props { completed: Game[] }
 
 export default function ResultsClient({ completed }: Props) {
+  const groups       = groupByCategory(completed)
+  const sportsGroups  = groups.filter(g => g.type === 'sports')
+  const culturalGroups = groups.filter(g => g.type === 'cultural')
+
   return (
     <div className="px-4 sm:px-6 py-4 max-w-2xl mx-auto pb-10">
       <h1 className="font-display font-extrabold text-2xl mb-1" style={{ color: 'var(--text-primary)' }}>
         Results
       </h1>
-      
+      <p className="text-xs mb-6" style={{ color: 'var(--text-muted)' }}>
+        {completed.length} completed event{completed.length !== 1 ? 's' : ''}
+      </p>
 
-      
+      <LeaderboardTable />
+
+      {completed.length > 0 && (
+        <>
+          {sportsGroups.length > 0 && (
+            <div className="mb-6">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-sm">⚽</span>
+                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Sports</span>
+                <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
+              </div>
+              {sportsGroups.map(group => (
+                <CategoryAccordion key={group.categoryName} group={group} />
+              ))}
+            </div>
+          )}
+
+          {culturalGroups.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-sm">🎭</span>
+                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Cultural</span>
+                <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
+              </div>
+              {culturalGroups.map(group => (
+                <CategoryAccordion key={group.categoryName} group={group} />
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
+      {completed.length === 0 && (
+        <div className="card p-10 text-center mt-4">
+          <p className="text-3xl mb-2">🏆</p>
+          <p className="font-semibold text-sm" style={{ color: 'var(--text-secondary)' }}>No results yet</p>
+          <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Results will appear here as events complete</p>
+        </div>
+      )}
     </div>
   )
 }
